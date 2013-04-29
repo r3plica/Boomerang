@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{81C01F8F-0761-4EE4-8269-9844E4E4F6F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boomerang", "Boomerang\Boomerang.csproj", "{3FC6678F-60D4-423C-B1F0-AF1FB7E62080}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{81C01F8F-0761-4EE4-8269-9844E4E4F6F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81C01F8F-0761-4EE4-8269-9844E4E4F6F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81C01F8F-0761-4EE4-8269-9844E4E4F6F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81C01F8F-0761-4EE4-8269-9844E4E4F6F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FC6678F-60D4-423C-B1F0-AF1FB7E62080}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FC6678F-60D4-423C-B1F0-AF1FB7E62080}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FC6678F-60D4-423C-B1F0-AF1FB7E62080}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FC6678F-60D4-423C-B1F0-AF1FB7E62080}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

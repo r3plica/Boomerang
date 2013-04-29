@@ -1,0 +1,60 @@
+﻿@using Core;
+
+@model IEnumerable<Client>
+
+@section navigation
+{
+	<li id="current">@Html.ActionLink("Index", "Index", "Home")<span></span></li>
+	<li>@Html.ActionLink("Clients", "Index", "Clients")<span></span></li>
+	<li>@Html.ActionLink("Candidates", "Index", "Candidates")<span></span></li>
+	<li>@Html.ActionLink("Users", "Index", "Users")<span></span></li>
+	<li>@Html.ActionLink("Profile", "Index", "Account")<span></span></li>
+	<li>@Html.ActionLink("Lists", "Index", "Lists")<span></span></li>
+}
+
+<div class="container">
+    <div class="row">
+        <div class="twlevecol last">        
+            <h2>@ViewBag.Title</h2>
+
+            @if (Model.Count() > 0)
+            {
+			    <table class="default-table"> 
+                    <thead>            
+				        <tr>
+					        <th>Callback date</th>
+					        <th>Client</th>
+					        <th>Email</th>
+					        <th>Tel</th>
+					        <th>Mob</th>
+					        <th>Fax</th>
+					        <th>Active</th>
+				        </tr>
+                    </thead>  
+                    <tbody>
+                        @foreach(Client c in Model)
+                        {
+				            <tr id="@c.Id">
+					            <td>@c.PrimaryContact().CallbackDate.ToShortDateString()</td>
+					            <td>@c.Name</td>
+					            <td>@c.PrimaryContact().Email</td>
+					            <td>@c.PrimaryContact().Telephone</td>
+					            <td>@c.PrimaryContact().Mobile</td>
+					            <td>@c.PrimaryContact().Fax</td>
+					            <td>
+                                    @if (c.Active) {
+                                        <input type="checkbox" checked="checked" disabled="disabled" />
+                                    } else {
+                                        <input type="checkbox" disabled="disabled" />
+                                    }
+					            </td>
+				            </tr>
+                        }
+                    </tbody>
+			    </table>
+            } else {
+                <p class="info">There are no upcoming callback dates.</p>
+            }
+        </div>
+    </div>
+</div>

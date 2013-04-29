@@ -1,0 +1,797 @@
+﻿@using Core
+@using Core.Components
+@model Client
+
+@{
+    ViewBag.Title = "Editing \"" + @Model.Name + "\"";
+}
+
+@section navigation
+{
+	<li>@Html.ActionLink("Index", "Index", "Home")<span></span></li>
+	<li id="current">@Html.ActionLink("Clients", "Index", "Clients")<span></span></li>
+	<li>@Html.ActionLink("Candidates", "Index", "Candidates")<span></span></li>
+	<li>@Html.ActionLink("Users", "Index", "Users")<span></span></li>
+	<!--<li>@Html.ActionLink("Profile", "Index", "Account")<span></span></li>-->
+	<!--<li>@Html.ActionLink("Lists", "Index", "Lists")<span></span></li>-->
+}
+
+<div class="container">
+    <div class="row">
+        <div class="twelvecol last">
+
+            <h2>@ViewBag.Title</h2>
+
+            <p class="message"></p>
+
+            <div class="tabs">
+                <ul>
+                    <li><a href="#client">Details</a></li>
+                    <li><a href="#sector">Sector</a></li>
+                    <li><a href="#contact">Contacts</a></li>
+                    <li><a href="#history">History</a></li>
+                    <li><a href="#documents">Documents</a></li>
+                </ul>
+
+                <div id="client" class="form">
+                    @Html.HiddenFor(m => m.Id)
+
+                    <fieldset>
+                        <legend>Client details</legend>
+
+                        <div class="table">
+                            <div class="table-row">
+                                <div class="table-cell twocol">
+                                    <label>Name</label>
+                                </div>
+                                <div class="table-cell fourcol">
+                                    <div class="input">@Html.TextBoxFor(m => m.Name, new { required = "required", tabindex = 1 })</div>
+                                </div>
+                                <div class="table-cell twocol">
+                                    <label>Assign to</label>
+                                </div>
+                                <div class="table-cell fourcol last">
+                                    <div class="input">@Html.DropDownListFor(m => m.UserId, (SelectList)ViewData["Managers"])</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </fieldset>
+
+                    <div class="table" id="addresses">
+                        @Html.Raw(Model.HtmlAddresses())
+                    </div>     
+
+                    <div class="no-border">
+                        <button class="primary save" tabindex="14">Save</button><a href="/clients">back to client list</a>
+                    </div>
+                </div>
+
+                <div id="sector" class="form">
+                    
+                    <fieldset>
+                        <legend>Sector</legend>
+
+                        <div class="table">
+                            <div class="table-row" id="sector-row">                                
+                                @if (Model.Sectors().Count() == 0)
+                                {                                      
+                                    <div class="table-cell twocol"><label>Name</label></div>
+                                    <div class="table-cell fourcol last">
+                                        <input type="hidden" id="Id" value="0" />
+                                        
+                                        <div class="input">
+                                            <input type="text" id="Name" value="" />
+                                        </div>
+                                    </div>
+                                }
+
+                                @foreach (Sector Sector in Model.Sectors())
+                                {                              
+                                    <div class="table-cell twocol"><label>Name</label></div>
+                                    <div class="table-cell fourcol last">
+                                        <input type="hidden" id="Id" value="@Sector.Id" />
+
+                                        <div class="input">
+                                            <input type="text" id="Name" value="@Sector.Name" />
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="no-border">
+                            <button id="btnAddSector" tabindex="20">Add more</button>
+                        </div>
+
+                    </fieldset>
+
+                    <div class="no-border">
+                        <button id="btnSaveSector" class="primary" tabindex="20">Save</button><a href="/Clients">back to client list</a>
+                    </div>
+
+                </div>
+
+                <div id="contact" class="form">
+                    <input type="hidden" name="Id" value="0" />
+                    
+                    <div class="page_navigation"></div>
+                    <table width="100%" id="contact_list" class="default-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Primary</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (Contact Contact in Model.Contacts())
+                            {
+                                <tr id="@Contact.Id">
+                                    <td>@Contact.Surname, @Contact.Forename</td>
+                                    <td>@Contact.Email</td>
+                                    <td id="is_primary">@Contact.Primary</td>
+                                    <td><a href="#" class="edit" id="@Contact.Id">Edit</a></td>
+                                    <td><a href="#" class="delete" id="@Contact.Id">Delete</a></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <fieldset>
+                        <legend>Create contact</legend>
+
+                        <div class="table">
+                            <div class="table-row">
+                                <div class="table-cell twocol"><label>Forename</label></div>
+                                <div class="table-cell fourcol"><div class="input"><input type="text" name="Forename" tabindex="1" /></div></div>
+                                <div class="table-cell twocol"><label>Middle name(s)</label></div>
+                                <div class="table-cell fourcol last"><div class="input"><input type="text" name="Middlenames" tabindex="1" /></div></div>
+                            </div>
+
+                            <div class="table-row">
+                                <div class="table-cell twocol"><label>Surname</label></div>
+                                <div class="table-cell fourcol"><div class="input"><input type="text" name="Surname" tabindex="1" /></div></div>
+                                <div class="table-cell twocol"><label>Email</label></div>
+                                <div class="table-cell fourcol last"><div class="input"><input type="text" name="Email" tabindex="1" /></div></div>
+                            </div>
+
+                            <div class="table-row">
+                                <div class="table-cell twocol"><label>Telephone</label></div>
+                                <div class="table-cell fourcol"><div class="input"><input type="text" name="Telephone" tabindex="1" /></div></div>
+                                <div class="table-cell twocol"><label>Mobile</label></div>
+                                <div class="table-cell fourcol last"><div class="input"><input type="text" name="Mobile" tabindex="1" /></div></div>
+                            </div>
+
+                            <div class="table-row">
+                                <div class="table-cell twocol"><label>Fax</label></div>
+                                <div class="table-cell fourcol"><div class="input"><input type="text" name="Fax" tabindex="1" /></div></div>
+                                <div class="table-cell twocol"><label>Job Tile</label></div>
+                                <div class="table-cell fourcol last"><div class="input"><input type="text" name="JobTitle" tabindex="1" /></div></div>
+                            </div>
+
+                            <div class="table-row">
+                                <div class="table-cell twocol"><label>Callback date</label></div>
+                                <div class="table-cell fourcol"><div class="input"><input id="datepicker" type="text" name="CallbackDate" tabindex="1" /></div></div>
+                                <div class="table-cell sixcol last">
+                                    <div class="radio">
+                                        <input type="checkbox" id="Primary" /><label for="Primary">Primary contact</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    
+                    <div class="no-border">
+                        <button class="primary save" tabindex="15">Save</button><a href="/clients">back to client list</a>
+                    </div>
+                </div>
+
+                <div id="history" class="form">                    
+                    <fieldset>
+                        <legend>History</legend>
+                                    
+                        <input type="hidden" id="HistoryId" value="0"  />
+                        <div class="input"><textarea id="HistoryMessage" rows="10" tabindex="1"></textarea></div>
+
+                    </fieldset>
+
+                    <div class="no-border">
+                        <button id="btnSaveHistory" class="primary" tabindex="2">Save</button><a href="/Clients">back to client list</a>
+                    </div>
+
+                    <ol id="history-comments" class="notes">                             
+                        @foreach (Note Note in Model.History())
+                        {  
+                            <li id="@Note.Id">
+                                <p>Posted by: <a id="user" href="/Account/Profile/@Note.UserId">@Note.UserName</a><br />
+                                <span id="date" class="small">@Note.DateCreated</span></p>
+                                <p class="note">@Html.Raw(Note.DisplayHtmlMessage())</p>
+                            </li>
+                        }
+                    </ol>
+                </div>
+
+                <form id="documents" action="/Components/UploadHandler.ashx" method="POST" enctype="multipart/form-data">
+
+                    @Html.HiddenFor(m => m.Id)
+                    <input type="hidden" id="Type" name="Type" value="0" />
+                    <input type="hidden" id="UserId" name="UserId" value="@Membership.GetUser(User.Identity.Name).ProviderUserKey.ToString()" />
+                    
+                    <table class="default-table" id="existing-files">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Size</th>
+                                <th>Date</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (Document d in Model.Documents())
+                            {
+                                <tr id="@d.Id">
+                                    <td><a href="/Components/UploadHandler.ashx?Id=@d.Id">@d.FileName</a></td>
+                                    <td>@d.FileSize.ToNearestFileSize()</td>         
+                                    <td>@d.Date</td>    
+                                    <td class="delete">
+                                        <button data-id="@d.Id">
+                                            <span>Delete</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+                    <div class="row fileupload-buttonbar">
+                        <div class="span7">
+                            <!-- The fileinput-button span is used to style the file input field as button -->
+                            <span class="fileinput-button">
+                                <span>Add files...</span>
+                                <input type="file" name="files[]" multiple>
+                            </span>
+                            <button type="submit" class="start">
+                                <span>Start uploads</span>
+                            </button>
+                            <button type="reset" class="cancel">
+                                <span>Cancel uploads</span>
+                            </button>
+                        </div>
+                        <div class="span5">
+                            <!-- The global progress bar -->
+                            <div class="progress progress-success progress-striped active fade">
+                                <div class="bar" style="width:0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- The loading indicator is shown during image processing -->
+                    <div class="fileupload-loading"></div>
+                    <br>
+                    <!-- The table listing the files available for upload/download -->
+                    <table class="default-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Size</th>
+                                <th>Progress</th>
+                                <th>Start</th>
+                                <th>Cancel</th>
+                            </tr>
+                        </thead>
+                        <tbody id="progress-list"></tbody>
+                    </table>
+                </form>
+
+            </div>
+        </div>        
+    </div>
+</div>
+
+<link href="/Content/FileUpload/jquery.fileupload-ui.css" rel="stylesheet" />
+
+<script type="text/javascript" src="/Content/FileUpload/tmpl.min.js"></script>
+<script type="text/javascript" src="/Content/FileUpload/canvas-to-blob.min.js"></script>
+<script type="text/javascript" src="/Content/FileUpload/load-image.min.js"></script>        
+<script type="text/javascript" src="/Content/FileUpload/jquery.iframe-transport.js"></script>
+<script type="text/javascript" src="/Content/FileUpload/jquery.fileupload.js"></script>
+<script type="text/javascript" src="/Content/FileUpload/jquery.fileupload-ip.js"></script>
+<script type="text/javascript" src="/Content/FileUpload/jquery.fileupload-ui.js"></script>
+<script type="text/javascript" src="/Content/FileUpload/locale.js"></script>
+<script type="text/javascript" src="/Content/FileUpload/main.js"></script>
+
+<script type="text/javascript">
+    var settings = {
+        selectedColumn: 0,
+        ignoreColumns: [3,4],
+        onComplete: function () {
+            $('.page_navigation').paginate({ collection: 'tbody > tr', recordsperpage: 20, container: 'tbody > tr' });
+        }
+    };
+
+    var fileSettings = {
+        selectedColumn: 2,
+        ignoreColumns: [3]
+    };
+
+    var pMessage = $('.message');
+    var pClientId = $('input[name=Id]', '#client'), pName = $('input[name=Name]', '#client'), pUserId = $('#UserId', '#client'); // Client form        
+    var pContactId = $('input[name=Id]', '#contact'), pForename = $('input[name=Forename]', '#contact'), pMiddlenames = $('input[name=Middlenames]', '#contact'), pSurname = $('input[name=Surname]', '#contact'), pTelephone = $('input[name=Telephone]', '#contact'), pMoblile = $('input[name=Mobile]', '#contact'), pFax = $('input[name=Fax]', '#contact'), pEmail = $('input[name=Email]', '#contact'), pJobTitle = $('input[name=JobTitle]', '#contact'), pCallback = $('input[name=CallbackDate]', '#contact'), pPrimary = $('#Primary', '#contact')
+    var pHistoryId = $('#HistoryId', '#history'), pHistoryMessage = $('#HistoryMessage', '#history'); // History form
+    
+    $(function () {
+
+        /* SETUP
+        ********************************************************************/
+
+
+        $('.tabs').tabs(); // jquery ui tabs
+        $('#datepicker').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'dd/mm/yy'
+        });
+
+        $('#contact_list').sortTable(settings);
+        $('#existing-files').sortTable(fileSettings);
+
+
+        /* DETAILS
+        ********************************************************************/
+
+
+        $('.save', '#client').click(function () {
+            $.event.trigger('AjaxButtonClick', this);
+
+            if (validateClient()) {
+                saveClient($(this));
+            } else {
+                $.event.trigger('AjaxButtonError');
+            }
+        });
+
+        /* ADDRESSES
+        ********************************************************************/
+        
+
+        $('.btnAddAddress').live("click", function () {
+            var count = $('#addresses > .table-row').last().find('fieldset').length;
+            var newRow = (count == 2) ? true : false;
+
+            addAddress(newRow);
+        });
+        
+        $('.removeAddress').live("click", function () {
+            var dataId = $(this).attr('data-id');
+            var success = false;
+
+            if (dataId > 0) {
+                success = deleteAddress(dataId);
+            } else {
+                success = true;
+            }
+
+            if (success)
+                $('#' + dataId).parent().parent().remove();
+        });
+        
+        /* SECTORS
+        ********************************************************************/
+
+
+        $('#btnAddSector').click(function () {
+            addSector($('#sector-row'));
+        });
+
+        $('#btnSaveSector').click(function () {
+            $.event.trigger('AjaxButtonClick', this);
+
+            saveSectors();
+        });
+
+        /* CONTACT
+        ********************************************************************/
+        
+
+        $('.save', '#contact').click(function () {
+            $.event.trigger('AjaxButtonClick', this);
+            if (validateContact()) {
+                saveContact();
+            } else {
+                $.event.trigger('AjaxButtonError');
+            }
+        });
+
+        $('.edit', '#contact_list').live('click', function () {
+            getContact($(this).attr('id'));
+        });
+        
+        /* HISTORY
+        ********************************************************************/
+
+
+        $('#btnSaveHistory').click(function () {
+            $.event.trigger('AjaxButtonClick', this);
+
+            if (validateHistory()) {
+                saveNote($(this));
+            } else {
+                $.event.trigger('AjaxButtonError');
+            }
+        });
+    });
+
+    /* DETAILS
+    ********************************************************************/
+
+
+    function validateClient() {
+        if (pName.val().length > 0) {
+            pName.removeClass('ui-state-error');
+            pMessage.show().removeClass('ui-state-error').removeClass('ui-state-highlight').text('');
+            return true;
+        } else {
+            pName.addClass('ui-state-error').effect('shake');
+            pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('Please correct the errors below:');
+            return false;
+        }
+    };
+
+    /* SECTORS
+    ********************************************************************/
+
+    function addSector(row) {
+        var item = '<div class="table-cell twocol"><label>Name</label></div><div class="table-cell fourcol last"><input type="hidden" id="Id" value="0" /><div class="input"><input type="text" id="Name" /></div></div>';
+        row.append(item);
+    }
+
+    function saveSectors() {
+        var bFine = true;
+
+        var i = $('.fourcol', '#sector-row').length;
+        while (i-- && bFine) {
+            var item = $('.fourcol', '#sector-row').eq(i);
+            var id = item.find('#Id').val();
+            var name = item.find('#Name').val();
+
+            bFine = saveSector(id, name, item); // Set our new value
+            console.log(bFine);
+        }
+
+        if (bFine) {
+            pMessage.show().addClass('ui-state-highlight').removeClass('ui-state-error').text('Your sectors have been saved.');
+            $.event.trigger('AjaxButtonSuccess');
+        } else {
+            pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 121).');
+            $.event.trigger('AjaxButtonError');
+        }
+    };
+
+    /* ADDRESS
+    ********************************************************************/
+
+
+    function validateAddress(target) {
+        return true;
+    };
+
+    function saveAddresses() {
+        var target = $('#addresses');
+
+        $.each(target.find('.address'), function (i, address) {
+            if (!saveAddress(address))
+                return false;
+        });
+
+        return true;
+    };
+
+    /* CONTACT
+    ********************************************************************/
+
+
+    function validateContact() {
+        if (pForename.val().length > 0 && pSurname.val().length > 0 && pEmail.val().length > 0) {
+            pForename.removeClass('ui-state-error');
+            pSurname.removeClass('ui-state-error');
+            pEmail.removeClass('ui-state-error');
+            pMessage.show().removeClass('ui-state-error').removeClass('ui-state-highlight').text('');
+            return true;
+        } else {
+            if (pForename.val().length == 0) pForename.addClass('ui-state-error');
+            if (pSurname.val().length == 0) pSurname.addClass('ui-state-error');
+            if (pEmail.val().length == 0) pEmail.addClass('ui-state-error');
+            pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('Please correct the errors below:');
+            return false;
+        }
+    };
+
+    /* HISTORY
+    ********************************************************************/
+
+
+    function validateHistory() {
+        if (pHistoryMessage.val().length > 0) {
+            pHistoryMessage.removeClass('ui-state-error');
+            pMessage.show().removeClass('ui-state-error').removeClass('ui-state-highlight').text('');
+            return true;
+        } else {
+            if (pHistoryMessage.val().length == 0) pHistoryMessage.addClass('ui-state-error');
+            pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('Please correct the errors below:');
+            return false;
+        }
+    };
+
+    /* MISC
+    ********************************************************************/
+
+
+    function resetContactForm() {
+        pContactId.val('0');
+        pForename.val('');
+        pMiddlenames.val('');
+        pSurname.val('');
+        pEmail.val('');
+        pTelephone.val('');
+        pMoblile.val('');
+        pFax.val('');
+        pCallback.val('');
+        pJobTitle.val('');
+
+        pPrimary.removeAttr('checked');
+    };
+
+    /* AJAX FUNCTIONS
+    ********************************************************************/
+
+
+    function saveClient(saveButton) {
+        $.ajax({
+            url: '@Url.Action("Save", "Clients")',
+            type: 'POST',
+            data: '{ "Id": ' + pClientId.val() + ', "Name": "' + pName.val() + '", "UserId": "' + pUserId.val() + '" }',
+            dataType: 'text json',
+            contentType: 'application/json; charset=utf-8',
+            traditional: true,
+            success: function (o) {
+                if (o.success) {
+                    if (saveAddresses()) {
+                        pMessage.show().addClass('ui-state-highlight').removeClass('ui-state-error').text('Your client has been saved.');
+                        $.event.trigger('AjaxButtonSuccess');
+                    } else {
+                        pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text("There was a problem saving one or more of the addresses for this record.");
+                        $.event.trigger('AjaxButtonError');
+                    }
+                } else {
+                    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text(o.error);
+                    $.event.trigger('AjaxButtonError');
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 100).');
+                $.event.trigger('AjaxButtonError');
+            }
+        });
+    };
+
+    function saveSector(id, name, item) {
+        bComplete = false;
+
+        if (name != null && name != '') {
+            $.ajax({
+                async: false, // Wait until completed
+                url: '@Url.Action("SaveSector", "Clients")',
+                type: 'POST',
+                data: '{ "Id": ' + id + ', "ClientId": ' + pClientId.val() + ', "Name": "' + name + '" }',
+                dataType: 'text json',
+                contentType: 'application/json; charset=utf-8',
+                traditional: true,
+                success: function (o) {
+                    if (o.success) {
+                        item.find('#Id').val(o.id);
+                        bComplete = true;
+                    }
+                }
+            });
+        }
+
+        return bComplete;
+    };
+
+    function addAddress(newRow) {
+        $.ajax({
+            url: '@Url.Action("AddAddress", "Common")',
+            type: 'POST',
+            data: '{ "newRow": ' + newRow + '  }',
+            dataType: 'text json',
+            contentType: 'application/json; charset=utf-8',
+            traditional: true,
+            success: function (o) {
+                if (o.success) {
+                    if (newRow) {
+                        $('#addresses').append(o.address);
+                    } else {
+                        $('#addresses > .table-row').last().append(o.address);
+                    }
+                } else {
+                    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text(o.error);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 122).');
+            }
+        });
+    };
+
+    function deleteAddress(id) {
+        var bSuccess = false;
+
+        $.ajax({
+            async: false,
+            url: '@Url.Action("DeleteAddress", "Common")',
+            type: 'POST',
+            data: '{ "id": ' + id + '}',
+            dataType: 'text json',
+            contentType: 'application/json; charset=utf-8',
+            traditional: true,
+            success: function (o) {
+                bSuccess = o.success;
+
+                if (bSuccess) {
+                    pMessage.show().addClass('ui-state-highlight').removeClass('ui-state-error').text("Your address has been removed.");
+                } else {
+                    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text(o.error);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 123).');
+            }
+        });
+
+        return bSuccess;
+    }
+
+    function saveAddress(target) {
+        var pAddressId = $(target).attr('id'), pTypeId = $('input[name=TypeId]', target), pHouse = $('input[name=HouseNumber]', target), pStreet = $('input[name=Street]', target), pArea = $('input[name=Area]', target), pTown = $('input[name=Town]', target), pPostCode = $('input[name=PostCode]', target), pCounty = $('select[name=County]', target); // Address form
+        var bSuccess = false;
+
+        $.ajax({
+            async: false,
+            url: '@Url.Action("SaveAddress", "Common")',
+            type: 'POST',
+            data: '{ "Id": ' + pAddressId + ', "ClientId": ' + pClientId.val() + ', "HouseNumber": "' + pHouse.val() + '", "Street": "' + pStreet.val() + '", "Area": "' + pArea.val() + '", "Town": "' + pTown.val() + '", "County": "' + pCounty.val() + '", "PostCode": "' + pPostCode.val() + '"  }',
+            dataType: 'text json',
+            contentType: 'application/json; charset=utf-8',
+            traditional: true,
+            success: function (o) {
+                bSuccess = o.success;
+
+                if (bSuccess) {
+                    $.event.trigger('AjaxButtonSuccess');
+                } else {
+                    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text(o.error);
+                    $.event.trigger('AjaxButtonError');
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 101).');
+                $.event.trigger('AjaxButtonError');
+            }
+        });
+
+        return bSuccess;
+    };
+
+    function getContact(id) {
+        $.ajax({
+            url: '@Url.Action("GetContact", "Clients")',
+            type: 'POST',
+            data: '{ "Id": ' + id + ' }',
+            dataType: 'text json',
+            contentType: 'application/json; charset=utf-8',
+            traditional: true,
+            success: function (o) {
+                if (o.success) {
+                    pContactId.val(o.contact.Id);
+                    pForename.val(o.contact.Forename);
+                    pMiddlenames.val(o.contact.Middlenames);
+                    pSurname.val(o.contact.Surname);
+                    pEmail.val(o.contact.Email);
+                    pTelephone.val(o.contact.Telephone);
+                    pMoblile.val(o.contact.Mobile);
+                    pFax.val(o.contact.Fax);
+                    pJobTitle.val(o.contact.JobTitle);
+                    pCallback.val(o.contact.Callback);
+
+                    if (o.contact.Primary) {
+                        pPrimary.attr('checked', 'checked');
+                    } else {
+                        pPrimary.removeAttr('checked');
+                    }
+                } else {
+                    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text(o.error);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 103).');
+            }
+        });
+    };
+
+    function saveContact() {
+        $.ajax({
+            url: '@Url.Action("SaveContact", "Clients")',
+            type: 'POST',
+            data: '{ "Id": ' + pContactId.val() + ', "ClientId": ' + pClientId.val() + ', "Forename": "' + pForename.val() + '", "Middlenames": "' + pMiddlenames.val() + '", "Surname": "' + pSurname.val() + '", "Telephone": "' + pTelephone.val() + '", "Mobile": "' + pMoblile.val() + '", "Fax": "' + pFax.val() + '", "Email": "' + pEmail.val() + '", "JobTitle": "' + pJobTitle.val() + '", "CallbackDate": "' + pCallback.val() + '", "Primary": "' + pPrimary.is(':checked') + '" }',
+            dataType: 'text json',
+            contentType: 'application/json; charset=utf-8',
+            traditional: true,
+            success: function (o) {
+                if (o.success) {
+                    var _primary = (pPrimary.is(':checked')) ? 'True' : 'False';
+                    var row = '<tr id="' + o.id + '"><td>' + $('input[name=Surname]', '#contact').val() + ', ' + $('input[name=Forename]', '#contact').val() + '</td><td>' + $('input[name=Email]', '#contact').val() + '</td><td id="is_primary">' + _primary + '</td><td><a href="#form" class="button edit" id="' + o.id + '">Edit</a></td><td><a href="#" class="button edit" id="' + o.id + '">Delete</a></td></tr>';
+                    
+                    if (pPrimary.is(':checked')) {
+                        var i = $('#contact_list tr').length;
+                        while (i--) {
+                            $('td#is_primary').eq(i).text('False');
+                        }
+                    }
+                    
+                    if (pContactId.val() > 0) {
+                        $('#' + o.id).replaceWith($(row));
+                    } else {
+                        $('tbody', '#contact_list').append(row);
+                    }
+
+                    $('#contact_list').sortTable(settings);
+
+                    resetContactForm();
+                    pMessage.show().addClass('ui-state-highlight').text('Your client\'s contact has been saved.');
+                    $.event.trigger('AjaxButtonSuccess');
+                } else {
+                    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text(o.error);
+                    $.event.trigger('AjaxButtonError');
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 102).');
+                $.event.trigger('AjaxButtonError');
+            }
+        });
+    };
+
+    function saveNote(saveButton) {
+        $.ajax({
+            url: '@Url.Action("SaveNote", "Candidates")',
+            type: 'POST',
+            data: '{ "Id": ' + pHistoryId.val() + ', "ClientId": ' + pClientId.val() + ', "TypeId": ' + 2 + ', "Message": "' + pHistoryMessage.val() + '"  }',
+            dataType: 'text json',
+            contentType: 'application/json; charset=utf-8',
+            traditional: true,
+            success: function (o) {
+                if (o.success) {
+                    pHistoryId.val(0); // Reset our Id
+                    pHistoryMessage.val(''); // Reset our message
+
+                    var note = '<li id="' + o.note.Id + '"><p>Posted by: <a id="user" href="/Account/Profile/' + o.note.UserId + '">' + o.note.UserName + '</a><br /><span id="date" class="small">' + new Date().toLocaleString() + '</span></p><p class="note">' + o.note.Message + '</p></li>'
+                    $('#history-comments').prepend(note);
+
+                    pMessage.show().addClass('ui-state-highlight').removeClass('ui-state-error').text('Your message has been saved.');
+                    $.event.trigger('AjaxButtonSuccess');
+                } else {
+                    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text(o.error);
+                    $.event.trigger('AjaxButtonError');
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 112).');
+                $.event.trigger('AjaxButtonError');
+            }
+        });
+    };
+</script>

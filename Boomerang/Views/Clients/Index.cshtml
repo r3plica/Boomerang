@@ -1,0 +1,157 @@
+﻿@using System.Collections.ObjectModel
+@using Core
+@using Core.Helpers
+@model Collection<Client>
+
+@{
+    ViewBag.Title = "Clients";
+}
+
+@section navigation
+{
+	<li>@Html.ActionLink("Index", "Index", "Home")<span></span></li>
+	<li id="current">@Html.ActionLink("Clients", "Index", "Clients")<span></span></li>
+	<li>@Html.ActionLink("Candidates", "Index", "Candidates")<span></span></li>
+	<li>@Html.ActionLink("Users", "Index", "Users")<span></span></li>
+	<!--<li>@Html.ActionLink("Profile", "Index", "Account")<span></span></li>-->
+	<!--<li>@Html.ActionLink("Lists", "Index", "Lists")<span></span></li>-->
+}
+
+@using (Html.BeginForm("Export", "Common", FormMethod.Post, new { id = "export-form" }))
+{
+    <input type="hidden" id="FileContent" name="FileContent" value="" />
+    <input type="hidden" id="FileName" name="FileName" value="" />
+} 
+
+<div class="container">
+    <div class="row">
+        <div class="twelvecol last">
+        
+            <h2>@ViewBag.Title</h2>
+
+            <p class="message"></p>
+            
+            <div class="pagination"><input type="text" id="Filter" placeholder="Eg: Filter" /><div class="page_navigation"></div></div>
+			<table class="default-table clients" id="clients">
+                <thead>            
+				    <tr>
+                        <th><span class="tick"></span></th>
+					    <th>Callback</th>
+					    <th>Client</th>
+					    <th>Name</th>
+					    <th>Email</th>
+					    <th>Tel</th>
+					    <th>Mob</th>
+					    <th>Active</th>
+				    </tr>
+                </thead> 
+                <tbody>
+                    @foreach (Client c in Model)
+                    {
+                        <tr id="@c.Id">
+                            <td><span class="tick"></span></td>
+					        <td>@c.PrimaryContact().CallbackDate</td>
+					        <td><a href="/Clients/Edit/@c.Id">@c.Name</a></td>
+					        <td>@c.PrimaryContact().Forename @c.PrimaryContact().Surname</td>
+					        <td><a href="mailto:@c.PrimaryContact().Email" title="@c.PrimaryContact().Email">@c.PrimaryContact().Email.CutToSize(15)</a></td>
+					        <td>@c.PrimaryContact().Telephone</td>
+					        <td>@c.PrimaryContact().Mobile</td>
+					        <td class="status">
+                                @if (c.Active) {
+                                    <input type="checkbox" checked="checked" disabled="disabled" />
+                                } else {
+                                    <input type="checkbox" disabled="disabled" />
+                                }
+					        </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+
+<div id="action-panel">
+    <h2>Actions</h2>
+    <ul class="actions">
+        <li><a href="/Clients/Create" class="button" id="create">Create</a></li>
+        <li><a href="#" class="button" id="edit">Edit</a></li>
+        <li><a href="#" class="button" id="delete">Delete</a></li>
+        <li><a href="#" class="button" id="activate">Activate</a></li>
+        <li><a href="#" class="button" id="deactivate">Deactivate</a></li>
+        <li><a href="#" class="button" id="export" data-id="clients">Export</a></li>
+    </ul>
+    <div class="radio"><input type="checkbox" id="show-active-only" /> <label for="show-active-only">Show only active</label></div>
+</div>
+
+<script type="text/javascript" src="/Scripts/custom/jquery.table-to-csv.js"></script>
+<script type="text/javascript" src="/Scripts/custom/clients/actions.js"></script>
+<script type="text/javascript">
+    function deleteClient(id) {
+        $.ajax({
+            url: '@Url.Action("Delete", "Clients")',
+            type: 'POST',
+            data: '{ "Id": ' + id + ' }',
+            dataType: 'text json',
+            contentType: 'application/json; charset=utf-8',
+            traditional: true,
+            success: function (o) {
+                if (o.success) {
+                    $('#' + id).remove();
+                    pMessage.show().addClass('ui-state-highlight').text('Your clients have been deleted.');
+                } else {
+                    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text(o.error);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 105).');
+            }
+        });
+    };
+
+    function deactivate(id) {
+        $.ajax({
+            url: '@Url.Action("Deactivate", "Clients")',
+            type: 'POST',
+            data: '{ "Id": ' + id + ' }',
+            dataType: 'text json',
+            contentType: 'application/json; charset=utf-8',
+            traditional: true,
+            success: function (o) {
+                if (o.success) {
+                    $('.status', '#' + id).find('input[type=checkbox]').removeAttr('checked');
+                    pMessage.show().addClass('ui-state-highlight').text('Your client has been deactivated.');
+                } else {
+                    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text(o.error);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 114).');
+            }
+        });
+    };
+
+    function activate(id) {
+        $.ajax({
+            url: '@Url.Action("Activate", "Clients")',
+            type: 'POST',
+            data: '{ "Id": ' + id + ' }',
+            dataType: 'text json',
+            contentType: 'application/json; charset=utf-8',
+            traditional: true,
+            success: function (o) {
+                if (o.success) {
+                    $('.status', '#' + id).find('input[type=checkbox]').attr('checked', 'checked');
+                    pMessage.show().addClass('ui-state-highlight').text('Your client has been activated.');
+                } else {
+                    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text(o.error);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 115).');
+            }
+        });
+    };
+</script>

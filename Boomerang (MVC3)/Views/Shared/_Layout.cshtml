@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title - Boomerang Database</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+	    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+	
+	    <!-- 1140px Grid styles for IE -->
+	    <!--[if lte IE 9]><link rel="stylesheet" href="/Content/ie.css" type="text/css" media="screen" /><![endif]-->
+
+	    <!-- The 1140px Grid - http://cssgrid.net/ -->
+	    <link rel="stylesheet" href="/Content/1140.css" type="text/css" media="screen" />
+	
+	    <!-- Your styles -->
+        <link href="/Content/Boomerang/jquery-ui-1.9.1.custom.min.css" rel="stylesheet" />
+	    <link href="/Content/styles.css" type="text/css" media="screen" rel="stylesheet" />
+	
+	    <!--css3-mediaqueries-js - http://code.google.com/p/css3-mediaqueries-js/ - Enables media queries in some unsupported browsers-->
+	    <script type="text/javascript" src="/Scripts/css3-mediaqueries.js"></script>
+
+        <!-- Our scripts -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+        <script src="/Scripts/jquery-ui-1.9.1.custom.min.js"></script>
+        <script src="/Scripts/modernizr-2.5.3.js" type="text/javascript"></script>   
+    </head>
+    <body>
+        <header class="container" id="header-wrap">
+            <div class="row">
+                <div class="twelvecol last">
+ 	                <hgroup>
+                        <h1><a href="/">Boomerang</a></h1>
+                        <h3>Client/Candidate Database</h3>
+                    </hgroup>
+
+                    <nav>
+	                    <ul>
+                            @RenderSection("navigation", false)
+                            @Html.Partial("_LogOnPartial")
+                        </ul>
+	                </nav>
+
+                    <form id="quick-search" method="get" action="/">
+                        <fieldset class="search">
+                            <label for="qsearch">Search:</label>
+                            <input class="tbox" id="qsearch" type="text" name="qsearch" value="Search..." title="Start typing and hit ENTER" />
+                            <button class="btn" title="Submit Search">Search</button>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </header>
+        
+        <div id="content-wrap">
+
+            @RenderBody()
+
+        </div>
+
+        <!-- footer -->
+        <footer class="container">
+            <div class="row">
+                <div class="twelvecol last">
+	                <p class="footer-left">
+		                &copy; 2012 Boomerang &nbsp; &nbsp; &nbsp;
+		                Design by <a href="http://www.r3plica.co.uk/">r3plica</a>
+	                </p>
+
+	                <p class="footer-right">
+	   	                <a href="/">Home</a> |
+		                <a href="/">Sitemap</a> |
+		                <a href="/">RSS Feed</a> |
+                        <a href="#top" class="back-to-top">Back to Top</a>
+                    </p>
+                </div>
+            </div>
+
+        <!-- /footer -->
+        </footer>
+
+        <script src="/Scripts/Custom/jquery.common.js" type="text/javascript"></script>
+        <script src="/Scripts/Custom/jquery.buttons.js" type="text/javascript"></script>
+        <script src="/Scripts/Custom/jquery.table-sorter.js" type="text/javascript"></script>
+        <script src="/Scripts/Custom/jquery.paginate.js" type="text/javascript"></script>     
+    </body>
+</html>

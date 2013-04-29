@@ -1,0 +1,885 @@
+﻿@using Core
+@using Core.Components
+@using System.Collections.ObjectModel
+@model Candidate
+
+@{
+    ViewBag.Title = "Editing \"" + @Model.Forename + " " + @Model.Surname + "\"";
+}
+
+@section navigation
+{
+	<li>@Html.ActionLink("Index", "Index", "Home")<span></span></li>
+	<li>@Html.ActionLink("Clients", "Index", "Clients")<span></span></li>
+	<li id="current">@Html.ActionLink("Candidates", "Index", "Candidates")<span></span></li>
+	<li>@Html.ActionLink("Users", "Index", "Users")<span></span></li>
+	<li>@Html.ActionLink("Profile", "Index", "Account")<span></span></li>
+	<li>@Html.ActionLink("Lists", "Index", "Lists")<span></span></li>
+}
+
+<div class="container">
+    <div class="row">
+        <div class="twelvecol last">
+
+            <h2>@ViewBag.Title</h2>
+
+            <p class="message"></p>            
+
+            <div class="tabs">
+                <ul>
+                    <li><a href="#details">Candidate details</a></li>
+                    <li><a href="#salary">Work/skills</a></li>
+                    <li><a href="#history">History</a></li>
+                    <li><a href="#documents">Documents</a></li>
+                </ul>
+
+                <div id="details" class="form">
+
+                    <fieldset>
+                        <legend>Candidate information</legend>
+
+                        @Html.HiddenFor(m => m.Id)
+                        <input type="hidden" name="AddressId" value="@Model.Address().Id" />
+                        <input type="hidden" name="TypeId" value="1" />
+
+                        <table>
+                            <tr>
+                                <td width="180px">
+                                    <label>Forename</label>
+                                </td>
+                                <td>
+                                    <div class="input"><input type="text" name="Forename" tabindex="1" value="@Model.Forename" /></div>
+                                </td>
+                                <td><label>Date created</label></td>
+                                <td>@DateTime.Now.ToString("U")</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Middle name(s)</label>
+                                </td>
+                                <td>
+                                    <div class="input"><input type="text" name="Middlename" tabindex="2" value="@Model.Middlenames" /></div>
+                                </td>
+                                <td>
+                                    <label for="Inactive">Mark as inactive</label>
+                                </td>
+                                <td>
+                                    @if (Model.Active)
+                                    {
+                                        <input type="checkbox" name="Inactive" id="Inactive" tabindex="5" />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" name="Inactive" id="Inactive" tabindex="5" checked="checked" />
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Surname</label>
+                                </td>
+                                <td>
+                                    <div class="input"><input type="text" name="Surname" tabindex="3" value="@Model.Surname" /></div>
+                                </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Date of birth</label>
+                                </td>
+                                <td>
+                                    <div class="input"><input type="text" name="DOB" tabindex="4" id="datepicker1" value="@Model.DOB" /></div>
+                                </td>
+                                <td><label>Age</label></td>
+                                <td><span id="current_age">0</span></td>
+                            </tr>
+                        </table>
+
+                        <hr />
+
+                        <table>
+                            <tr>
+                                <td width="180px">
+                                    <label>Last contact date</label>
+                                </td>
+                                <td>
+                                    <div class="input"><input type="text" name="LastContactDate" tabindex="6" id="datepicker2" value="@Model.LastContactDate" /></div>
+                                </td>
+                                <td>
+                                    <div class="radio">
+                                        @if (Model.CRB)
+                                        {
+                                            <input type="checkbox" name="CRB" id="CRB" tabindex="7" checked="checked" />
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" name="CRB" id="CRB" tabindex="7" />
+                                        }
+                                        <label for="CRB">CRB checks</label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="radio">
+                                        @if (Model.References)
+                                        {
+                                            <input type="checkbox" name="References" id="References" tabindex="8" checked="checked" />
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" name="References" id="References" tabindex="8" />
+                                        }                                            
+                                        <label for="Reference">Reference checks</label>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <hr />
+
+                        <table>
+                            <tr>
+                                <td width="180px">
+                                    <label>Telephone</label>
+                                </td>
+                                <td>
+                                    <div class="input"><input type="text" name="Telephone" tabindex="10" value="@Model.Telephone" /></div>
+                                </td>
+                                <td>
+                                    <label>House/Flat number</label>
+                                </td>
+                                <td>
+                                    <div class="input"><input type="text" name="HouseNumber" tabindex="14" value="@Model.Address().HouseNumber" /></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Mobile</label>
+                                </td>
+                                <td>
+                                    <div class="input"><input type="text" name="Mobile" tabindex="11" value="@Model.Mobile" /></div>
+                                </td>
+                                <td>
+                                    <label>Street</label>
+                                </td>
+                                <td>
+                                    <div class="input"><input type="text" name="Street" tabindex="15" value="@Model.Address().Street" /></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Email</label>
+                                </td>
+                                <td>
+                                    <div class="input"><input type="text" name="Email" tabindex="12" value="@Model.Email" /></div>
+                                </td>
+                                <td>
+                                    <label>Town/City</label>
+                                </td>
+                                <td>
+                                    <div class="input"><input type="text" name="Town" tabindex="16" value="@Model.Address().Town" /></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Transport</label>
+                                </td>
+                                <td>
+                                    <select name="Transport" tabindex="13">
+                                        <option value="1">None</option>
+                                        <option value="2">Walking</option>
+                                        <option value="3">Cycling</option>
+                                        <option value="4">Public transport</option>
+                                        <option value="5">Car</option>
+                                        <option value="6">Other</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <label>County</label>
+                                </td>
+                                <td>
+                                    <select name="County" tabindex="17">
+                                        <option value="">Please select</option>
+                                        <option value="Avon">Avon</option>
+                                        <option value="Bedfordshire">Bedfordshire</option>
+                                        <option value="Berkshire">Berkshire</option>
+                                        <option value="Bristol">Bristol</option>
+                                        <option value="Buckinghamshire">Buckinghamshire</option>
+                                        <option value="Cambridgeshire">Cambridgeshire</option>
+                                        <option value="Cheshire">Cheshire</option>
+                                        <option value="Cleveland">Cleveland</option>
+                                        <option value="Cornwall">Cornwall</option>
+                                        <option value="Cumbria">Cumbria</option>
+                                        <option value="Derbyshire">Derbyshire</option>
+                                        <option value="Devon">Devon</option>
+                                        <option value="Dorset">Dorset</option>
+                                        <option value="Durham">Durham</option>
+                                        <option value="East Riding of Yorkshire">East Riding of Yorkshire</option>
+                                        <option value="East Sussex">East Sussex</option>
+                                        <option value="Essex">Essex</option>
+                                        <option value="Gloucestershire">Gloucestershire</option>
+                                        <option value="Greater Manchester">Greater Manchester</option>
+                                        <option value="Hampshire">Hampshire</option>
+                                        <option value="Herefordshire">Herefordshire</option>
+                                        <option value="Hertfordshire">Hertfordshire</option>
+                                        <option value="Humberside">Humberside</option>
+                                        <option value="Isle of Wight">Isle of Wight</option>
+                                        <option value="Isles of Scilly">Isles of Scilly</option>
+                                        <option value="Kent">Kent</option>
+                                        <option value="Lancashire">Lancashire</option>
+                                        <option value="Leicestershire">Leicestershire</option>
+                                        <option value="Lincolnshire">Lincolnshire</option>
+                                        <option value="London">London</option>
+                                        <option value="Merseyside">Merseyside</option>
+                                        <option value="Middlesex">Middlesex</option>
+                                        <option value="Norfolk">Norfolk</option>
+                                        <option value="North Yorkshire">North Yorkshire</option>
+                                        <option value="Northamptonshire">Northamptonshire</option>
+                                        <option value="Northumberland">Northumberland</option>
+                                        <option value="Nottinghamshire">Nottinghamshire</option>
+                                        <option value="Oxfordshire">Oxfordshire</option>
+                                        <option value="Rutland">Rutland</option>
+                                        <option value="Shropshire">Shropshire</option>
+                                        <option value="Somerset">Somerset</option>
+                                        <option value="South Yorkshire">South Yorkshire</option>
+                                        <option value="Staffordshire">Staffordshire</option>
+                                        <option value="Suffolk">Suffolk</option>
+                                        <option value="Surrey">Surrey</option>
+                                        <option value="Tyne and Wear">Tyne and Wear</option>
+                                        <option value="Warwickshire">Warwickshire</option>
+                                        <option value="West Midlands">West Midlands</option>
+                                        <option value="West Sussex">West Sussex</option>
+                                        <option value="West Yorkshire">West Yorkshire</option>
+                                        <option value="Wiltshire">Wiltshire</option>
+                                        <option value="Worcestershire">Worcestershire</option>
+                                        <option value="">&nbsp;</option>
+                                        <option value="--UK Offshore--">--UK Offshore--</option>
+                                        <option value="Channel Islands">Channel Islands</option>
+                                        <option value="Isle of Man">Isle of Man</option>
+                                        <option value="">&nbsp;</option>
+                                        <option value="--Northern Ireland--">--Northern Ireland--</option>
+                                        <option value="Antrim">Antrim</option>
+                                        <option value="Armagh">Armagh</option>
+                                        <option value="Down">Down</option>
+                                        <option value="Fermanagh">Fermanagh</option>
+                                        <option value="Londonderry">Londonderry</option>
+                                        <option value="Tyrone">Tyrone</option>
+                                        <option value="">&nbsp;</option>
+                                        <option value="--Scotland--">--Scotland--</option>
+                                        <option value="Aberdeen City">Aberdeen City</option>
+                                        <option value="Aberdeenshire">Aberdeenshire</option>
+                                        <option value="Angus">Angus</option>
+                                        <option value="Argyll and Bute">Argyll and Bute</option>
+                                        <option value="Borders">Borders</option>
+                                        <option value="Clackmannan">Clackmannan</option>
+                                        <option value="Dumfries and Galloway">Dumfries and Galloway</option>
+                                        <option value="Dundee (City of)">Dundee (City of)</option>
+                                        <option value="East Ayrshire">East Ayrshire</option>
+                                        <option value="East Dunbartonshire">East Dunbartonshire</option>
+                                        <option value="East Lothian">East Lothian</option>
+                                        <option value="East Renfrewshire">East Renfrewshire</option>
+                                        <option value="Edinburgh (City of)">Edinburgh (City of)</option>
+                                        <option value="Falkirk">Falkirk</option>
+                                        <option value="Fife">Fife</option>
+                                        <option value="Glasgow (City of)">Glasgow (City of)</option>
+                                        <option value="Highland">Highland</option>
+                                        <option value="Inverclyde">Inverclyde</option>
+                                        <option value="Midlothian">Midlothian</option>
+                                        <option value="Moray">Moray</option>
+                                        <option value="North Ayrshire">North Ayrshire</option>
+                                        <option value="North Lanarkshire">North Lanarkshire</option>
+                                        <option value="Orkney">Orkney</option>
+                                        <option value="Perthshire and Kinross">Perthshire and Kinross</option>
+                                        <option value="Renfrewshire">Renfrewshire</option>
+                                        <option value="Shetland">Shetland</option>
+                                        <option value="South Ayrshire">South Ayrshire</option>
+                                        <option value="South Lanarkshire">South Lanarkshire</option>
+                                        <option value="Stirling">Stirling</option>
+                                        <option value="West Dunbartonshire">West Dunbartonshire</option>
+                                        <option value="West Lothian">West Lothian</option>
+                                        <option value="Western Isles">Western Isles</option>
+                                        <option value="">&nbsp;</option>
+                                        <option value="--Wales--">--Wales--</option>
+                                        <option value="Blaenau Gwent">Blaenau Gwent</option>
+                                        <option value="Bridgend">Bridgend</option>
+                                        <option value="Caerphilly">Caerphilly</option>
+                                        <option value="Cardiff">Cardiff</option>
+                                        <option value="Carmarthenshire">Carmarthenshire</option>
+                                        <option value="Ceredigion">Ceredigion</option>
+                                        <option value="Conwy">Conwy</option>
+                                        <option value="Denbighshire">Denbighshire</option>
+                                        <option value="Flintshire">Flintshire</option>
+                                        <option value="Gwynedd">Gwynedd</option>
+                                        <option value="Isle of Anglesey">Isle of Anglesey</option>
+                                        <option value="Merthyr Tydfil">Merthyr Tydfil</option>
+                                        <option value="Monmouthshire">Monmouthshire</option>
+                                        <option value="Neath Port Talbot">Neath Port Talbot</option>
+                                        <option value="Newport">Newport</option>
+                                        <option value="Pembrokeshire">Pembrokeshire</option>
+                                        <option value="Powys">Powys</option>
+                                        <option value="Rhondda Cynon Taff">Rhondda Cynon Taff</option>
+                                        <option value="Swansea">Swansea</option>
+                                        <option value="Torfaen">Torfaen</option>
+                                        <option value="The Vale of Glamorgan">The Vale of Glamorgan</option>
+                                        <option value="Wrexham">Wrexham</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+                                    <label>Post Code</label>
+                                </td>
+                                <td>
+                                    <div class="input"><input type="text" name="PostCode" tabindex="18" value="@Model.Address().PostCode" /></div>
+                                </td>
+                            </tr>
+                        </table>
+                    </fieldset>
+
+                    <div class="no-border">
+                        <button class="save primary" tabindex="20">Save</button><a href="/Candidates">back to candidate list</a>
+                    </div>
+
+                </div>
+
+                <div id="salary" class="form">
+
+                    <fieldset>
+                        <legend>Salary details</legend>
+
+                        <input type="hidden" id="Id" name="Id" value="@Model.SalaryDetails().Id" />
+
+                        <div class="table">
+                            <div class="table-row">
+                                <div class="table-cell threecol">
+                                    <div class="radio">
+                                        @Html.CheckBoxFor(m => m.SalaryDetails().FullTime)
+                                        @Html.LabelFor(m => m.SalaryDetails().FullTime)
+                                        <br /><br />
+                                        @Html.CheckBoxFor(m => m.SalaryDetails().PartTime)
+                                        @Html.LabelFor(m => m.SalaryDetails().PartTime)
+                                        <br /><br />
+                                        @Html.CheckBoxFor(m => m.SalaryDetails().Student)
+                                        @Html.LabelFor(m => m.SalaryDetails().Student)
+                                        <br /><br />
+                                        @Html.CheckBoxFor(m => m.SalaryDetails().Temp)
+                                        @Html.LabelFor(m => m.SalaryDetails().Temp)
+                                        <br /><br />
+                                        @Html.CheckBoxFor(m => m.SalaryDetails().NightShifts)
+                                        @Html.LabelFor(m => m.SalaryDetails().NightShifts)
+                                        <br /><br />
+                                        @Html.CheckBoxFor(m => m.SalaryDetails().DayShifts)
+                                        @Html.LabelFor(m => m.SalaryDetails().DayShifts)
+                                        <br /><br />
+                                        @Html.CheckBoxFor(m => m.SalaryDetails().Other)
+                                        @Html.LabelFor(m => m.SalaryDetails().Other)
+                                    </div> 
+                                </div>
+                                <div class="table-cell ninecol last">
+                                    <div class="table">
+                                        <div class="table-row">
+                                            <div class="table-cell threecol">
+                                                @Html.LabelFor(m => m.SalaryDetails().TempWage)
+                                            </div>
+                                            <div class="table-cell sixcol">
+                                                <div class="input">
+                                                    @Html.TextBoxFor(m => m.SalaryDetails().TempWage)
+                                                </div>
+                                            </div>
+                                            <div class="table-cell threecol last">
+                                                @Html.DropDownList("TempRateId", string.Empty)
+                                            </div>
+                                        </div>
+                                        <div class="table-row">
+                                            <div class="table-cell threecol">
+                                                @Html.LabelFor(m => m.SalaryDetails().PermWage)
+                                            </div>
+                                            <div class="table-cell sixcol">
+                                                <div class="input">
+                                                    @Html.TextBoxFor(m => m.SalaryDetails().PermWage)
+                                                </div>
+                                            </div>
+                                            <div class="table-cell threecol last">
+                                                @Html.DropDownList("PermRateId", string.Empty)
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Work</legend>
+
+                        <div class="table">
+                            <div class="table-row" id="work-row">
+                                @if (Model.Experience().Where(x => x.TypeId == ExperienceType.Work).Count() == 0)
+                                {                              
+                                    <div class="table-cell twocol"><label>Name</label></div>
+                                    <div class="table-cell fourcol last">
+                                        <input type="hidden" id="ExperienceId" value="0" />
+                                        <input type="hidden" id="ExperienceTypeId" value="2" />
+
+                                        <div class="input">
+                                            <input type="text" id="ExperienceName" />
+                                        </div>
+                                    </div>
+                                }
+
+                                @foreach (Experience Work in Model.Experience().Where(x => x.TypeId == ExperienceType.Work))
+                                {                         
+                                    <div class="table-cell twocol"><label>Name</label></div>
+                                    <div class="table-cell fourcol last">
+                                        <input type="hidden" id="ExperienceId" value="@Work.Id" />
+                                        <input type="hidden" id="ExperienceTypeId" value="@Work.TypeId" />
+
+                                        <div class="input">
+                                            <input type="text" id="ExperienceName" value="@Work.Name" />
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="no-border">
+                            <button id="btnAddWork" tabindex="20">Add more</button>
+                        </div>
+
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Skills</legend>
+
+                        <div class="table">
+                            <div class="table-row" id="skill-row">
+                                @if (Model.Experience().Where(x => x.TypeId == ExperienceType.Skill).Count() == 0)
+                                {                                      
+                                    <div class="table-cell twocol"><label>Name</label></div>
+                                    <div class="table-cell fourcol last">
+                                        <input type="hidden" id="ExperienceId" value="0" />
+                                        <input type="hidden" id="ExperienceTypeId" value="1" />
+
+                                        <div class="input">
+                                            <input type="text" id="ExperienceName" />
+                                        </div>
+                                    </div>
+                                }
+                                
+                                @foreach (Experience Skill in Model.Experience().Where(x => x.TypeId == ExperienceType.Skill))
+                                {                        
+                                    <div class="table-cell twocol"><label>Name</label></div>
+                                    <div class="table-cell fourcol last">
+                                        <input type="hidden" id="ExperienceId" value="@Skill.Id" />
+                                        <input type="hidden" id="ExperienceTypeId" value="@Skill.TypeId" />
+
+                                        <div class="input">
+                                            <input type="text" id="ExperienceName" value="@Skill.Name" />
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="no-border">
+                            <button id="btnAddSkill" tabindex="20">Add more</button>
+                        </div>
+
+                    </fieldset>
+
+                    <div class="no-border">
+                        <button id="btnSaveSalary" class="primary" tabindex="20">Save</button><a href="/Candidates">back to candidate list</a>
+                    </div>
+
+                </div>
+
+                <div id="history" class="form">
+
+                    <div class="table">
+                        <div class="table-row">
+                            <div class="table-cell sixcol">
+                                <fieldset>
+                                    <legend>Interview notes</legend>
+
+                                    <input type="hidden" id="NoteId" value="0" />
+                                    <div class="input"><textarea id="NoteMessage" rows="10" tabindex="1"></textarea></div>
+
+                                </fieldset>
+
+                                <div class="no-border">
+                                    <button id="btnSaveNote" class="primary" tabindex="2">Save</button><a href="/Candidates">back to candidate list</a>
+                                </div>
+
+                                <ol id="interview-comments" class="notes">                                
+                                    @foreach (Note Note in Model.Notes().Where(x => x.TypeId == NoteType.Interview))
+                                    {  
+                                        <li id="@Note.Id">
+                                            <p>Posted by: <a id="user" href="/Account/Profile/@Note.UserId">@Note.UserName</a><br />
+                                            <span id="date" class="small">@Note.DateCreated</span></p>
+                                            <p class="note">@HtmlExtensions.decodeEscapedText(Note.Message)</p>
+                                        </li>
+                                    }
+                                </ol>
+
+                            </div>
+                            <div class="table-cell sixcol last">
+                                <fieldset>
+                                    <legend>History</legend>
+                                    
+                                    <input type="hidden" id="HistoryId" value="0"  />
+                                    <div class="input"><textarea id="HistoryMessage" rows="10" tabindex="3"></textarea></div>
+
+                                </fieldset>
+
+                                <div class="no-border">
+                                    <button id="btnSaveHistory" class="primary" tabindex="4">Save</button><a href="/Candidates">back to candidate list</a>
+                                </div>
+
+                                <ol id="history-comments" class="notes">                             
+                                    @foreach (Note Note in Model.Notes().Where(x => x.TypeId == NoteType.History))
+                                    {  
+                                        <li id="@Note.Id">
+                                            <p>Posted by: <a id="user" href="/Account/Profile/@Note.UserId">@Note.UserName</a><br />
+                                            <span id="date" class="small">@Note.DateCreated</span></p>
+                                            <p class="note">@HtmlExtensions.decodeEscapedText(Note.Message)</p>
+                                        </li>
+                                    }
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<script type="text/javascript">
+    var pMessage = $('.message');
+    var pId = $('#Id', '#details'), pForename = $('input[name=Forename]', '#details'), pMiddlenames = $('input[name=Middlename]', '#details'), pSurname = $('input[name=Surname]', '#details'), pTelephone = $('input[name=Telephone]', '#details'), pMobile = $('input[name=Mobile]', '#details'), pEmail = $('input[name=Email]', '#details'), pDob = $('input[name=DOB]', '#details'), pActive = $('input[name=Inactive]', '#details'), pLastContactDate = $('input[name=LastContactDate]', '#details'), pCRB = $('input[name=CRB]', '#details'), pReferences = $('input[name=References]', '#details'), pTransport = $('select[name=Transport]', '#details'); // Candidate form   
+    var pAddressId = $('input[name=Id]', '#details'), pTypeId = $('input[name=TypeId]', '#details'), pHouse = $('input[name=HouseNumber]', '#details'), pStreet = $('input[name=Street]', '#details'), pTown = $('input[name=Town]', '#details'), pCounty = $('select[name=County]', '#details'), pPostCode = $('input[name=PostCode]', '#details'); // Address form
+    var pSalaryId = $('#Id', '#salary'), pSalaryFulltime = $('#FullTime', '#salary'), pSalaryParttime = $('#PartTime', '#salary'), pSalaryStudent = $('#Student', '#salary'), pSalaryTemp = $('#Temp', '#salary'), pSalaryNightShifts = $('#NightShifts', '#salary'), pSalaryDayShifts = $('#DayShifts', '#salary'), pSalaryOther = $('#Other', '#salary'), pSalaryTempWage = $('#TempWage', '#salary'), pSalaryPermWage = $('#PermWage', '#salary'), pSalaryTempRateId = $('#TempRateId', '#salary'), pSalaryPermRateId = $('#PermRateId', '#salary') // Salary form   
+
+    $(function () {
+
+        /* SETUP
+        ********************************************************************/
+
+
+        $('.tabs').tabs(); // jquery ui tabs
+        
+        $('#current_age').text(getAge('@Model.DOB'));
+        $('select[name=County]', '#details').val('@Model.Address().County');
+        $('select[name=Transport]', '#details').val('@Model.TransportId');
+        $('#datepicker1').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'dd/mm/yy',
+            minDate: "-100Y",
+            maxDate: '0',
+            yearRange: 'c-100:c+0', // shows -100 years to this year in the dropdown
+            onClose: function (d) {
+                var age = $('#current_age');
+
+                if (d != "") {
+                    var birth_year = d.substring(d.lastIndexOf("/") + 1);
+                    var birth_month = d.substring(d.indexOf("/") + 1, d.lastIndexOf("/"));
+                    var birth_day = d.substring(0, d.indexOf("/"));
+                    var birth = birth_year + "-" + birth_month + "-" + birth_day;
+
+                    age.text(getAge(birth));
+                } else {
+                    age.text(0);
+                }
+            }
+        });
+
+        $('#datepicker2').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'dd/mm/yy',
+        });
+
+        /* DETAILS
+        ********************************************************************/
+
+        $('.save', '#details').click(function () {
+            $.event.trigger('AjaxButtonClick', '.save');
+
+            var validCandidate = validate();
+            var validAddress = validateAddress();
+
+            if (validCandidate && validAddress) {
+                saveCandidate();
+            } else {
+                $.event.trigger('AjaxButtonError');
+            }
+        });
+
+
+
+        /* WORK/SKILLS
+        ********************************************************************/
+
+
+        $('#btnAddWork').click(function () {
+            addExperience($('#work-row'), 2);
+        });
+
+        $('#btnAddSkill').click(function () {
+            addExperience($('#skill-row'), 1);
+        });
+
+        $('#btnSaveSalary').click(function () {
+            $.event.trigger('AjaxButtonClick', '#btnSaveSalary');
+
+            saveSalary();
+        });
+
+        /* INTERVIEW NOTES/HISTORY
+        ********************************************************************/
+        
+
+        $('#btnSaveNote').click(function () {
+            $.event.trigger('AjaxButtonClick', '#btnSaveNote');
+
+            saveNote($('#NoteId'), 1, $('#NoteMessage'));
+        });
+
+        $('#btnSaveHistory').click(function () {
+            $.event.trigger('AjaxButtonClick', '#btnSaveHistory');
+
+            saveNote($('#HistoryId'), 2, $('#HistoryMessage'));
+        });
+    });
+
+    /* DETAILS FUNCTIONS
+    ********************************************************************/
+    
+
+    function getAge(dateString) {
+        var today = new Date();
+        var birthDate = new Date(dateString);
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    }
+
+    function validate() {
+        (pForename.val().length > 0) ? pForename.removeClass('ui-state-error') : pForename.addClass('ui-state-error');
+        (pSurname.val().length > 0) ? pSurname.removeClass('ui-state-error') : pSurname.addClass('ui-state-error');
+        (pDob.val().length > 0) ? pDob.removeClass('ui-state-error') : pDob.addClass('ui-state-error');
+
+        if (pForename.val().length > 0 && pSurname.val().length > 0 && pDob.val().length > 0) {
+            pMessage.show().removeClass('ui-state-error').removeClass('ui-state-highlight').text('');
+            return true;
+        } else {
+            pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('Please correct the errors below:');
+            return false;
+        }
+    };
+
+    function validateAddress() {
+        (pHouse.val().length > 0) ? pHouse.removeClass('ui-state-error') : pHouse.addClass('ui-state-error');
+        (pStreet.val().length > 0) ? pStreet.removeClass('ui-state-error') : pStreet.addClass('ui-state-error');
+        (pPostCode.val().length > 0) ? pPostCode.removeClass('ui-state-error') : pPostCode.addClass('ui-state-error');
+        (pCounty.val() == 0) ? pCounty.addClass('ui-state-error') : pCounty.removeClass('ui-state-error');
+
+        if (pHouse.val().length > 0 && pStreet.val().length > 0 && pPostCode.val().length > 0 && pCounty.val() != 0) {
+            pMessage.show().removeClass('ui-state-error').removeClass('ui-state-highlight').text('');
+            return true;
+        } else {
+            pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('Please correct the errors below:');
+            return false;
+        }
+    };
+
+    /* WORK/SKILL FUNCTIONS
+    ********************************************************************/
+
+    
+    function addExperience(row, typeId) {
+        var item = '<div class="table-cell twocol"><label>Name</label></div><div class="table-cell fourcol last"><input type="hidden" id="ExperienceId" value="0" /><input type="hidden" id="ExperienceTypeId" value="' + typeId + '" /><div class="input"><input type="text" id="ExperienceName" /></div></div>';
+        row.append(item);
+    }
+
+    /* AJAX FUNCTIONS
+    ********************************************************************/
+
+
+    function saveCandidate() {
+        $.ajax({
+            url: '@Url.Action("Save", "Candidates")',
+            type: 'POST',
+            data: '{ "Id": ' + pId.val() + ', "Forename": "' + pForename.val() + '", "Middlenames": "' + pMiddlenames.val() + '", "Surname": "' + pSurname.val() + '", "Telephone": "' + pTelephone.val() + '", "Mobile": "' + pMobile.val() + '", "Email": "' + pEmail.val() + '", "Active": "' + !pActive.is(':checked') + '", "DOB": "' + pDob.val() + '", "CRB": "' + pCRB.is(':checked') + '", "References": "' + pReferences.is(':checked') + '", "LastContactDate": "' + pLastContactDate.val() + '", "TransportId": "' + pTransport.val() + '" }',
+            dataType: 'text json',
+            contentType: 'application/json; charset=utf-8',
+            traditional: true,
+            success: function (o) {
+                if (o.success) {
+                    saveAddress();
+                } else {
+                    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text(o.error);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 104).');
+            }
+        });
+    };
+
+    function saveAddress() {
+        $.ajax({
+            url: '@Url.Action("SaveAddress", "Clients")',
+            type: 'POST',
+            data: '{ "Id": ' + pAddressId.val() + ', "CandidateId": ' + pId.val() + ', "TypeId": ' + pTypeId.val() + ', "HouseNumber": "' + pHouse.val() + '", "Street": "' + pStreet.val() + '", "Town": "' + pTown.val() + '", "County": "' + pCounty.val() + '", "PostCode": "' + pPostCode.val() + '"  }',
+            dataType: 'text json',
+            contentType: 'application/json; charset=utf-8',
+            traditional: true,
+            success: function (o) {
+                if (o.success) {
+                    pMessage.show().addClass('ui-state-highlight').removeClass('ui-state-error').text('Your candidate has been saved.');
+                    $.event.trigger('AjaxButtonSuccess');
+                } else {
+                    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text(o.error);
+                    $.event.trigger('AjaxButtonError');
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 101).');
+            }
+        });
+    };
+
+    function saveSalary() {
+        $.ajax({
+            url: '@Url.Action("SaveSalary", "Candidates")',
+            type: 'POST',
+            data: '{ "Id": ' + pSalaryId.val() + ', "CandidateId": ' + pId.val() + ', "FullTime": ' + pSalaryFulltime.is(':checked') + ', "PartTime": ' + pSalaryParttime.is(':checked') + ', "Student": ' + pSalaryStudent.is(':checked') + ', "Temp": ' + pSalaryTemp.is(':checked') + ', "NightShifts": ' + pSalaryNightShifts.is(':checked') + ', "DayShifts": ' + pSalaryDayShifts.is(':checked') + ', "Other": ' + pSalaryOther.is(':checked') + ', "TempWage": "' + pSalaryTempWage.val() + '", "PermWage": "' + pSalaryPermWage.val() + '", "TempRateId": ' + pSalaryTempRateId.val() + ', "PermRateId": ' + pSalaryPermRateId.val() + ' }',
+            dataType: 'text json',
+            contentType: 'application/json; charset=utf-8',
+            traditional: true,
+            success: function (o) {
+                if (o.success) {
+                    pSalaryId.val(o.id)
+                    var bWork = saveSingleExperience('#work-row');
+                    var bSkill = saveSingleExperience('#skill-row');
+
+                    if (bWork && bSkill) {
+                        pMessage.show().addClass('ui-state-highlight').removeClass('ui-state-error').text('Your candidate salary details have been saved.');
+                        $.event.trigger('AjaxButtonSuccess');
+                    } else {
+                        if (!bWork && !bSkill) {
+                            pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 108).');
+                            $.event.trigger('AjaxButtonError');
+                        } else {
+                            if (!bWork) {
+                                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 109).');
+                                $.event.trigger('AjaxButtonError');
+                            }
+                            if (!bSkill) {
+                                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 110).');
+                                $.event.trigger('AjaxButtonError');
+                            }
+                        }
+                    }
+                } else {
+                    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text(o.error);
+                    $.event.trigger('AjaxButtonError');
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 107).');
+                $.event.trigger('AjaxButtonError');
+            }
+        });
+    };
+
+    function saveSingleExperience(target) {
+        var bWork = true;
+        var iWork = $('.fourcol', target).length;
+
+        while (iWork-- && bWork) {
+            var item = $('.fourcol', target).eq(iWork);
+            var _id = item.find('#ExperienceId').val();
+            var _typeId = item.find('#ExperienceTypeId').val();
+            var _name = item.find('#ExperienceName').val();
+
+            saveExperience(_id, _typeId, _name, item); // Set our new value
+        }
+
+        return bWork;
+    };
+
+    function saveExperience(id, typeId, name, item) {
+        if (name != null && name != '') {
+            $.ajax({
+                async: false, // Wait until completed
+                url: '@Url.Action("SaveExperience", "Candidates")',
+                type: 'POST',
+                data: '{ "Id": ' + id + ', "CandidateId": ' + pId.val() + ', "TypeId": ' + typeId + ', "Name": "' + name + '" }',
+                dataType: 'text json',
+                contentType: 'application/json; charset=utf-8',
+                traditional: true,
+                success: function (o) {
+                    if (o.success) {
+                        item.find('#ExperienceId').val(o.id);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            });
+        } else {
+            return true;
+        }
+    };
+
+    function saveNote(id, typeId, message) {
+        $.ajax({
+            url: '@Url.Action("SaveNote", "Candidates")',
+            type: 'POST',
+            data: '{ "Id": ' + id.val() + ', "CandidateId": ' + pId.val() + ', "TypeId": ' + typeId + ', "Message": "' + message.val() + '"  }',
+            dataType: 'text json',
+            contentType: 'application/json; charset=utf-8',
+            traditional: true,
+            success: function (o) {
+                if (o.success) {
+                    id.val(0); // Reset our Id
+                    message.val(''); // Reset our message
+
+                    var note = '<li id="' + o.note.Id + '"><p>Posted by: <a id="user" href="/Account/Profile/' + o.note.UserId + '">' + o.note.UserName + '</a><br /><span id="date" class="small">' + new Date().toLocaleString() + '</span></p><p class="note">' + o.note.Message + '</p></li>'
+                    if (typeId == 1) {
+                        $('#interview-comments').prepend(note);
+                    } else {
+                        $('#history-comments').prepend(note);
+                    }
+
+                    pMessage.show().addClass('ui-state-highlight').removeClass('ui-state-error').text('Your message has been saved.');
+                    $.event.trigger('AjaxButtonSuccess');
+                } else {
+                    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text(o.error);
+                    $.event.trigger('AjaxButtonError');
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 111).');
+                $.event.trigger('AjaxButtonError');
+            }
+        });
+    };
+</script>
+        

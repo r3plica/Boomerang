@@ -1,0 +1,367 @@
+﻿@using Core;
+@using Core.Components
+
+@{
+    ViewBag.Title = "Create a candidate";
+}
+
+@section navigation
+{
+	<li>@Html.ActionLink("Index", "Index", "Home")<span></span></li>
+	<li>@Html.ActionLink("Clients", "Index", "Clients")<span></span></li>
+	<li id="current">@Html.ActionLink("Candidates", "Index", "Candidates")<span></span></li>
+	<li>@Html.ActionLink("Users", "Index", "Users")<span></span></li>
+	<!--<li>@Html.ActionLink("Profile", "Index", "Account")<span></span></li>-->
+	<!--<li>@Html.ActionLink("Lists", "Index", "Lists")<span></span></li>-->
+}
+
+<div class="container">
+    <div class="row">
+        <div class="twelvecol last">
+
+            <h2>@ViewBag.Title</h2>
+
+            <p class="message"></p>
+            
+            <div class="tabs">
+                <ul>
+                    <li><a href="#details">Candidate details</a></li>
+                    <li><a href="#work">Work/skills</a></li>
+                    <li><a href="#history">History</a></li>
+                    <li><a href="#documents">Documents</a></li>
+                </ul>
+
+                <div id="details" class="form">
+
+                    <fieldset>
+                        <legend>Candidate details</legend>
+
+                        <div class="table">
+                            <div class="table-row">
+                                <div class="table-cell twocol">
+                                    <label>Forename</label>
+                                </div>
+                                <div class="table-cell fourcol">
+                                    <div class="input"><input type="text" name="Forename" tabindex="1" /></div>
+                                </div>
+                                <div class="table-cell twocol">
+                                    <label>Surname</label>
+                                </div>
+                                <div class="table-cell fourcol last">
+                                    <div class="input"><input type="text" name="Surname" tabindex="2" /></div>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell twocol">
+                                    <label>Date of birth</label>
+                                </div>
+                                <div class="table-cell fourcol">
+                                    <div class="input"><input type="text" name="DOB" tabindex="3" id="datepicker1" /></div>
+                                </div>
+                                <div class="table-cell twocol"></div>
+                                <div class="table-cell fourcol last">
+                                    <div class="radio">
+                                        <input type="checkbox" name="Inactive" id="Inactive" tabindex="4" />
+                                        <label for="Inactive">Mark as inactive</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell twocol"><label>Age</label></div>
+                                <div class="table-cell fourcol"><span id="current_age">0</span></div>
+                                <div class="table-cell twocol"><label>Date created</label></div>
+                                <div class="table-cell fourcol last">@DateTime.Now.ToString("U")</div>
+                            </div>
+                        </div>
+
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Candidate contact details</legend>
+
+                        <div class="table">
+                            <div class="table-row">      
+                                <div class="table-cell twocol"></div>     
+                                <div class="table-cell tencol last">
+                                    <div class="radio"><input type="checkbox" name="CRB" id="CRB" tabindex="5" /><label for="CRB">CRB checks</label></div>
+                                    <div class="radio"><input type="checkbox" name="References" id="References" tabindex="6" /><label for="References">Reference checks</label></div>
+                                    <div class="radio"><input type="checkbox" name="Interviewed" id="Interviewed" tabindex="7" /><label for="Interviewed">Interviewed</label></div>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell twocol">
+                                    <label>Last contact date</label>
+                                </div>
+                                <div class="table-cell fourcol">
+                                    <div class="input"><input type="text" name="LastContactDate" tabindex="8" id="datepicker2" /></div>
+                                </div>
+                                <div class="table-cell twocol">
+                                    <label>NI Number</label>
+                                </div>
+                                <div class="table-cell fourcol last">
+                                    <div class="input"><input type="text" name="NiNumber" tabindex="9" /></div>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell twocol">
+                                    <label>Telephone</label>
+                                </div>
+                                <div class="table-cell fourcol">
+                                    <div class="input"><input type="text" name="Telephone" tabindex="10" /></div>
+                                </div>
+                                <div class="table-cell twocol">
+                                    <label>Mobile</label>
+                                </div>
+                                <div class="table-cell fourcol last">
+                                    <div class="input"><input type="text" name="Mobile" tabindex="11" /></div>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell twocol">
+                                    <label>Email</label>
+                                </div>
+                                <div class="table-cell fourcol">
+                                    <div class="input"><input type="text" name="Email" tabindex="12" /></div>
+                                </div>
+                                <div class="table-cell twocol">
+                                    <label>Transport</label>
+                                </div>
+                                <div class="table-cell fourcol last">
+                                    <select name="Transport" tabindex="13">
+                                        <option value="1">None</option>
+                                        <option value="2">Walking</option>
+                                        <option value="3">Cycling</option>
+                                        <option value="4">Public transport</option>
+                                        <option value="5">Car</option>
+                                        <option value="6">Other</option>
+                                    </select>
+                                </div>       
+                            </div>
+                        </div>
+
+                    </fieldset>
+                    
+                    <fieldset>
+                        <legend>Candidate address</legend>
+                                              
+                        <div class="table">
+                            <div class="table-row">
+                                <div class="table-cell twocol">
+                                    <label>House/Flat number</label>
+                                </div>
+                                <div class="table-cell fourcol">
+                                    <div class="input"><input type="text" name="HouseNumber" tabindex="14" /></div>
+                                </div>
+                                <div class="table-cell twocol">
+                                    <label>Street</label>
+                                </div>
+                                <div class="table-cell fourcol last">
+                                    <div class="input"><input type="text" name="Street" tabindex="15" /></div>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell twocol">
+                                    <label>Area</label>
+                                </div>
+                                <div class="table-cell fourcol">
+                                    <div class="input"><input type="text" name="Area" tabindex="16" /></div>
+                                </div> 
+                                <div class="table-cell twocol">
+                                    <label>Town/City</label>
+                                </div>
+                                <div class="table-cell fourcol last">
+                                    <div class="input"><input type="text" name="Town" tabindex="17" /></div>
+                                </div>
+                            </div>
+                            <div class="table-row">                     
+                                <div class="table-cell twocol">
+                                    <label>County</label>
+                                </div>
+                                <div class="table-cell fourcol">
+                                    @Html.Raw(AddressManager.DisplayCountyDropDown(new Address().GetCountyList(), null, 18))
+                                </div>
+                                <div class="table-cell twocol">
+                                    <label>Post Code</label>
+                                </div>
+                                <div class="table-cell fourcol last">
+                                    <div class="input"><input type="text" name="PostCode" tabindex="19" /></div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <div class="no-border">
+                        <button class="primary saveEdit" tabindex="20">Save and edit</button><button class="save" tabindex="21">Save</button><a href="/Candidates">back to candidate list</a>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<script type="text/javascript">
+    var pMessage = $('.message');
+    var pForename = $('input[name=Forename]', '#details'), pSurname = $('input[name=Surname]', '#details'), pTelephone = $('input[name=Telephone]', '#details'), pMobile = $('input[name=Mobile]', '#details'), pEmail = $('input[name=Email]', '#details'), pDob = $('input[name=DOB]', '#details'), pActive = $('input[name=Inactive]', '#details'), pLastContactDate = $('input[name=LastContactDate]', '#details'), pNiNumber = $('input[name=NiNumber]', '#details'), pCRB = $('input[name=CRB]', '#details'), pReferences = $('input[name=References]', '#details'), pInterviewed = $('input[name=Interviewed]', '#details'), pTransport = $('select[name=Transport]', '#details'); // Candidate form   
+    var pHouse = $('input[name=HouseNumber]', '#details'), pStreet = $('input[name=Street]', '#details'), pArea = $('input[name=Area]', '#details'), pTown = $('input[name=Town]', '#details'), pCounty = $('select[name=County]', '#details'), pPostCode = $('input[name=PostCode]', '#details'); // Address form
+
+    $(function () {
+        $('.tabs').tabs({ disabled: [1, 2, 3] }); // jquery ui tabs
+        $('#datepicker1').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'dd/mm/yy',
+            minDate: "-100Y",
+            maxDate: '0',
+            yearRange: 'c-100:c+0', // shows -100 years to this year in the dropdown
+            onClose: function (d) {
+                var age = $('#current_age');
+
+                if (d != "") {
+                    var birth_year = d.substring(d.lastIndexOf("/") + 1);
+                    var birth_month = d.substring(d.indexOf("/") + 1, d.lastIndexOf("/"));
+                    var birth_day = d.substring(0, d.indexOf("/"));
+                    var birth = birth_year + "-" + birth_month + "-" + birth_day;
+
+                    age.text(getAge(birth));
+                } else {
+                    age.text(0);
+                }
+            }
+        });
+
+        $('#datepicker2').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'dd/mm/yy',
+        });
+
+        $('.save', '#details').click(function () {
+            $.event.trigger('AjaxButtonClick', this);
+
+            var validCandidate = validate();
+            var validAddress = validateAddress();
+
+            if (validCandidate && validAddress) {
+                saveCandidate($(this), false);
+            } else {
+                $.event.trigger('AjaxButtonError');
+            }
+        });
+
+        $('.saveEdit', '#details').click(function () {
+            $.event.trigger('AjaxButtonClick', this);
+
+            var validCandidate = validate();
+            var validAddress = validateAddress();
+
+            if (validCandidate && validAddress) {
+                saveCandidate($(this), true);
+            } else {
+                $.event.trigger('AjaxButtonError');
+            }
+        });
+    });
+
+    function getAge(dateString) {
+        var today = new Date();
+        var birthDate = new Date(dateString);
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    }
+
+    function validate() {
+        (pForename.val().length > 0) ? pForename.removeClass('ui-state-error') : pForename.addClass('ui-state-error');
+        (pSurname.val().length > 0) ? pSurname.removeClass('ui-state-error') : pSurname.addClass('ui-state-error');
+
+        if (pForename.val().length > 0 && pSurname.val().length > 0) {
+            pMessage.show().removeClass('ui-state-error').removeClass('ui-state-highlight').text('');
+            return true;
+        } else {
+            pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('Please correct the errors below:');
+            return false;
+        }
+    };
+
+    function validateAddress() {
+        //(pHouse.val().length > 0) ? pHouse.removeClass('ui-state-error') : pHouse.addClass('ui-state-error');
+        //(pStreet.val().length > 0) ? pStreet.removeClass('ui-state-error') : pStreet.addClass('ui-state-error');
+        //(pPostCode.val().length > 0) ? pPostCode.removeClass('ui-state-error') : pPostCode.addClass('ui-state-error');
+        //(pCounty.val() == 0) ? pCounty.addClass('ui-state-error') : pCounty.removeClass('ui-state-error');
+
+        //if (pHouse.val().length > 0 && pStreet.val().length > 0 && pPostCode.val().length > 0 && pCounty.val() != 0) {
+        //    pMessage.show().removeClass('ui-state-error').removeClass('ui-state-highlight').text('');
+            return true;
+        //} else {
+        //    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('Please correct the errors below:');
+        //    return false;
+        //}
+    };
+
+    function clearForm() {
+        $.each($('input[type=text]'), function () {
+            $(this).val('');
+        });
+
+        $.each($('select'), function () {
+            $(this).val('0');
+        });
+    };
+
+    function saveCandidate(saveButton, redirect) {
+        $.ajax({
+            url: '@Url.Action("Save", "Candidates")',
+            type: 'POST',
+            data: '{ "Id": 0, "Forename": "' + pForename.val() + '", "Surname": "' + pSurname.val() + '", "Telephone": "' + pTelephone.val() + '", "Mobile": "' + pMobile.val() + '", "Email": "' + pEmail.val() + '", "Active": "' + !pActive.is(':checked') + '", "DOB": "' + pDob.val() + '", "CRB": "' + pCRB.is(':checked') + '", "References": "' + pReferences.is(':checked') + '", "Interviewed": "' + pInterviewed.is(':checked') + '", "LastContactDate": "' + pLastContactDate.val() + '", "NiNumber": "' + pNiNumber.val() + '", "TransportId": "' + pTransport.val() + '" }',
+            dataType: 'text json',
+            contentType: 'application/json; charset=utf-8',
+            traditional: true,
+            success: function (o) {
+                if (o.success) {
+                    saveAddress(saveButton, o.id, redirect);
+                } else {
+                    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text(o.error);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 104).');
+            }
+        });
+    };
+
+    function saveAddress(saveButton, CandidateId, redirect) {
+        $.ajax({
+            url: '@Url.Action("SaveAddress", "Common")',
+            type: 'POST',
+            data: '{ "Id": 0, "CandidateId": ' + CandidateId + ', "HouseNumber": "' + pHouse.val() + '", "Street": "' + pStreet.val() + '", "Area": "' + pArea.val() + '", "Town": "' + pTown.val() + '", "County": "' + pCounty.val() + '", "PostCode": "' + pPostCode.val() + '"  }',
+            dataType: 'text json',
+            contentType: 'application/json; charset=utf-8',
+            traditional: true,
+            success: function (o) {
+                if (o.success) {
+                    if (redirect) {
+                        window.location = "/Candidates/Edit/" + CandidateId;
+                    } else {
+                        pMessage.show().addClass('ui-state-highlight').removeClass('ui-state-error').text('Your candidate has been created.');
+                        clearForm();
+                        $.event.trigger('AjaxButtonSuccess');
+                    }
+                } else {
+                    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text(o.error);
+                    $.event.trigger('AjaxButtonError');
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 101).');
+                $.event.trigger('AjaxButtonError');
+            }
+        });
+    };
+</script>
+        

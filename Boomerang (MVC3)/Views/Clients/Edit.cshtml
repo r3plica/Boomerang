@@ -1,0 +1,884 @@
+﻿@using Core
+@using Core.Components
+@model Client
+
+@{
+    ViewBag.Title = "Editing \"" + @Model.Name + "\"";
+}
+
+@section navigation
+{
+	<li>@Html.ActionLink("Index", "Index", "Home")<span></span></li>
+	<li id="current">@Html.ActionLink("Clients", "Index", "Clients")<span></span></li>
+	<li>@Html.ActionLink("Candidates", "Index", "Candidates")<span></span></li>
+	<li>@Html.ActionLink("Users", "Index", "Users")<span></span></li>
+	<li>@Html.ActionLink("Profile", "Index", "Account")<span></span></li>
+	<li>@Html.ActionLink("Lists", "Index", "Lists")<span></span></li>
+}
+
+<div class="container">
+    <div class="row">
+        <div class="twelvecol last">
+
+            <h2>@ViewBag.Title</h2>
+
+            <p class="message"></p>
+
+            <div class="tabs">
+                <ul>
+                    <li><a href="#client">Details</a></li>
+                    <li><a href="#contact">Contacts</a></li>
+                    <li><a href="#history">History</a></li>
+                </ul>
+
+                <div id="client" class="form">
+                    @Html.HiddenFor(m => m.Id)
+
+                    <fieldset>
+                        <legend>Client details</legend>
+
+                        <div class="table">
+                            <div class="table-row">
+                                <div class="table-cell twocol">
+                                    <label>Name</label>
+                                </div>
+                                <div class="table-cell tencol last">
+                                    <div class="input">@Html.TextBoxFor(m => m.Name, new { required = "required", tabindex = 1 })</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </fieldset>
+
+                    <div class="table">
+                        <div class="table-row">
+                            <div class="table-cell sixcol">
+                                <fieldset id="address">
+                                    <legend>Delivery address</legend>    
+                                        <input type="hidden" name="AddressId" value="@Model.DeliveryAddress().Id" />
+                                        <input type="hidden" name="TypeId" value="1" /> 
+
+                                        <div class="table">
+                                            <div class="table-row">
+                                                <div class="table-cell fourcol">
+                                                    <label>House/Flat number</label>
+                                                </div>
+                                                <div class="table-cell eightcol last">
+                                                    <div class="input"><input type="text" name="HouseNumber" tabindex="2" value="@Model.DeliveryAddress().HouseNumber" /></div>
+                                                </div>                                                
+                                            </div>
+
+                                            <div class="table-row">
+                                                <div class="table-cell fourcol">
+                                                    <label>Street</label>
+                                                </div>
+                                                <div class="table-cell eightcol last">
+                                                    <div class="input"><input type="text" name="Street" tabindex="3" value="@Model.DeliveryAddress().Street" /></div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="table-row">
+                                                <div class="table-cell fourcol">
+                                                    <label>Town/City</label>
+                                                </div>
+                                                <div class="table-cell eightcol last">
+                                                    <div class="input"><input type="text" name="Town" tabindex="4" value="@Model.DeliveryAddress().Town" /></div>
+                                                </div>                                 
+                                            </div>
+
+                                            <div class="table-row">
+                                                <div class="table-cell fourcol">
+                                                    <label>County</label>
+                                                </div>
+                                                <div class="table-cell eightcol last">
+                                                    <select name="County" tabindex="5">
+                                                        <option value="">Please select</option>
+                                                        <option value="Avon">Avon</option>
+                                                        <option value="Bedfordshire">Bedfordshire</option>
+                                                        <option value="Berkshire">Berkshire</option>
+                                                        <option value="Bristol">Bristol</option>
+                                                        <option value="Buckinghamshire">Buckinghamshire</option>
+                                                        <option value="Cambridgeshire">Cambridgeshire</option>
+                                                        <option value="Cheshire">Cheshire</option>
+                                                        <option value="Cleveland">Cleveland</option>
+                                                        <option value="Cornwall">Cornwall</option>
+                                                        <option value="Cumbria">Cumbria</option>
+                                                        <option value="Derbyshire">Derbyshire</option>
+                                                        <option value="Devon">Devon</option>
+                                                        <option value="Dorset">Dorset</option>
+                                                        <option value="Durham">Durham</option>
+                                                        <option value="East Riding of Yorkshire">East Riding of Yorkshire</option>
+                                                        <option value="East Sussex">East Sussex</option>
+                                                        <option value="Essex">Essex</option>
+                                                        <option value="Gloucestershire">Gloucestershire</option>
+                                                        <option value="Greater Manchester">Greater Manchester</option>
+                                                        <option value="Hampshire">Hampshire</option>
+                                                        <option value="Herefordshire">Herefordshire</option>
+                                                        <option value="Hertfordshire">Hertfordshire</option>
+                                                        <option value="Humberside">Humberside</option>
+                                                        <option value="Isle of Wight">Isle of Wight</option>
+                                                        <option value="Isles of Scilly">Isles of Scilly</option>
+                                                        <option value="Kent">Kent</option>
+                                                        <option value="Lancashire">Lancashire</option>
+                                                        <option value="Leicestershire">Leicestershire</option>
+                                                        <option value="Lincolnshire">Lincolnshire</option>
+                                                        <option value="London">London</option>
+                                                        <option value="Merseyside">Merseyside</option>
+                                                        <option value="Middlesex">Middlesex</option>
+                                                        <option value="Norfolk">Norfolk</option>
+                                                        <option value="North Yorkshire">North Yorkshire</option>
+                                                        <option value="Northamptonshire">Northamptonshire</option>
+                                                        <option value="Northumberland">Northumberland</option>
+                                                        <option value="Nottinghamshire">Nottinghamshire</option>
+                                                        <option value="Oxfordshire">Oxfordshire</option>
+                                                        <option value="Rutland">Rutland</option>
+                                                        <option value="Shropshire">Shropshire</option>
+                                                        <option value="Somerset">Somerset</option>
+                                                        <option value="South Yorkshire">South Yorkshire</option>
+                                                        <option value="Staffordshire">Staffordshire</option>
+                                                        <option value="Suffolk">Suffolk</option>
+                                                        <option value="Surrey">Surrey</option>
+                                                        <option value="Tyne and Wear">Tyne and Wear</option>
+                                                        <option value="Warwickshire">Warwickshire</option>
+                                                        <option value="West Midlands">West Midlands</option>
+                                                        <option value="West Sussex">West Sussex</option>
+                                                        <option value="West Yorkshire">West Yorkshire</option>
+                                                        <option value="Wiltshire">Wiltshire</option>
+                                                        <option value="Worcestershire">Worcestershire</option>
+                                                        <option value="">&nbsp;</option>
+                                                        <option value="--UK Offshore--">--UK Offshore--</option>
+                                                        <option value="Channel Islands">Channel Islands</option>
+                                                        <option value="Isle of Man">Isle of Man</option>
+                                                        <option value="">&nbsp;</option>
+                                                        <option value="--Northern Ireland--">--Northern Ireland--</option>
+                                                        <option value="Antrim">Antrim</option>
+                                                        <option value="Armagh">Armagh</option>
+                                                        <option value="Down">Down</option>
+                                                        <option value="Fermanagh">Fermanagh</option>
+                                                        <option value="Londonderry">Londonderry</option>
+                                                        <option value="Tyrone">Tyrone</option>
+                                                        <option value="">&nbsp;</option>
+                                                        <option value="--Scotland--">--Scotland--</option>
+                                                        <option value="Aberdeen City">Aberdeen City</option>
+                                                        <option value="Aberdeenshire">Aberdeenshire</option>
+                                                        <option value="Angus">Angus</option>
+                                                        <option value="Argyll and Bute">Argyll and Bute</option>
+                                                        <option value="Borders">Borders</option>
+                                                        <option value="Clackmannan">Clackmannan</option>
+                                                        <option value="Dumfries and Galloway">Dumfries and Galloway</option>
+                                                        <option value="Dundee (City of)">Dundee (City of)</option>
+                                                        <option value="East Ayrshire">East Ayrshire</option>
+                                                        <option value="East Dunbartonshire">East Dunbartonshire</option>
+                                                        <option value="East Lothian">East Lothian</option>
+                                                        <option value="East Renfrewshire">East Renfrewshire</option>
+                                                        <option value="Edinburgh (City of)">Edinburgh (City of)</option>
+                                                        <option value="Falkirk">Falkirk</option>
+                                                        <option value="Fife">Fife</option>
+                                                        <option value="Glasgow (City of)">Glasgow (City of)</option>
+                                                        <option value="Highland">Highland</option>
+                                                        <option value="Inverclyde">Inverclyde</option>
+                                                        <option value="Midlothian">Midlothian</option>
+                                                        <option value="Moray">Moray</option>
+                                                        <option value="North Ayrshire">North Ayrshire</option>
+                                                        <option value="North Lanarkshire">North Lanarkshire</option>
+                                                        <option value="Orkney">Orkney</option>
+                                                        <option value="Perthshire and Kinross">Perthshire and Kinross</option>
+                                                        <option value="Renfrewshire">Renfrewshire</option>
+                                                        <option value="Shetland">Shetland</option>
+                                                        <option value="South Ayrshire">South Ayrshire</option>
+                                                        <option value="South Lanarkshire">South Lanarkshire</option>
+                                                        <option value="Stirling">Stirling</option>
+                                                        <option value="West Dunbartonshire">West Dunbartonshire</option>
+                                                        <option value="West Lothian">West Lothian</option>
+                                                        <option value="Western Isles">Western Isles</option>
+                                                        <option value="">&nbsp;</option>
+                                                        <option value="--Wales--">--Wales--</option>
+                                                        <option value="Blaenau Gwent">Blaenau Gwent</option>
+                                                        <option value="Bridgend">Bridgend</option>
+                                                        <option value="Caerphilly">Caerphilly</option>
+                                                        <option value="Cardiff">Cardiff</option>
+                                                        <option value="Carmarthenshire">Carmarthenshire</option>
+                                                        <option value="Ceredigion">Ceredigion</option>
+                                                        <option value="Conwy">Conwy</option>
+                                                        <option value="Denbighshire">Denbighshire</option>
+                                                        <option value="Flintshire">Flintshire</option>
+                                                        <option value="Gwynedd">Gwynedd</option>
+                                                        <option value="Isle of Anglesey">Isle of Anglesey</option>
+                                                        <option value="Merthyr Tydfil">Merthyr Tydfil</option>
+                                                        <option value="Monmouthshire">Monmouthshire</option>
+                                                        <option value="Neath Port Talbot">Neath Port Talbot</option>
+                                                        <option value="Newport">Newport</option>
+                                                        <option value="Pembrokeshire">Pembrokeshire</option>
+                                                        <option value="Powys">Powys</option>
+                                                        <option value="Rhondda Cynon Taff">Rhondda Cynon Taff</option>
+                                                        <option value="Swansea">Swansea</option>
+                                                        <option value="Torfaen">Torfaen</option>
+                                                        <option value="The Vale of Glamorgan">The Vale of Glamorgan</option>
+                                                        <option value="Wrexham">Wrexham</option>
+                                                    </select>
+                                                </div>
+
+                                            </div>
+                                            
+                                            <div class="table-row">                                                
+                                                <div class="table-cell fourcol">
+                                                    <label>Post Code</label>
+                                                </div>
+                                                <div class="table-cell eightcol last">
+                                                    <div class="input"><input type="text" name="PostCode" tabindex="6" value="@Model.DeliveryAddress().PostCode" /></div>
+                                                </div>                                 
+                                            </div>
+                                        </div>
+
+                                </fieldset>
+                            </div>
+                            <div class="table-cell sixcol last">
+                                <fieldset id="invoice">
+                                    <legend>Invoice address</legend>                      
+                                        <input type="hidden" name="AddressId" value="@Model.InvoiceAddress().Id" />
+                                        <input type="hidden" name="TypeId" value="2" /> 
+
+                                        <div class="table">
+                                            <div class="table-row">
+                                                <div class="table-cell fourcol">
+                                                    <label>House/Flat number</label>
+                                                </div>
+                                                <div class="table-cell eightcol last">
+                                                    <div class="input"><input type="text" name="HouseNumber" tabindex="7" value="@Model.InvoiceAddress().HouseNumber" /></div>
+                                                </div>                                                
+                                            </div>
+
+                                            <div class="table-row">
+                                                <div class="table-cell fourcol">
+                                                    <label>Street</label>
+                                                </div>
+                                                <div class="table-cell eightcol last">
+                                                    <div class="input"><input type="text" name="Street" tabindex="8" value="@Model.InvoiceAddress().Street" /></div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="table-row">
+                                                <div class="table-cell fourcol">
+                                                    <label>Town/City</label>
+                                                </div>
+                                                <div class="table-cell eightcol last">
+                                                    <div class="input"><input type="text" name="Town" tabindex="9" value="@Model.InvoiceAddress().Town" /></div>
+                                                </div>                                 
+                                            </div>
+
+                                            <div class="table-row">
+                                                <div class="table-cell fourcol">
+                                                    <label>County</label>
+                                                </div>
+                                                <div class="table-cell eightcol last">
+                                                    <select name="County" tabindex="10">
+                                                        <option value="">Please select</option>
+                                                        <option value="Avon">Avon</option>
+                                                        <option value="Bedfordshire">Bedfordshire</option>
+                                                        <option value="Berkshire">Berkshire</option>
+                                                        <option value="Bristol">Bristol</option>
+                                                        <option value="Buckinghamshire">Buckinghamshire</option>
+                                                        <option value="Cambridgeshire">Cambridgeshire</option>
+                                                        <option value="Cheshire">Cheshire</option>
+                                                        <option value="Cleveland">Cleveland</option>
+                                                        <option value="Cornwall">Cornwall</option>
+                                                        <option value="Cumbria">Cumbria</option>
+                                                        <option value="Derbyshire">Derbyshire</option>
+                                                        <option value="Devon">Devon</option>
+                                                        <option value="Dorset">Dorset</option>
+                                                        <option value="Durham">Durham</option>
+                                                        <option value="East Riding of Yorkshire">East Riding of Yorkshire</option>
+                                                        <option value="East Sussex">East Sussex</option>
+                                                        <option value="Essex">Essex</option>
+                                                        <option value="Gloucestershire">Gloucestershire</option>
+                                                        <option value="Greater Manchester">Greater Manchester</option>
+                                                        <option value="Hampshire">Hampshire</option>
+                                                        <option value="Herefordshire">Herefordshire</option>
+                                                        <option value="Hertfordshire">Hertfordshire</option>
+                                                        <option value="Humberside">Humberside</option>
+                                                        <option value="Isle of Wight">Isle of Wight</option>
+                                                        <option value="Isles of Scilly">Isles of Scilly</option>
+                                                        <option value="Kent">Kent</option>
+                                                        <option value="Lancashire">Lancashire</option>
+                                                        <option value="Leicestershire">Leicestershire</option>
+                                                        <option value="Lincolnshire">Lincolnshire</option>
+                                                        <option value="London">London</option>
+                                                        <option value="Merseyside">Merseyside</option>
+                                                        <option value="Middlesex">Middlesex</option>
+                                                        <option value="Norfolk">Norfolk</option>
+                                                        <option value="North Yorkshire">North Yorkshire</option>
+                                                        <option value="Northamptonshire">Northamptonshire</option>
+                                                        <option value="Northumberland">Northumberland</option>
+                                                        <option value="Nottinghamshire">Nottinghamshire</option>
+                                                        <option value="Oxfordshire">Oxfordshire</option>
+                                                        <option value="Rutland">Rutland</option>
+                                                        <option value="Shropshire">Shropshire</option>
+                                                        <option value="Somerset">Somerset</option>
+                                                        <option value="South Yorkshire">South Yorkshire</option>
+                                                        <option value="Staffordshire">Staffordshire</option>
+                                                        <option value="Suffolk">Suffolk</option>
+                                                        <option value="Surrey">Surrey</option>
+                                                        <option value="Tyne and Wear">Tyne and Wear</option>
+                                                        <option value="Warwickshire">Warwickshire</option>
+                                                        <option value="West Midlands">West Midlands</option>
+                                                        <option value="West Sussex">West Sussex</option>
+                                                        <option value="West Yorkshire">West Yorkshire</option>
+                                                        <option value="Wiltshire">Wiltshire</option>
+                                                        <option value="Worcestershire">Worcestershire</option>
+                                                        <option value="">&nbsp;</option>
+                                                        <option value="--UK Offshore--">--UK Offshore--</option>
+                                                        <option value="Channel Islands">Channel Islands</option>
+                                                        <option value="Isle of Man">Isle of Man</option>
+                                                        <option value="">&nbsp;</option>
+                                                        <option value="--Northern Ireland--">--Northern Ireland--</option>
+                                                        <option value="Antrim">Antrim</option>
+                                                        <option value="Armagh">Armagh</option>
+                                                        <option value="Down">Down</option>
+                                                        <option value="Fermanagh">Fermanagh</option>
+                                                        <option value="Londonderry">Londonderry</option>
+                                                        <option value="Tyrone">Tyrone</option>
+                                                        <option value="">&nbsp;</option>
+                                                        <option value="--Scotland--">--Scotland--</option>
+                                                        <option value="Aberdeen City">Aberdeen City</option>
+                                                        <option value="Aberdeenshire">Aberdeenshire</option>
+                                                        <option value="Angus">Angus</option>
+                                                        <option value="Argyll and Bute">Argyll and Bute</option>
+                                                        <option value="Borders">Borders</option>
+                                                        <option value="Clackmannan">Clackmannan</option>
+                                                        <option value="Dumfries and Galloway">Dumfries and Galloway</option>
+                                                        <option value="Dundee (City of)">Dundee (City of)</option>
+                                                        <option value="East Ayrshire">East Ayrshire</option>
+                                                        <option value="East Dunbartonshire">East Dunbartonshire</option>
+                                                        <option value="East Lothian">East Lothian</option>
+                                                        <option value="East Renfrewshire">East Renfrewshire</option>
+                                                        <option value="Edinburgh (City of)">Edinburgh (City of)</option>
+                                                        <option value="Falkirk">Falkirk</option>
+                                                        <option value="Fife">Fife</option>
+                                                        <option value="Glasgow (City of)">Glasgow (City of)</option>
+                                                        <option value="Highland">Highland</option>
+                                                        <option value="Inverclyde">Inverclyde</option>
+                                                        <option value="Midlothian">Midlothian</option>
+                                                        <option value="Moray">Moray</option>
+                                                        <option value="North Ayrshire">North Ayrshire</option>
+                                                        <option value="North Lanarkshire">North Lanarkshire</option>
+                                                        <option value="Orkney">Orkney</option>
+                                                        <option value="Perthshire and Kinross">Perthshire and Kinross</option>
+                                                        <option value="Renfrewshire">Renfrewshire</option>
+                                                        <option value="Shetland">Shetland</option>
+                                                        <option value="South Ayrshire">South Ayrshire</option>
+                                                        <option value="South Lanarkshire">South Lanarkshire</option>
+                                                        <option value="Stirling">Stirling</option>
+                                                        <option value="West Dunbartonshire">West Dunbartonshire</option>
+                                                        <option value="West Lothian">West Lothian</option>
+                                                        <option value="Western Isles">Western Isles</option>
+                                                        <option value="">&nbsp;</option>
+                                                        <option value="--Wales--">--Wales--</option>
+                                                        <option value="Blaenau Gwent">Blaenau Gwent</option>
+                                                        <option value="Bridgend">Bridgend</option>
+                                                        <option value="Caerphilly">Caerphilly</option>
+                                                        <option value="Cardiff">Cardiff</option>
+                                                        <option value="Carmarthenshire">Carmarthenshire</option>
+                                                        <option value="Ceredigion">Ceredigion</option>
+                                                        <option value="Conwy">Conwy</option>
+                                                        <option value="Denbighshire">Denbighshire</option>
+                                                        <option value="Flintshire">Flintshire</option>
+                                                        <option value="Gwynedd">Gwynedd</option>
+                                                        <option value="Isle of Anglesey">Isle of Anglesey</option>
+                                                        <option value="Merthyr Tydfil">Merthyr Tydfil</option>
+                                                        <option value="Monmouthshire">Monmouthshire</option>
+                                                        <option value="Neath Port Talbot">Neath Port Talbot</option>
+                                                        <option value="Newport">Newport</option>
+                                                        <option value="Pembrokeshire">Pembrokeshire</option>
+                                                        <option value="Powys">Powys</option>
+                                                        <option value="Rhondda Cynon Taff">Rhondda Cynon Taff</option>
+                                                        <option value="Swansea">Swansea</option>
+                                                        <option value="Torfaen">Torfaen</option>
+                                                        <option value="The Vale of Glamorgan">The Vale of Glamorgan</option>
+                                                        <option value="Wrexham">Wrexham</option>
+                                                    </select>
+                                                </div>
+
+                                            </div>
+                                            
+                                            <div class="table-row">                                                
+                                                <div class="table-cell fourcol">
+                                                    <label>Post Code</label>
+                                                </div>
+                                                <div class="table-cell eightcol last">
+                                                    <div class="input"><input type="text" name="PostCode" tabindex="11" value="@Model.InvoiceAddress().PostCode" /></div>
+                                                </div>                                 
+                                            </div>
+                                        </div>
+
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>           
+                                                            
+                    <div class="radio">
+                        <input type="checkbox" name="Invoice" id="invoice_checkbox" /><label for="invoice_checkbox">Use same details for the invoice address</label>
+                    </div>
+
+                    <div class="no-border">
+                        <button class="primary save" tabindex="12">Save</button><a href="/clients">back to client list</a>
+                    </div>
+                </div>
+
+                <div id="contact" class="form">
+                    <input type="hidden" name="Id" value="0" />
+                    
+                    <div class="page_navigation"></div>
+                    <table width="100%" id="contact_list" class="default-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Primary</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (Contact Contact in Model.Contacts())
+                            {
+                                <tr id="@Contact.Id">
+                                    <td>@Contact.Surname, @Contact.Forename</td>
+                                    <td>@Contact.Email</td>
+                                    <td id="is_primary">@Contact.Primary</td>
+                                    <td><a href="#form" class="edit" id="@Contact.Id">Edit</a></td>
+                                    <td><a href="#" class="delete" id="@Contact.Id">Delete</a></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <fieldset>
+                        <legend>Create contact</legend>
+
+                        <div class="table">
+                            <div class="table-row">
+                                <div class="table-cell twocol"><label>Forename</label></div>
+                                <div class="table-cell fourcol"><div class="input"><input type="text" name="Forename" tabindex="1" /></div></div>
+                                <div class="table-cell twocol"><label>Middle name(s)</label></div>
+                                <div class="table-cell fourcol last"><div class="input"><input type="text" name="Middlenames" tabindex="1" /></div></div>
+                            </div>
+
+                            <div class="table-row">
+                                <div class="table-cell twocol"><label>Surname</label></div>
+                                <div class="table-cell fourcol"><div class="input"><input type="text" name="Surname" tabindex="1" /></div></div>
+                                <div class="table-cell twocol"><label>Email</label></div>
+                                <div class="table-cell fourcol last"><div class="input"><input type="text" name="Email" tabindex="1" /></div></div>
+                            </div>
+
+                            <div class="table-row">
+                                <div class="table-cell twocol"><label>Telephone</label></div>
+                                <div class="table-cell fourcol"><div class="input"><input type="text" name="Telephone" tabindex="1" /></div></div>
+                                <div class="table-cell twocol"><label>Mobile</label></div>
+                                <div class="table-cell fourcol last"><div class="input"><input type="text" name="Mobile" tabindex="1" /></div></div>
+                            </div>
+
+                            <div class="table-row">
+                                <div class="table-cell twocol"><label>Fax</label></div>
+                                <div class="table-cell fourcol"><div class="input"><input type="text" name="Fax" tabindex="1" /></div></div>
+                                <div class="table-cell twocol"><label>Job Tile</label></div>
+                                <div class="table-cell fourcol last"><div class="input"><input type="text" name="JobTitle" tabindex="1" /></div></div>
+                            </div>
+
+                            <div class="table-row">
+                                <div class="table-cell twocol"><label>Callback date</label></div>
+                                <div class="table-cell fourcol"><div class="input"><input id="datepicker" type="text" name="CallbackDate" tabindex="1" /></div></div>
+                                <div class="table-cell sixcol last">
+                                    <div class="radio">
+                                        <input type="checkbox" id="Primary" /><label for="Primary">Primary contact</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    
+                    <div class="no-border">
+                        <button class="primary save" tabindex="15">Save</button><a href="/clients">back to client list</a>
+                    </div>
+                </div>
+
+                <div id="history" class="form">                    
+                    <fieldset>
+                        <legend>History</legend>
+                                    
+                        <input type="hidden" id="HistoryId" value="0"  />
+                        <div class="input"><textarea id="HistoryMessage" rows="10" tabindex="1"></textarea></div>
+
+                    </fieldset>
+
+                    <div class="no-border">
+                        <button id="btnSaveHistory" class="primary" tabindex="2">Save</button><a href="/Candidates">back to candidate list</a>
+                    </div>
+
+                    <ol id="history-comments" class="notes">                             
+                        @foreach (Note Note in Model.History())
+                        {  
+                            <li id="@Note.Id">
+                                <p>Posted by: <a id="user" href="/Account/Profile/@Note.UserId">@Note.UserName</a><br />
+                                <span id="date" class="small">@Note.DateCreated</span></p>
+                                <p class="note">@HtmlExtensions.decodeEscapedText(Note.Message)</p>
+                            </li>
+                        }
+                    </ol>
+                </div>
+            </div>
+
+        </div>
+        
+    </div>
+</div>
+
+<script type="text/javascript">
+    var settings = {
+        selectedColumn: 0,
+        ignoreColumns: [3,4],
+        onComplete: function () {
+            $('.page_navigation').paginate({ collection: 'tbody > tr', recordsperpage: 20, container: 'tbody > tr' });
+        }
+    };
+
+    var pMessage = $('.message');
+    var pClientId = $('input[name=Id]', '#client'), pName = $('input[name=Name]', '#client'); // Client form        
+    var pContactId = $('input[name=Id]', '#contact'), pForename = $('input[name=Forename]', '#contact'), pMiddlenames = $('input[name=Middlenames]', '#contact'), pSurname = $('input[name=Surname]', '#contact'), pTelephone = $('input[name=Telephone]', '#contact'), pMoblile = $('input[name=Mobile]', '#contact'), pFax = $('input[name=Fax]', '#contact'), pEmail = $('input[name=Email]', '#contact'), pJobTitle = $('input[name=JobTitle]', '#contact'), pCallback = $('input[name=CallbackDate]', '#contact'), pPrimary = $('#Primary', '#contact')
+    var pHistoryId = $('#HistoryId', '#history'), pHistoryMessage = $('#HistoryMessage', '#history'); // History form
+    
+    $(function () {
+
+        /* SETUP
+        ********************************************************************/
+
+
+        $('.tabs').tabs(); // jquery ui tabs
+        $('#datepicker').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'dd/mm/yy'
+        });
+        $('select[name=County]', '#address').val('@Model.DeliveryAddress().County');
+        $('select[name=County]', '#invoice').val('@Model.InvoiceAddress().County');
+        $('#contact_list').sortTable(settings);
+
+
+        /* DETAILS
+        ********************************************************************/
+
+
+        $('.save', '#client').click(function () {
+            var bValidClient = validateClient();
+            var bValidDelievery = validateAddress('#address');
+            var bValidInvoice = validateAddress('#invoice');
+
+            if (bValidClient && bValidDelievery && bValidInvoice) {
+                saveClient($(this));
+            } else {
+                setSavingText($(this), "Error!", true);
+            }
+
+            window.location = '#content-wrap';
+        });
+
+        /* ADDRESS
+        ********************************************************************/
+
+
+        $('#invoice_checkbox').change(function () {
+            var copyDelivery = $(this).val();
+
+            if (copyDelivery) {
+                $('input[name=HouseNumber]', '#invoice').val($('input[name=HouseNumber]', '#address').val());
+                $('input[name=Street]', '#invoice').val($('input[name=Street]', '#address').val());
+                $('input[name=Town]', '#invoice').val($('input[name=Town]', '#address').val());
+                $('select[name=County]', '#invoice').val($('select[name=County]', '#address').val());
+                $('input[name=PostCode]', '#invoice').val($('input[name=PostCode]', '#address').val());
+            }
+        });
+
+        /* CONTACT
+        ********************************************************************/
+        
+
+        $('.save', '#contact').click(function () {
+            if (validateContact()) saveContact();
+            window.location = '#content-wrap';
+        });
+
+        $('.edit', '#contact_list').live('click', function () {
+            getContact($(this).attr('id'));
+        });
+        
+        /* HISTORY
+        ********************************************************************/
+
+
+        $('#btnSaveHistory').click(function () {
+            if (validateHistory()) saveNote($(this));
+            window.location = '#content-wrap';
+        });
+    });
+
+    /* DETAILS
+    ********************************************************************/
+
+
+    function validateClient() {
+        if (pName.val().length > 0) {
+            pName.removeClass('ui-state-error');
+            pMessage.show().removeClass('ui-state-error').removeClass('ui-state-highlight').text('');
+            return true;
+        } else {
+            pName.addClass('ui-state-error').effect('shake');
+            pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('Please correct the errors below:');
+            return false;
+        }
+    };
+
+    /* ADDRESS
+    ********************************************************************/
+
+
+    function validateAddress(target) {
+        var pAddressId = $('input[name=AddressId]', target), pTypeId = $('input[name=TypeId]', target), pHouse = $('input[name=HouseNumber]', target), pStreet = $('input[name=Street]', target), pTown = $('input[name=Town]', target), pPostCode = $('input[name=PostCode]', target), pCounty = $('select[name=County]', target); // Address form
+
+        if (pHouse.val().length > 0 && pStreet.val().length > 0 && pPostCode.val().length > 0 && pCounty.val() != 0) {
+            pHouse.removeClass('ui-state-error');
+            pStreet.removeClass('ui-state-error');
+            pPostCode.removeClass('ui-state-error');
+            pCounty.removeClass('ui-state-error');
+            pMessage.show().removeClass('ui-state-error').removeClass('ui-state-highlight').text('');
+            return true;
+        } else {
+            if (pHouse.val().length == 0) pHouse.addClass('ui-state-error');
+            if (pStreet.val().length == 0) pStreet.addClass('ui-state-error');
+            if (pPostCode.val().length == 0) pPostCode.addClass('ui-state-error');
+            if (pCounty.val() == 0) pCounty.addClass('ui-state-error');
+            pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('Please correct the errors below:');
+            return false;
+        }
+    };
+
+    /* CONTACT
+    ********************************************************************/
+
+
+    function validateContact() {
+        if (pForename.val().length > 0 && pSurname.val().length > 0 && pEmail.val().length > 0) {
+            pForename.removeClass('ui-state-error');
+            pSurname.removeClass('ui-state-error');
+            pEmail.removeClass('ui-state-error');
+            pMessage.show().removeClass('ui-state-error').removeClass('ui-state-highlight').text('');
+            return true;
+        } else {
+            if (pForename.val().length == 0) pForename.addClass('ui-state-error');
+            if (pSurname.val().length == 0) pSurname.addClass('ui-state-error');
+            if (pEmail.val().length == 0) pEmail.addClass('ui-state-error');
+            pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('Please correct the errors below:');
+            return false;
+        }
+    };
+
+    /* HISTORY
+    ********************************************************************/
+
+
+    function validateHistory() {
+        if (pHistoryMessage.val().length > 0) {
+            pHistoryMessage.removeClass('ui-state-error');
+            pMessage.show().removeClass('ui-state-error').removeClass('ui-state-highlight').text('');
+            return true;
+        } else {
+            if (pHistoryMessage.val().length == 0) pHistoryMessage.addClass('ui-state-error');
+            pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('Please correct the errors below:');
+            return false;
+        }
+    };
+
+    /* MISC
+    ********************************************************************/
+
+
+    function resetContactForm() {
+        pContactId.val('0');
+        pForename.val('');
+        pMiddlenames.val('');
+        pSurname.val('');
+        pEmail.val('');
+        pTelephone.val('');
+        pMoblile.val('');
+        pFax.val('');
+        pCallback.val('');
+        pJobTitle.val('');
+
+        pPrimary.removeAttr('checked');
+    };
+
+    /* AJAX FUNCTIONS
+    ********************************************************************/
+
+    function saveClient(saveButton) {
+        $.ajax({
+            url: '@Url.Action("Save", "Clients")',
+            type: 'POST',
+            data: '{ "Id": ' + pClientId.val() + ', "Name": "' + pName.val() + '" }',
+            dataType: 'text json',
+            contentType: 'application/json; charset=utf-8',
+            traditional: true,
+            success: function (o) {
+                if (o.success) {
+                    var bDelivery = saveAddress('#address');
+
+                    if (bDelivery) {
+                        var bInvoice = saveAddress('#invoice');
+
+                        if (bInvoice) {
+                            pMessage.show().addClass('ui-state-highlight').removeClass('ui-state-error').text('Your client has been saved.');
+                            setSavingText(saveButton, "Success!", true);
+                        }
+                    }
+                } else {
+                    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text(o.error);
+                    setSavingText(saveButton, "Error!", true);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 100).');
+            }
+        });
+    };
+
+    function saveAddress(target) {
+        var pAddressId = $('input[name=AddressId]', target), pTypeId = $('input[name=TypeId]', target), pHouse = $('input[name=HouseNumber]', target), pStreet = $('input[name=Street]', target), pTown = $('input[name=Town]', target), pPostCode = $('input[name=PostCode]', target), pCounty = $('select[name=County]', target); // Address form
+        var bSuccess = false;
+
+        $.ajax({
+            async: false,
+            url: '@Url.Action("SaveAddress", "Clients")',
+            type: 'POST',
+            data: '{ "Id": ' + pAddressId.val() + ', "ClientId": ' + pClientId.val() + ', "TypeId": ' + pTypeId.val() + ', "HouseNumber": "' + pHouse.val() + '", "Street": "' + pStreet.val() + '", "Town": "' + pTown.val() + '", "County": "' + pCounty.val() + '", "PostCode": "' + pPostCode.val() + '"  }',
+            dataType: 'text json',
+            contentType: 'application/json; charset=utf-8',
+            traditional: true,
+            success: function (o) {
+                if (o.success) {
+                    bSuccess = true;
+                } else {
+                    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text(o.error);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 101).');
+            }
+        });
+
+        return bSuccess;
+    };
+
+    function getContact(id) {
+        $.ajax({
+            url: '@Url.Action("GetContact", "Clients")',
+            type: 'POST',
+            data: '{ "Id": ' + id + ' }',
+            dataType: 'text json',
+            contentType: 'application/json; charset=utf-8',
+            traditional: true,
+            success: function (o) {
+                if (o.success) {
+                    pContactId.val(o.contact.Id);
+                    pForename.val(o.contact.Forename);
+                    pMiddlenames.val(o.contact.Middlenames);
+                    pSurname.val(o.contact.Surname);
+                    pEmail.val(o.contact.Email);
+                    pTelephone.val(o.contact.Telephone);
+                    pMoblile.val(o.contact.Mobile);
+                    pFax.val(o.contact.Fax);
+                    pJobTitle.val(o.contact.JobTitle);
+                    pCallback.val(o.contact.Callback);
+
+                    if (o.contact.Primary) {
+                        pPrimary.attr('checked', 'checked');
+                    } else {
+                        pPrimary.removeAttr('checked');
+                    }
+                } else {
+                    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text(o.error);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 103).');
+            }
+        });
+    };
+
+    function saveContact() {
+        $.ajax({
+            url: '@Url.Action("SaveContact", "Clients")',
+            type: 'POST',
+            data: '{ "Id": ' + pContactId.val() + ', "ClientId": ' + pClientId.val() + ', "Forename": "' + pForename.val() + '", "Middlenames": "' + pMiddlenames.val() + '", "Surname": "' + pSurname.val() + '", "Telephone": "' + pTelephone.val() + '", "Mobile": "' + pMoblile.val() + '", "Fax": "' + pFax.val() + '", "Email": "' + pEmail.val() + '", "JobTitle": "' + pJobTitle.val() + '", "CallbackDate": "' + pCallback.val() + '", "Primary": "' + pPrimary.is(':checked') + '" }',
+            dataType: 'text json',
+            contentType: 'application/json; charset=utf-8',
+            traditional: true,
+            success: function (o) {
+                if (o.success) {
+                    var _primary = (pPrimary.is(':checked')) ? 'True' : 'False';
+                    var row = '<tr id="' + o.id + '"><td>' + $('input[name=Surname]', '#contact').val() + ', ' + $('input[name=Forename]', '#contact').val() + '</td><td>' + $('input[name=Email]', '#contact').val() + '</td><td id="is_primary">' + _primary + '</td><td><a href="#form" class="button edit" id="' + o.id + '">Edit</a></td><td><a href="#" class="button edit" id="' + o.id + '">Delete</a></td></tr>';
+                    
+                    if (pPrimary.is(':checked')) {
+                        var i = $('#contact_list tr').length;
+                        while (i--) {
+                            $('td#is_primary').eq(i).text('False');
+                        }
+                    }
+                    
+                    if (pContactId.val() > 0) {
+                        $('#' + o.id).replaceWith($(row));
+                    } else {
+                        $('tbody', '#contact_list').append(row);
+                    }
+
+                    $('#contact_list').sortTable(settings);
+
+                    resetContactForm();
+                    pMessage.show().addClass('ui-state-highlight').text('Your client\'s contact has been saved.');
+                } else {
+                    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text(o.error);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 102).');
+            }
+        });
+    };
+
+    function saveNote(saveButton) {
+        $.ajax({
+            url: '@Url.Action("SaveNote", "Candidates")',
+            type: 'POST',
+            data: '{ "Id": ' + pHistoryId.val() + ', "ClientId": ' + pClientId.val() + ', "TypeId": ' + 2 + ', "Message": "' + pHistoryMessage.val() + '"  }',
+            dataType: 'text json',
+            contentType: 'application/json; charset=utf-8',
+            traditional: true,
+            success: function (o) {
+                if (o.success) {
+                    pHistoryId.val(0); // Reset our Id
+                    pHistoryMessage.val(''); // Reset our message
+
+                    var note = '<li id="' + o.note.Id + '"><p>Posted by: <a id="user" href="/Account/Profile/' + o.note.UserId + '">' + o.note.UserName + '</a><br /><span id="date" class="small">' + new Date().toLocaleString() + '</span></p><p class="note">' + o.note.Message + '</p></li>'
+                    $('#history-comments').prepend(note);
+
+                    pMessage.show().addClass('ui-state-highlight').removeClass('ui-state-error').text('Your message has been saved.');
+                    setSavingText(saveButton, "Success!", true);
+                } else {
+                    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text(o.error);
+                    setSavingText(saveButton, "Error!", true);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 112).');
+            }
+        });
+    };
+</script>

@@ -1,0 +1,18 @@
+﻿@section navigation
+{
+	<li id="current">@Html.ActionLink("Index", "Index", "Home")<span></span></li>
+	<li>@Html.ActionLink("Clients", "Index", "Clients")<span></span></li>
+	<li>@Html.ActionLink("Candidates", "Index", "Candidates")<span></span></li>
+	<li>@Html.ActionLink("Users", "Index", "Users")<span></span></li>
+	<li>@Html.ActionLink("Profile", "Index", "Account")<span></span></li>
+	<li>@Html.ActionLink("Lists", "Index", "Lists")<span></span></li>
+}
+
+<div class="container">
+    <div class="row">
+        <div class="twlevecol last">
+            <h2>@ViewBag.Title</h2>
+            
+        </div>
+    </div>
+</div>

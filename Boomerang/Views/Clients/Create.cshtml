@@ -1,0 +1,267 @@
+﻿@using Core;
+
+@{
+    ViewBag.Title = "Create a client";
+}
+
+@section navigation
+{
+	<li>@Html.ActionLink("Index", "Index", "Home")<span></span></li>
+	<li id="current">@Html.ActionLink("Clients", "Index", "Clients")<span></span></li>
+	<li>@Html.ActionLink("Candidates", "Index", "Candidates")<span></span></li>
+	<li>@Html.ActionLink("Users", "Index", "Users")<span></span></li>
+	<!--<li>@Html.ActionLink("Profile", "Index", "Account")<span></span></li>-->
+	<!--<li>@Html.ActionLink("Lists", "Index", "Lists")<span></span></li>-->
+}
+
+<div class="container">
+    <div class="row">
+        <div class="twelvecol last">
+
+            <h2>@ViewBag.Title</h2>
+
+            <p class="message"></p>
+
+            <div class="tabs">
+                <ul>
+                    <li><a href="#client">Details</a></li>
+                    <li><a href="#sector">Sector</a></li>
+                    <li><a href="#contact">Contacts</a></li>
+                    <li><a href="#history">History</a></li>
+                </ul>
+
+                <div id="client" class="form">
+
+                    <fieldset>
+                        <legend>Client details</legend>
+
+                        <input type="hidden" id="UserId" value="@Membership.GetUser(User.Identity.Name).ProviderUserKey.ToString()" />
+
+                        <div class="table">
+                            <div class="table-row">
+                                <div class="table-cell twocol">
+                                    <label>Name</label>
+                                </div>
+                                <div class="table-cell tencol last">
+                                    <div class="input"><input type="text" name="Name" tabindex="1" /></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </fieldset>
+
+                    <div class="table" id="addresses">
+                        @Html.Raw(new Client().HtmlAddresses())
+                    </div>
+
+                    <div class="no-border">
+                       <button class="primary saveEdit" tabindex="13">Save and edit</button><button class="save" tabindex="14">Save</button><a href="/clients">back to client list</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        
+    </div>
+</div>
+
+<script type="text/javascript">
+    var pMessage = $('.message');
+    var pName = $('input[name=Name]', '#client'), pSector = $('input[name=Sector]', '#client'), pUserId = $('#UserId', '#client'); // Client form   
+    
+    $(function () {
+        $('.tabs').tabs({ disabled: [1, 2, 3] }); // jquery ui tabs
+        $('#datepicker').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'dd/mm/yy'
+        });
+
+        $('#invoice_checkbox').change(function () {
+            var copyDelivery = $(this).is(':checked');
+
+            if (copyDelivery) {
+                $('input[name=HouseNumber]', '#invoice').val($('input[name=HouseNumber]', '#address').val());
+                $('input[name=Street]', '#invoice').val($('input[name=Street]', '#address').val());
+                $('input[name=Area]', '#invoice').val($('input[name=Area]', '#address').val());
+                $('input[name=Town]', '#invoice').val($('input[name=Town]', '#address').val());
+                $('select[name=County]', '#invoice').val($('select[name=County]', '#address').val());
+                $('input[name=PostCode]', '#invoice').val($('input[name=PostCode]', '#address').val());
+            }
+        });
+
+        $('.saveEdit', '#client').click(function () {
+            $.event.trigger('AjaxButtonClick', this);
+
+            if (validateClient()) {
+                saveClient(true);
+            } else {
+                $.event.trigger('AjaxButtonError');
+            }
+        });
+
+        $('.save', '#client').click(function () {
+            $.event.trigger('AjaxButtonClick', this);
+
+            if (validateClient()) {
+                saveClient(false);
+            } else {
+                $.event.trigger('AjaxButtonError');
+            }
+        });
+
+        $('.btnAddAddress').live("click", function () {
+            var count = $('#addresses > .table-row').last().find('fieldset').length;
+            var newRow = (count == 2) ? true : false;
+
+            addAddress(newRow);
+        });
+
+        $('.removeAddress').live("click", function () {
+            var dataId = $(this).attr('data-id');
+            
+            $('#' + dataId).parent().parent().remove();
+        });
+    });
+
+    function validateClient() {
+        if (pName.val().length > 0) {
+            pName.removeClass('ui-state-error');
+            pMessage.show().removeClass('ui-state-error').removeClass('ui-state-highlight').text('');
+            return true;
+        } else {
+            pName.addClass('ui-state-error').effect('shake');
+            pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('Please correct the errors below:');
+            return false;
+        }
+    };
+
+    function validateAddress(target) {
+        //var pAddressId = $('input[name=AddressId]', target), pTypeId = $('input[name=TypeId]', target), pHouse = $('input[name=HouseNumber]', target), pStreet = $('input[name=Street]', target), pTown = $('input[name=Town]', target), pPostCode = $('input[name=PostCode]', target), pCounty = $('select[name=County]', target); // Address form
+
+        //if (pHouse.val().length > 0 && pStreet.val().length > 0 && pPostCode.val().length > 0 && pCounty.val() != 0) {
+        //    pHouse.removeClass('ui-state-error');
+        //    pStreet.removeClass('ui-state-error');
+        //    pPostCode.removeClass('ui-state-error');
+        //    pCounty.removeClass('ui-state-error');
+        //    pMessage.show().removeClass('ui-state-error').removeClass('ui-state-highlight').text('');
+            return true;
+        //} else {
+        //    if (pHouse.val().length == 0) pHouse.addClass('ui-state-error');
+        //    if (pStreet.val().length == 0) pStreet.addClass('ui-state-error');
+        //    if (pPostCode.val().length == 0) pPostCode.addClass('ui-state-error');
+        //    if (pCounty.val() == 0) pCounty.addClass('ui-state-error');
+        //    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('Please correct the errors below:');
+        //    return false;
+        //}
+    };
+
+    function saveAddresses(clientId) {       
+        var target = $('#addresses');
+        
+        $.each(target.find('.address'), function (i, address) {
+            if (!saveAddress(address, clientId))
+                return false;
+        });
+
+        return true;
+    };
+
+    function clearForm() {
+        $.each($('input[type=text]'), function () {
+            $(this).val('');
+        });
+
+        $.each($('select'), function () {
+            $(this).val('0');
+        });
+    };
+
+    function saveClient(redirect) {
+        $.ajax({
+            url: '@Url.Action("Save", "Clients")',
+            type: 'POST',
+            data: '{ "Id": 0, "Name": "' + pName.val() + '", "Sector": "' + pSector.val() + '", "UserId": "' + pUserId.val() + '" }',
+            dataType: 'text json',
+            contentType: 'application/json; charset=utf-8',
+            traditional: true,
+            success: function (o) {
+                if (o.success) {
+                    if (saveAddresses(o.id)) {
+                        if (redirect) {
+                            window.location = "/Clients/Edit/" + o.id;
+                        } else {
+                            clearForm();
+                            pMessage.show().addClass('ui-state-highlight').removeClass('ui-state-error').text('Your client has been created.');
+                            $.event.trigger('AjaxButtonSuccess');
+                        }
+                    } else {
+                        pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text("There was a problem saving one or more of the addresses for this record.");
+                        $.event.trigger('AjaxButtonError');
+                    }
+                } else {
+                    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text(o.error);
+                    $.event.trigger('AjaxButtonError');
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 100).');
+                $.event.trigger('AjaxButtonError');
+            }
+        });
+    };
+
+    function addAddress(newRow) {
+        $.ajax({
+            url: '@Url.Action("AddAddress", "Common")',
+            type: 'POST',
+            data: '{ "newRow": ' + newRow + '  }',
+            dataType: 'text json',
+            contentType: 'application/json; charset=utf-8',
+            traditional: true,
+            success: function (o) {
+                if (o.success) {
+                    if (newRow) {
+                        $('#addresses').append(o.address);
+                    } else {
+                        $('#addresses > .table-row').last().append(o.address);
+                    }
+                } else {
+                    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text(o.error);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 122).');
+            }
+        });
+    };
+
+    function saveAddress(target, clientId) {
+        var pAddressId = $(target).attr('id'), pTypeId = $('input[name=TypeId]', target), pHouse = $('input[name=HouseNumber]', target), pStreet = $('input[name=Street]', target), pArea = $('input[name=Area]', target), pTown = $('input[name=Town]', target), pPostCode = $('input[name=PostCode]', target), pCounty = $('select[name=County]', target); // Address form
+        var bSuccess = false;
+
+        $.ajax({
+            async: false,
+            url: '@Url.Action("SaveAddress", "Common")',
+            type: 'POST',
+            data: '{ "Id": ' + pAddressId + ', "ClientId": ' + clientId + ', "HouseNumber": "' + pHouse.val() + '", "Street": "' + pStreet.val() + '", "Area": "' + pArea.val() + '", "Town": "' + pTown.val() + '", "County": "' + pCounty.val() + '", "PostCode": "' + pPostCode.val() + '"  }',
+            dataType: 'text json',
+            contentType: 'application/json; charset=utf-8',
+            traditional: true,
+            success: function (o) {
+                bSuccess = o.success;
+
+                if (bSuccess) {
+                    $.event.trigger('AjaxButtonSuccess');
+                } else {
+                    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text(o.error);
+                    $.event.trigger('AjaxButtonError');
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 101).');
+                $.event.trigger('AjaxButtonError');
+            }
+        });
+    };
+</script>

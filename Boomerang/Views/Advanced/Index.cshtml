@@ -1,0 +1,207 @@
+﻿@using Boomerang.Models
+@model AdvancedSearchModel
+
+@{
+    ViewBag.Title = "Advanced search";
+}
+
+@section navigation
+{
+	<li id="current">@Html.ActionLink("Index", "Index", "Home")<span></span></li>
+	<li>@Html.ActionLink("Clients", "Index", "Clients")<span></span></li>
+	<li>@Html.ActionLink("Candidates", "Index", "Candidates")<span></span></li>
+	<li>@Html.ActionLink("Users", "Index", "Users")<span></span></li>
+	<!--<li>@Html.ActionLink("Profile", "Index", "Account")<span></span></li>-->
+	<!--<li>@Html.ActionLink("Lists", "Index", "Lists")<span></span></li>-->
+}
+
+<div class="container">
+    <div class="row">
+        <div class="twlevecol last">
+            <h2>@ViewBag.Title</h2>
+
+            <p class="message"></p>
+                 
+            <div class="form">
+                <select name="Type" id="QueryType">
+                    <option value="0">Clients</option>
+                    <option value="1">Candidates</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" id="clients" style="display: none;">
+    <div class="row">
+        <div class="twlevecol last">
+            @using (Html.BeginForm("Clients", "Advanced", FormMethod.Post, new { @novalidate = "novalidate" }))
+            {
+                <div class="table">
+                    <div class="table-row">
+                        <div class="table-cell twocol">
+                            @Html.LabelFor(m => m.Client.SearchClient)
+                        </div>
+
+                        <div class="table-cell fourcol"> 
+                            <div class="input">@Html.TextBoxFor(m => m.Client.SearchClient, new { placeholder = "Eg: Boomerang recruitment" })</div>
+                        </div>
+
+                        <div class="table-cell twocol">
+                            <div class="radio">@Html.CheckBoxFor(m => m.Client.ShowActive, new { @checked = "checked" })@Html.LabelFor(m => m.Client.ShowActive)</div>
+                        </div>
+
+                        <div class="table-cell fourcol last">
+                            <div class="radio">@Html.CheckBoxFor(m => m.Client.ShowInactive)@Html.LabelFor(m => m.Client.ShowInactive)</div>
+                        </div>
+                    </div>
+
+                    <div class="table-row">
+                        <div class="table-cell twocol">
+                            @Html.LabelFor(m => m.Client.SearchAddress)
+                        </div>
+
+                        <div class="table-cell fourcol"> 
+                            <div class="input">@Html.TextBoxFor(m => m.Client.SearchAddress, new { placeholder = "Eg: Huddersfield road" })</div>
+                        </div>
+
+                        <div class="table-cell twocol">
+                            <div class="radio">@Html.CheckBoxFor(m => m.Client.ShowDelivery, new { @checked = "checked" })@Html.LabelFor(m => m.Client.ShowDelivery)</div>
+                        </div>
+
+                        <div class="table-cell fourcol last">
+                            <div class="radio">@Html.CheckBoxFor(m => m.Client.ShowInvoice, new { @checked = "checked" })@Html.LabelFor(m => m.Client.ShowInvoice)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="table-row">
+                        <div class="table-cell twocol">
+                            @Html.LabelFor(m => m.Client.SearchContact)
+                        </div>
+
+                        <div class="table-cell fourcol"> 
+                            <div class="input">@Html.TextBoxFor(m => m.Client.SearchContact, new { placeholder = "Eg: User@gmail.com" })</div>
+                        </div>
+
+                        <div class="table-cell sixcol last">
+                            <div class="radio">@Html.CheckBoxFor(m => m.Client.ShowPrimary, new { @checked = "checked" })@Html.LabelFor(m => m.Client.ShowPrimary)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="table-row">
+                        <div class="table-cell twocol">
+                            @Html.LabelFor(m => m.Client.SearchHistory)
+                        </div>
+
+                        <div class="table-cell tencol last"> 
+                            <div class="input">@Html.TextBoxFor(m => m.Client.SearchHistory, new { placeholder = "Eg: place was filled" })</div>
+                        </div>
+                    </div>
+
+                    <div class="table-row">
+                        <div class="table-cell twelvecol last"> 
+                            <button class="button primary">Search</button>
+                            <a href="/">back to home</a>
+                        </div>
+                    </div>
+                </div>                      
+            }
+        </div>
+    </div>
+</div>
+
+<div class="container" id="candidates" style="display: none;">
+    <div class="row">
+        <div class="twlevecol last">
+            @using (Html.BeginForm("Candidates", "Advanced", FormMethod.Post, new { @novalidate = "novalidate" }))
+            {
+                <div class="table">
+                    <div class="table-row">
+                        <div class="table-cell twocol">
+                            @Html.LabelFor(m => m.Candidate.SearchCandidate)
+                        </div>
+
+                        <div class="table-cell fourcol"> 
+                            <div class="input">@Html.TextBoxFor(m => m.Candidate.SearchCandidate, new { placeholder = "Eg: Nicky Battye" })</div>
+                        </div>
+
+                        <div class="table-cell twocol">
+                            <div class="radio">@Html.CheckBoxFor(m => m.Candidate.ShowActive, new { @checked = "checked" })@Html.LabelFor(m => m.Candidate.ShowActive)</div>
+                        </div>
+
+                        <div class="table-cell fourcol last">
+                            <div class="radio">@Html.CheckBoxFor(m => m.Candidate.ShowInactive)@Html.LabelFor(m => m.Candidate.ShowInactive)</div>
+                        </div>
+                    </div>
+
+                    <div class="table-row">
+                        <div class="table-cell twocol">
+                            @Html.LabelFor(m => m.Candidate.SearchAddress)
+                        </div>
+
+                        <div class="table-cell tencol last"> 
+                            <div class="input">@Html.TextBoxFor(m => m.Candidate.SearchAddress, new { placeholder = "Eg: Huddersfield road" })</div>
+                        </div>
+                    </div>
+
+                    <div class="table-row">
+                        <div class="table-cell twocol">
+                            @Html.LabelFor(m => m.Candidate.SearchExperience)
+                        </div>
+
+                        <div class="table-cell tencol last"> 
+                            <div class="input">@Html.TextBoxFor(m => m.Candidate.SearchExperience, new { placeholder = "Eg: NVQ Electronics" })</div>
+                        </div>
+                    </div>
+                    
+                    <div class="table-row">
+                        <div class="table-cell twocol">
+                            @Html.LabelFor(m => m.Candidate.SearchNotes)
+                        </div>
+
+                        <div class="table-cell tencol last"> 
+                            <div class="input">@Html.TextBoxFor(m => m.Candidate.SearchNotes, new { placeholder = "Eg: well dressed" })</div>
+                        </div>
+                    </div>
+
+                    <div class="table-row">
+                        <div class="table-cell twelvecol last"> 
+                            <button class="button primary">Search</button>
+                            <a href="/">back to home</a>
+                        </div>
+                    </div>
+                </div>  
+            }
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(function () {
+        var _type = getParameterByName("Type");
+        if (_type == undefined || _type == 0) {
+            $('#clients').show();
+            $('#QueryType').val(0);
+        } else {
+            $('#candidates').show();
+            $('#QueryType').val(1);
+        }
+
+
+        $('#QueryType').change(function () {
+            window.location = "/Advanced?Type=" + $(this).val();
+        });
+    });
+
+    function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+        var regexS = "[\\?&]" + name + "=([^&#]*)";
+        var regex = new RegExp(regexS);
+        var results = regex.exec(window.location.href);
+        if (results == null)
+            return "";
+        else
+            return decodeURIComponent(results[1].replace(/\+/g, " "));
+    };
+</script>

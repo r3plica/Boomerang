@@ -1,0 +1,917 @@
+﻿@using Core
+@using Core.Components
+@using System.Collections.ObjectModel
+@model Candidate
+
+@{
+    ViewBag.Title = "Editing \"" + @Model.Forename + " " + @Model.Surname + "\"";
+}
+
+@section navigation
+{
+	<li>@Html.ActionLink("Index", "Index", "Home")<span></span></li>
+	<li>@Html.ActionLink("Clients", "Index", "Clients")<span></span></li>
+	<li id="current">@Html.ActionLink("Candidates", "Index", "Candidates")<span></span></li>
+	<li>@Html.ActionLink("Users", "Index", "Users")<span></span></li>
+	<!--<li>@Html.ActionLink("Profile", "Index", "Account")<span></span></li>-->
+	<!--<li>@Html.ActionLink("Lists", "Index", "Lists")<span></span></li>-->
+}
+
+<div class="container">
+    <div class="row">
+        <div class="twelvecol last">
+
+            <h2>@ViewBag.Title</h2>
+
+            <p class="message"></p>            
+
+            <div class="tabs">
+                <ul>
+                    <li><a href="#details">Candidate details</a></li>
+                    <li><a href="#salary">Work/skills</a></li>
+                    <li><a href="#history">History</a></li>
+                    <li><a href="#documents">Documents</a></li>
+                </ul>
+
+                <div id="details" class="form">
+
+                    <fieldset>
+                        <legend>Candidate details</legend>
+
+                        @Html.HiddenFor(m => m.Id)
+                        <input type="hidden" name="AddressId" value="@Model.Address().Id" />
+
+                        <div class="table">
+                            <div class="table-row">
+                                <div class="table-cell twocol">
+                                    <label>Forename</label>
+                                </div>
+                                <div class="table-cell fourcol">
+                                    <div class="input"><input type="text" name="Forename" tabindex="1" value="@Model.Forename" /></div>
+                                </div>
+                                <div class="table-cell twocol">
+                                    <label>Surname</label>
+                                </div>
+                                <div class="table-cell fourcol last">
+                                    <div class="input"><input type="text" name="Surname" tabindex="2" value="@Model.Surname" /></div>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell twocol">
+                                    <label>Date of birth</label>
+                                </div>
+                                <div class="table-cell fourcol">
+                                    <div class="input"><input type="text" name="DOB" tabindex="3" id="datepicker1" value="@Model.DOB" /></div>
+                                </div>
+                                <div class="table-cell twocol"></div>
+                                <div class="table-cell fourcol last">
+                                    <div class="radio">
+                                        @if (Model.Active)
+                                        {
+                                            <input type="checkbox" name="Inactive" id="Inactive" tabindex="4" />
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" name="Inactive" id="Inactive" tabindex="4" checked="checked" />
+                                        }
+                                        <label for="Inactive">Mark as inactive</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell twocol"><label>Age</label></div>
+                                <div class="table-cell fourcol"><span id="current_age">0</span></div>
+                                <div class="table-cell twocol"><label>Date created</label></div>
+                                <div class="table-cell fourcol last">@DateTime.Now.ToString("U")</div>
+                            </div>
+                        </div>
+
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Candidate contact details</legend>
+
+                        <div class="table">
+                            <div class="table-row">      
+                                <div class="table-cell twocol"></div>     
+                                <div class="table-cell tencol last">
+                                    <div class="radio">
+                                        @if (Model.CRB)
+                                        {
+                                            <input type="checkbox" name="CRB" id="CRB" tabindex="5" checked="checked" />
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" name="CRB" id="CRB" tabindex="5" />
+                                        }
+                                        <label for="CRB">CRB checks</label>
+                                    </div>
+                                    <div class="radio">                                        
+                                        @if (Model.References)
+                                        {
+                                            <input type="checkbox" name="References" id="References" tabindex="6" checked="checked" />
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" name="References" id="References" tabindex="6" />
+                                        }   
+                                        <label for="References">Reference checks</label>
+                                    </div>
+                                    <div class="radio">                                        
+                                        @if (Model.Interviewed)
+                                        {
+                                            <input type="checkbox" name="Interviewed" id="Interviewed" tabindex="7" checked="checked" />
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" name="Interviewed" id="Interviewed" tabindex="7" />
+                                        }   
+                                        <label for="Interviewed">Interviewed</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell twocol">
+                                    <label>Last contact date</label>
+                                </div>
+                                <div class="table-cell fourcol">
+                                    <div class="input"><input type="text" name="LastContactDate" tabindex="8" id="datepicker2" value="@Model.LastContactDate" /></div>
+                                </div>
+                                <div class="table-cell twocol">
+                                    <label>NI Number</label>
+                                </div>
+                                <div class="table-cell fourcol last">
+                                    <div class="input"><input type="text" name="NiNumber" tabindex="9" value="@Model.NiNumber" /></div>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell twocol">
+                                    <label>Telephone</label>
+                                </div>
+                                <div class="table-cell fourcol">
+                                    <div class="input"><input type="text" name="Telephone" tabindex="10" value="@Model.Telephone" /></div>
+                                </div>
+                                <div class="table-cell twocol">
+                                    <label>Mobile</label>
+                                </div>
+                                <div class="table-cell fourcol last">
+                                    <div class="input"><input type="text" name="Mobile" tabindex="11" value="@Model.Mobile" /></div>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell twocol">
+                                    <label>Email</label>
+                                </div>
+                                <div class="table-cell fourcol">
+                                    <div class="input"><input type="text" name="Email" tabindex="12" value="@Model.Email" /></div>
+                                </div>
+                                <div class="table-cell twocol">
+                                    <label>Transport</label>
+                                </div>
+                                <div class="table-cell fourcol last">
+                                    <select name="Transport" tabindex="13">
+                                        <option value="1">None</option>
+                                        <option value="2">Walking</option>
+                                        <option value="3">Cycling</option>
+                                        <option value="4">Public transport</option>
+                                        <option value="5">Car</option>
+                                        <option value="6">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                    
+                    <fieldset>
+                        <legend>Candidate address</legend>
+
+                        <div class="table">
+                            <div class="table-row">
+                                <div class="table-cell twocol">
+                                    <label>House/Flat number</label>
+                                </div>
+                                <div class="table-cell fourcol">
+                                    <div class="input"><input type="text" name="HouseNumber" tabindex="14" value="@Model.Address().HouseNumber" /></div>
+                                </div>
+                                <div class="table-cell twocol">
+                                    <label>Street</label>
+                                </div>
+                                <div class="table-cell fourcol last">
+                                    <div class="input"><input type="text" name="Street" tabindex="15" value="@Model.Address().Street" /></div>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell twocol">
+                                    <label>Area</label>
+                                </div>
+                                <div class="table-cell fourcol">
+                                    <div class="input"><input type="text" name="Area" tabindex="16" value="@Model.Address().Area" /></div>
+                                </div>
+                                <div class="table-cell twocol">
+                                    <label>Town/City</label>
+                                </div>
+                                <div class="table-cell fourcol last">
+                                    <div class="input"><input type="text" name="Town" tabindex="17" value="@Model.Address().Town" /></div>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell twocol">
+                                    <label>County</label>
+                                </div>
+                                <div class="table-cell fourcol">
+                                    @Html.Raw(AddressManager.DisplayCountyDropDown(Model.Address().GetCountyList(), Model.Address().County, 18))
+                                </div>
+                                <div class="table-cell twocol">
+                                    <label>Post Code</label>
+                                </div>
+                                <div class="table-cell fourcol last">
+                                    <div class="input"><input type="text" name="PostCode" tabindex="19" value="@Model.Address().PostCode" /></div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <div class="no-border">
+                        <button class="save primary" tabindex="20">Save</button><a href="/Candidates">back to candidate list</a>
+                    </div>
+
+                </div>
+
+                <div id="salary" class="form">
+
+                    <fieldset>
+                        <legend>Salary details</legend>
+
+                        <input type="hidden" id="Id" name="Id" value="@Model.SalaryDetails().Id" />
+
+                        <div class="table">
+                            <div class="table-row">
+                                <div class="table-cell threecol">
+                                    <div class="radio">
+                                        @Html.CheckBoxFor(m => m.SalaryDetails().FullTime)
+                                        @Html.LabelFor(m => m.SalaryDetails().FullTime)
+                                        <br /><br />
+                                        @Html.CheckBoxFor(m => m.SalaryDetails().PartTime)
+                                        @Html.LabelFor(m => m.SalaryDetails().PartTime)
+                                        <br /><br />
+                                        @Html.CheckBoxFor(m => m.SalaryDetails().Student)
+                                        @Html.LabelFor(m => m.SalaryDetails().Student)
+                                        <br /><br />
+                                        @Html.CheckBoxFor(m => m.SalaryDetails().Temp)
+                                        @Html.LabelFor(m => m.SalaryDetails().Temp)
+                                        <br /><br />
+                                        @Html.CheckBoxFor(m => m.SalaryDetails().NightShifts)
+                                        @Html.LabelFor(m => m.SalaryDetails().NightShifts)
+                                        <br /><br />
+                                        @Html.CheckBoxFor(m => m.SalaryDetails().DayShifts)
+                                        @Html.LabelFor(m => m.SalaryDetails().DayShifts)
+                                        <br /><br />
+                                        @Html.CheckBoxFor(m => m.SalaryDetails().Other)
+                                        @Html.LabelFor(m => m.SalaryDetails().Other)
+                                    </div> 
+                                </div>
+                                <div class="table-cell ninecol last">
+                                    <div class="table">
+                                        <div class="table-row">
+                                            <div class="table-cell threecol">
+                                                @Html.LabelFor(m => m.SalaryDetails().TempWage)
+                                            </div>
+                                            <div class="table-cell sixcol">
+                                                <div class="input">
+                                                    @Html.TextBoxFor(m => m.SalaryDetails().TempWage)
+                                                </div>
+                                            </div>
+                                            <div class="table-cell threecol last">
+                                                @Html.DropDownList("TempRateId", string.Empty)
+                                            </div>
+                                        </div>
+                                        <div class="table-row">
+                                            <div class="table-cell threecol">
+                                                @Html.LabelFor(m => m.SalaryDetails().PermWage)
+                                            </div>
+                                            <div class="table-cell sixcol">
+                                                <div class="input">
+                                                    @Html.TextBoxFor(m => m.SalaryDetails().PermWage)
+                                                </div>
+                                            </div>
+                                            <div class="table-cell threecol last">
+                                                @Html.DropDownList("PermRateId", string.Empty)
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Work</legend>
+
+                        <div class="table">
+                            <div class="table-row" id="work-row">
+                                @if (Model.Experience().Where(x => x.TypeId == ExperienceType.Work).Count() == 0)
+                                {                              
+                                    <div class="table-cell twocol"><label>Name</label></div>
+                                    <div class="table-cell fourcol last">
+                                        <input type="hidden" id="ExperienceId" value="0" />
+                                        <input type="hidden" id="ExperienceTypeId" value="2" />
+
+                                        <div class="input">
+                                            <input type="text" id="ExperienceName" />
+                                        </div>
+                                    </div>
+                                }
+
+                                @foreach (Experience Work in Model.Experience().Where(x => x.TypeId == ExperienceType.Work))
+                                {                         
+                                    <div class="table-cell twocol"><label>Name</label></div>
+                                    <div class="table-cell fourcol last">
+                                        <input type="hidden" id="ExperienceId" value="@Work.Id" />
+                                        <input type="hidden" id="ExperienceTypeId" value="@Work.TypeId" />
+
+                                        <div class="input">
+                                            <input type="text" id="ExperienceName" value="@Work.Name" />
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="no-border">
+                            <button id="btnAddWork" tabindex="20">Add more</button>
+                        </div>
+
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Skills</legend>
+
+                        <div class="table">
+                            <div class="table-row" id="skill-row">
+                                @if (Model.Experience().Where(x => x.TypeId == ExperienceType.Skill).Count() == 0)
+                                {                                      
+                                    <div class="table-cell twocol"><label>Name</label></div>
+                                    <div class="table-cell fourcol last">
+                                        <input type="hidden" id="ExperienceId" value="0" />
+                                        <input type="hidden" id="ExperienceTypeId" value="1" />
+
+                                        <div class="input">
+                                            <input type="text" id="ExperienceName" />
+                                        </div>
+                                    </div>
+                                }
+                                
+                                @foreach (Experience Skill in Model.Experience().Where(x => x.TypeId == ExperienceType.Skill))
+                                {                        
+                                    <div class="table-cell twocol"><label>Name</label></div>
+                                    <div class="table-cell fourcol last">
+                                        <input type="hidden" id="ExperienceId" value="@Skill.Id" />
+                                        <input type="hidden" id="ExperienceTypeId" value="@Skill.TypeId" />
+
+                                        <div class="input">
+                                            <input type="text" id="ExperienceName" value="@Skill.Name" />
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="no-border">
+                            <button id="btnAddSkill" tabindex="20">Add more</button>
+                        </div>
+
+                    </fieldset>
+
+                    <div class="no-border">
+                        <button id="btnSaveSalary" class="primary" tabindex="20">Save</button><a href="/Candidates">back to candidate list</a>
+                    </div>
+
+                </div>
+
+                <div id="history" class="form">
+
+                    <div class="table">
+                        <div class="table-row">
+                            <div class="table-cell sixcol">
+                                <fieldset>
+                                    <legend>Interview notes</legend>
+
+                                    <input type="hidden" id="NoteId" value="0" />
+                                    <div class="input"><textarea id="NoteMessage" rows="10" tabindex="1"></textarea></div>
+
+                                </fieldset>
+
+                                <div class="no-border">
+                                    <button id="btnSaveNote" class="primary" tabindex="2">Save</button><a href="/Candidates">back to candidate list</a>
+                                </div>
+
+                                <ol id="interview-comments" class="notes">                                
+                                    @foreach (Note Note in Model.Notes().Where(x => x.TypeId == NoteType.Interview))
+                                    {  
+                                        <li id="@Note.Id">
+                                            <p>Posted by: <a id="user" href="/Account/Profile/@Note.UserId">@Note.UserName</a><br />
+                                            <span id="date" class="small">@Note.DateCreated</span></p>
+                                            <p class="note">@HtmlExtensions.decodeEscapedText(Note.Message)</p>
+                                        </li>
+                                    }
+                                </ol>
+
+                            </div>
+                            <div class="table-cell sixcol last">
+                                <fieldset>
+                                    <legend>History</legend>
+                                    
+                                    <input type="hidden" id="HistoryId" value="0"  />
+                                    <div class="input"><textarea id="HistoryMessage" rows="10" tabindex="3"></textarea></div>
+
+                                </fieldset>
+
+                                <div class="no-border">
+                                    <button id="btnSaveHistory" class="primary" tabindex="4">Save</button><a href="/Candidates">back to candidate list</a>
+                                </div>
+
+                                <ol id="history-comments" class="notes">                             
+                                    @foreach (Note Note in Model.Notes().Where(x => x.TypeId == NoteType.History))
+                                    {  
+                                        <li id="@Note.Id">
+                                            <p>Posted by: <a id="user" href="/Account/Profile/@Note.UserId">@Note.UserName</a><br />
+                                            <span id="date" class="small">@Note.DateCreated</span></p>
+                                            <p class="note">@Html.Raw(Note.Message)</p>
+                                        </li>
+                                    }
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <form id="documents" action="/Components/UploadHandler.ashx" method="POST" enctype="multipart/form-data">
+
+                    @Html.HiddenFor(m => m.Id)
+                    <input type="hidden" id="Type" name="Type" value="1" />
+                    <input type="hidden" id="UserId" name="UserId" value="@Membership.GetUser(User.Identity.Name).ProviderUserKey.ToString()" />
+                    
+                    <table class="default-table" id="existing-files">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Size</th>
+                                <th>Date</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach(Document d in Model.Documents())
+                            {
+                                <tr id="@d.Id">
+                                    <td><a href="/Components/UploadHandler.ashx?Id=@d.Id">@d.FileName</a></td>
+                                    <td>@d.FileSize.ToNearestFileSize()</td>        
+                                    <td>@d.Date</td>
+                                    <td class="delete">
+                                        <button data-id="@d.Id">
+                                            <span>Delete</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+                    <div class="row fileupload-buttonbar">
+                        <div class="span7">
+                            <!-- The fileinput-button span is used to style the file input field as button -->
+                            <span class="fileinput-button">
+                                <span>Add files...</span>
+                                <input type="file" name="files[]" multiple>
+                            </span>
+                            <button type="submit" class="start">
+                                <span>Start uploads</span>
+                            </button>
+                            <button type="reset" class="cancel">
+                                <span>Cancel uploads</span>
+                            </button>
+                        </div>
+                        <div class="span5">
+                            <!-- The global progress bar -->
+                            <div class="progress progress-success progress-striped active fade">
+                                <div class="bar" style="width:0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- The loading indicator is shown during image processing -->
+                    <div class="fileupload-loading"></div>
+                    <br>
+                    <!-- The table listing the files available for upload/download -->
+                    <table class="default-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Size</th>
+                                <th>Progress</th>
+                                <th>Start</th>
+                                <th>Cancel</th>
+                            </tr>
+                        </thead>
+                        <tbody id="progress-list"></tbody>
+                    </table>
+                </form>
+
+            </div>
+        </div>
+        
+    </div>
+</div>   
+
+<link href="/Content/FileUpload/jquery.fileupload-ui.css" rel="stylesheet" />
+
+<script type="text/javascript" src="/Content/FileUpload/tmpl.min.js"></script>
+<script type="text/javascript" src="/Content/FileUpload/canvas-to-blob.min.js"></script>
+<script type="text/javascript" src="/Content/FileUpload/load-image.min.js"></script>        
+<script type="text/javascript" src="/Content/FileUpload/jquery.iframe-transport.js"></script>
+<script type="text/javascript" src="/Content/FileUpload/jquery.fileupload.js"></script>
+<script type="text/javascript" src="/Content/FileUpload/jquery.fileupload-ip.js"></script>
+<script type="text/javascript" src="/Content/FileUpload/jquery.fileupload-ui.js"></script>
+<script type="text/javascript" src="/Content/FileUpload/locale.js"></script>
+<script type="text/javascript" src="/Content/FileUpload/main.js"></script>
+
+<script type="text/javascript">
+    var pMessage = $('.message');
+    var pId = $('#Id', '#details'), pForename = $('input[name=Forename]', '#details'), pNiNumber = $('input[name=NiNumber]', '#details'), pSurname = $('input[name=Surname]', '#details'), pTelephone = $('input[name=Telephone]', '#details'), pMobile = $('input[name=Mobile]', '#details'), pEmail = $('input[name=Email]', '#details'), pDob = $('input[name=DOB]', '#details'), pActive = $('input[name=Inactive]', '#details'), pLastContactDate = $('input[name=LastContactDate]', '#details'), pCRB = $('input[name=CRB]', '#details'), pReferences = $('input[name=References]', '#details'), pInterviewed = $('input[name=Interviewed]', '#details'), pTransport = $('select[name=Transport]', '#details'); // Candidate form   
+    var pAddressId = $('input[name=AddressId]', '#details'), pHouse = $('input[name=HouseNumber]', '#details'), pStreet = $('input[name=Street]', '#details'), pArea = $('input[name=Area]', '#details'), pTown = $('input[name=Town]', '#details'), pCounty = $('select[name=County]', '#details'), pPostCode = $('input[name=PostCode]', '#details'); // Address form
+    var pSalaryId = $('#Id', '#salary'), pSalaryFulltime = $('#FullTime', '#salary'), pSalaryParttime = $('#PartTime', '#salary'), pSalaryStudent = $('#Student', '#salary'), pSalaryTemp = $('#Temp', '#salary'), pSalaryNightShifts = $('#NightShifts', '#salary'), pSalaryDayShifts = $('#DayShifts', '#salary'), pSalaryOther = $('#Other', '#salary'), pSalaryTempWage = $('#TempWage', '#salary'), pSalaryPermWage = $('#PermWage', '#salary'), pSalaryTempRateId = $('#TempRateId', '#salary'), pSalaryPermRateId = $('#PermRateId', '#salary') // Salary form   
+
+    var settings = {
+        selectedColumn: 2,
+        ignoreColumns: [3]
+    };
+
+    $(function () {
+
+
+        /* SETUP
+        ********************************************************************/
+        
+        $('.tabs').tabs(); // jquery ui tabs
+        
+        $('#current_age').text(getAge('@Model.DOB'));
+        $('select[name=County]', '#details').val('@Model.Address().County');
+        $('select[name=Transport]', '#details').val('@Model.TransportId');
+        $('#datepicker1').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'dd/mm/yy',
+            minDate: "-100Y",
+            maxDate: '0',
+            yearRange: 'c-100:c+0', // shows -100 years to this year in the dropdown
+            onClose: function (d) {
+                var age = $('#current_age');
+
+                if (d != "") {
+                    var birth_year = d.substring(d.lastIndexOf("/") + 1);
+                    var birth_month = d.substring(d.indexOf("/") + 1, d.lastIndexOf("/"));
+                    var birth_day = d.substring(0, d.indexOf("/"));
+                    var birth = birth_year + "-" + birth_month + "-" + birth_day;
+
+                    age.text(getAge(birth));
+                } else {
+                    age.text(0);
+                }
+            }
+        });
+
+        $('#datepicker2').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'dd/mm/yy',
+        });
+
+        $('#existing-files').sortTable(settings);
+
+
+        /* DETAILS
+        ********************************************************************/
+
+        $('.save', '#details').click(function () {
+            $.event.trigger('AjaxButtonClick', this);
+
+            var validCandidate = validate();
+            var validAddress = validateAddress();
+
+            if (validCandidate && validAddress) {
+                saveCandidate();
+            } else {
+                $.event.trigger('AjaxButtonError');
+            }
+        });
+        
+
+        /* WORK/SKILLS
+        ********************************************************************/
+        
+        $('#btnAddWork').click(function () {
+            addExperience($('#work-row'), 2);
+        });
+
+        $('#btnAddSkill').click(function () {
+            addExperience($('#skill-row'), 1);
+        });
+
+        $('#btnSaveSalary').click(function () {
+            $.event.trigger('AjaxButtonClick', this);
+
+            saveSalary();
+        });
+
+
+        /* INTERVIEW NOTES/HISTORY
+        ********************************************************************/
+        
+        $('#btnSaveNote').click(function () {
+            $.event.trigger('AjaxButtonClick', this);
+
+            saveNote($('#NoteId'), 1, $('#NoteMessage'));
+        });
+
+        $('#btnSaveHistory').click(function () {
+            $.event.trigger('AjaxButtonClick', this);
+
+            saveNote($('#HistoryId'), 2, $('#HistoryMessage'));
+        });
+
+        $('ol.notes > li').live('mouseenter', function () {
+            var deleteLink = '<a href="#" class="delete-note" id="' + $(this).attr('id') + '">Delete</a>';
+            
+            $(deleteLink).css({ position: 'absolute', top: '0', right: '5px' }).appendTo(this);
+        }).live('mouseleave', function () {
+            $('.delete-note').remove();
+        });
+
+        $('.delete-note').live('click', function (e) {
+            e.preventDefault();
+
+            deleteNote($(this).attr('id'));
+        });
+
+
+        /* DOCUMENTS
+        ********************************************************************/
+        
+        $('.delete button', '#existing-files').live('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            var Id = $(this).attr('data-id');
+            deleteFile(Id);
+        });
+    });
+
+
+    /* DETAILS FUNCTIONS
+    ********************************************************************/
+    
+    function getAge(dateString) {
+        var today = new Date();
+        var birthDate = new Date(dateString);
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    }
+
+    function validate() {
+        (pForename.val().length > 0) ? pForename.removeClass('ui-state-error') : pForename.addClass('ui-state-error');
+        (pSurname.val().length > 0) ? pSurname.removeClass('ui-state-error') : pSurname.addClass('ui-state-error');
+
+        if (pForename.val().length > 0 && pSurname.val().length > 0) {
+            pMessage.show().removeClass('ui-state-error').removeClass('ui-state-highlight').text('');
+            return true;
+        } else {
+            pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('Please correct the errors below:');
+            return false;
+        }
+    };
+
+    function validateAddress() {
+        return true;
+    };
+
+
+    /* WORK/SKILL FUNCTIONS
+    ********************************************************************/
+        
+    function addExperience(row, typeId) {
+        var item = '<div class="table-cell twocol"><label>Name</label></div><div class="table-cell fourcol last"><input type="hidden" id="ExperienceId" value="0" /><input type="hidden" id="ExperienceTypeId" value="' + typeId + '" /><div class="input"><input type="text" id="ExperienceName" /></div></div>';
+        row.append(item);
+    }
+    
+
+    /* AJAX FUNCTIONS
+    ********************************************************************/
+        
+    function deleteFile(Id) {
+        $.ajax({
+            url: '/Components/UploadHandler.ashx?id=' + Id + '&Method=DELETE',
+            type: 'POST',
+            success: function (o) {
+                $('#' + Id, '#existing-files').remove();
+                
+                pMessage.show().addClass('ui-state-highlight').removeClass('ui-state-error').text('Your file has been deleted.');
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('Failed to delete your file');
+            }
+        });
+    };
+
+    function deleteNote(id) {
+        $.ajax({
+            url: '@Url.Action("DeleteNote", "Common")',
+            type: 'POST',
+            data: '{ "Id": ' + id + ' }',
+            dataType: 'text json',
+            contentType: 'application/json; charset=utf-8',
+            traditional: true,
+            success: function (o) {
+                if (o.success) {
+                    $('ol.notes').find('li#' + id).remove();
+
+                    pMessage.show().addClass('ui-state-highlight').removeClass('ui-state-error').text('Your note has been deleted.');
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('Failed to delete your note');
+            }
+        });
+    };
+
+    function saveCandidate() {
+        $.ajax({
+            url: '@Url.Action("Save", "Candidates")',
+            type: 'POST',
+            data: '{ "Id": ' + pId.val() + ', "Forename": "' + pForename.val() + '", "Surname": "' + pSurname.val() + '", "Telephone": "' + pTelephone.val() + '", "Mobile": "' + pMobile.val() + '", "Email": "' + pEmail.val() + '", "Active": "' + !pActive.is(':checked') + '", "DOB": "' + pDob.val() + '", "CRB": "' + pCRB.is(':checked') + '", "References": "' + pReferences.is(':checked') + '", "Interviewed": "' + pInterviewed.is(':checked') + '", "LastContactDate": "' + pLastContactDate.val() + '", "NiNumber": "' + pNiNumber.val() + '", "TransportId": "' + pTransport.val() + '" }',
+            dataType: 'text json',
+            contentType: 'application/json; charset=utf-8',
+            traditional: true,
+            success: function (o) {
+                if (o.success) {
+                    saveAddress();
+                    $.event.trigger('AjaxButtonSuccess');
+                } else {
+                    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text(o.error);
+                    $.event.trigger('AjaxButtonError');
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 104).');
+                $.event.trigger('AjaxButtonError');
+            }
+        });
+    };
+
+    function saveAddress() {
+        $.ajax({
+            url: '@Url.Action("SaveAddress", "Common")',
+            type: 'POST',
+            data: '{ "Id": ' + pAddressId.val() + ', "CandidateId": ' + pId.val() + ', "HouseNumber": "' + pHouse.val() + '", "Street": "' + pStreet.val() + '", "Area": "' + pArea.val() + '", "Town": "' + pTown.val() + '", "County": "' + pCounty.val() + '", "PostCode": "' + pPostCode.val() + '"  }',
+            dataType: 'text json',
+            contentType: 'application/json; charset=utf-8',
+            traditional: true,
+            success: function (o) {
+                if (o.success) {
+                    pMessage.show().addClass('ui-state-highlight').removeClass('ui-state-error').text('Your candidate has been saved.');
+                } else {
+                    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text(o.error);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 101).');
+            }
+        });
+    };
+
+    function saveSalary() {
+        $.ajax({
+            url: '@Url.Action("SaveSalary", "Candidates")',
+            type: 'POST',
+            data: '{ "Id": ' + pSalaryId.val() + ', "CandidateId": ' + pId.val() + ', "FullTime": ' + pSalaryFulltime.is(':checked') + ', "PartTime": ' + pSalaryParttime.is(':checked') + ', "Student": ' + pSalaryStudent.is(':checked') + ', "Temp": ' + pSalaryTemp.is(':checked') + ', "NightShifts": ' + pSalaryNightShifts.is(':checked') + ', "DayShifts": ' + pSalaryDayShifts.is(':checked') + ', "Other": ' + pSalaryOther.is(':checked') + ', "TempWage": "' + pSalaryTempWage.val() + '", "PermWage": "' + pSalaryPermWage.val() + '", "TempRateId": ' + pSalaryTempRateId.val() + ', "PermRateId": ' + pSalaryPermRateId.val() + ' }',
+            dataType: 'text json',
+            contentType: 'application/json; charset=utf-8',
+            traditional: true,
+            success: function (o) {
+                if (o.success) {
+                    pSalaryId.val(o.id)
+                    var bWork = saveSingleExperience('#work-row');
+                    var bSkill = saveSingleExperience('#skill-row');
+
+                    if (bWork && bSkill) {
+                        pMessage.show().addClass('ui-state-highlight').removeClass('ui-state-error').text('Your candidate salary details have been saved.');
+                        $.event.trigger('AjaxButtonSuccess');
+                    } else {
+                        if (!bWork && !bSkill) {
+                            pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 108).');
+                            $.event.trigger('AjaxButtonError');
+                        } else {
+                            if (!bWork) {
+                                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 109).');
+                                $.event.trigger('AjaxButtonError');
+                            }
+                            if (!bSkill) {
+                                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 110).');
+                                $.event.trigger('AjaxButtonError');
+                            }
+                        }
+                    }
+                } else {
+                    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text(o.error);
+                    $.event.trigger('AjaxButtonError');
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 107).');
+                $.event.trigger('AjaxButtonError');
+            }
+        });
+    };
+
+    function saveSingleExperience(target) {
+        var bWork = true;
+        var iWork = $('.fourcol', target).length;
+
+        while (iWork-- && bWork) {
+            var item = $('.fourcol', target).eq(iWork);
+            var _id = item.find('#ExperienceId').val();
+            var _typeId = item.find('#ExperienceTypeId').val();
+            var _name = item.find('#ExperienceName').val();
+
+            saveExperience(_id, _typeId, _name, item); // Set our new value
+        }
+
+        return bWork;
+    };
+
+    function saveExperience(id, typeId, name, item) {
+        if (name != null && name != '') {
+            $.ajax({
+                async: false, // Wait until completed
+                url: '@Url.Action("SaveExperience", "Candidates")',
+                type: 'POST',
+                data: '{ "Id": ' + id + ', "CandidateId": ' + pId.val() + ', "TypeId": ' + typeId + ', "Name": "' + name + '" }',
+                dataType: 'text json',
+                contentType: 'application/json; charset=utf-8',
+                traditional: true,
+                success: function (o) {
+                    if (o.success) {
+                        item.find('#ExperienceId').val(o.id);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            });
+        } else {
+            return true;
+        }
+    };
+
+    function saveNote(id, typeId, message) {
+        $.ajax({
+            url: '@Url.Action("SaveNote", "Candidates")',
+            type: 'POST',
+            data: '{ "Id": ' + id.val() + ', "CandidateId": ' + pId.val() + ', "TypeId": ' + typeId + ', "Message": "' + message.val() + '"  }',
+            dataType: 'text json',
+            contentType: 'application/json; charset=utf-8',
+            traditional: true,
+            success: function (o) {
+                if (o.success) {
+                    id.val(0); // Reset our Id
+                    message.val(''); // Reset our message
+
+                    var note = '<li id="' + o.note.Id + '"><p>Posted by: <a id="user" href="/Account/Profile/' + o.note.UserId + '">' + o.note.UserName + '</a><br /><span id="date" class="small">' + new Date().toLocaleString() + '</span></p><p class="note">' + o.note.Message + '</p></li>'
+
+                    if (typeId == 1) {
+                        $('#interview-comments').prepend(note);
+                    } else {
+                        $('#history-comments').prepend(note);
+                    }
+
+                    pMessage.show().addClass('ui-state-highlight').removeClass('ui-state-error').text('Your message has been saved.');
+                    $.event.trigger('AjaxButtonSuccess');
+                } else {
+                    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text(o.error);
+                    $.event.trigger('AjaxButtonError');
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 111).');
+                $.event.trigger('AjaxButtonError');
+            }
+        });
+    };
+</script>
+        

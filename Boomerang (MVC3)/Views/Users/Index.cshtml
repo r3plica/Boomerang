@@ -1,0 +1,118 @@
+﻿@using System.Linq
+@using System.Collections.ObjectModel
+@using Core;
+@model Collection<Profile>
+           
+@{
+    ViewBag.Title = "Users";
+}
+
+@section navigation
+{
+	<li>@Html.ActionLink("Index", "Index", "Home")<span></span></li>
+	<li>@Html.ActionLink("Clients", "Index", "Clients")<span></span></li>
+	<li>@Html.ActionLink("Candidates", "Index", "Candidates")<span></span></li>
+	<li id="current">@Html.ActionLink("Users", "Index", "Users")<span></span></li>
+	<li>@Html.ActionLink("Profile", "Index", "Account")<span></span></li>
+	<li>@Html.ActionLink("Lists", "Index", "Lists")<span></span></li>
+}
+
+<div class="container">
+    <div class="row">
+        <div class="eightcol">
+        
+            <h2>@ViewBag.Title</h2>
+            
+            <div class="pagination"><div class="page_navigation"></div></div>
+			<table class="default-table users" id="users"> 
+                <thead>            
+				    <tr>
+                        <th><span class="tick"></span></th>
+					    <th>Username</th>
+					    <th>Email</th>
+					    <th>Last online</th>
+					    <th></th>
+					    <th></th>
+					    <th></th>
+				    </tr>
+                </thead> 
+                <tbody>
+                    @foreach (Profile User in Model.Where(p => p.RoleName == "Managers"))
+                    {
+                        <tr id="@User.ProviderUserKey.ToString()">
+                            <td><span class="tick"></span></td>
+                            <td>@User.UserName</td>
+                            <td>@User.Email</td>
+                            <td>@User.LastLoginDate</td>
+                            <td class="status">
+                                @if (User.IsApproved) {
+                                    <span class="approved" />
+                                } else {
+                                    <span class="unapproved" />
+                                }</td>
+                            <td class="status">
+                                @if (User.IsLockedOut) {
+                                    <span class="locked" />
+                                } else {
+                                    <span class="unlocked" />
+                                }</td>
+                            <td class="status">
+                                @if (User.IsOnline) {
+                                    <span class="online" />
+                                } else {
+                                    <span class="offline" />
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+        <div class="fourcol last">
+            <h2>Actions</h2>
+            <div class="form">
+                <ul class="actions">
+                    <li><a href="/Users/Create" class="button" id="create">Create a new user</a></li>
+                    <li><a href="#" class="button" id="view">View the selected user</a></li>
+                    <li><a href="#" class="button" id="edit">Edit the selected user</a></li>
+                    <li><a href="#" class="button" id="approve">Approve the selected user</a></li>
+                    <li><a href="#" class="button" id="unapprove">Un-approve the selected user</a></li>
+                    <li><a href="#" class="button" id="lock">Lock the selected user</a></li>
+                    <li><a href="#" class="button" id="unlock">Un-lock the selected user</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var settings = {
+        selectedColumn: 1,
+        ignoreColumns: [0],
+        onComplete: function () {
+            $('.page_navigation').paginate({ collection: 'tbody > tr', recordsperpage: 20, container: 'tbody > tr' });
+        }
+    };
+
+    $(function () {
+        $('.users').sortTable(settings);
+        displayButtons('#users');
+
+        // Setting this to live click, seems to detect the selection properly. 
+        // If we don't, then when a row is selected, it doesn't detect it properly (even if we use window.load()).
+        $('#users').live('click', function () {
+            displayButtons('#users');
+        });
+
+        $('#edit', '.actions').click(function (e) {
+            e.preventDefault();
+            window.location = '/Users/Edit/' + $('.selected', '.users').attr('id');
+        });
+
+        $('#view', '.actions').click(function (e) {
+            e.preventDefault();
+            window.location = '/Account/Index/' + $('.selected', '.users').attr('id');
+        });
+    });
+</script>
