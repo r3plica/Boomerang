@@ -1,5 +1,5 @@
 ﻿using Boomerang.Models;
-using Core.Components;
+using Boomerang.Web.Providers;
 using System;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -29,7 +29,7 @@ namespace Boomerang.Controllers
 
         public ActionResult LogOn()
         {
-            ProfileManager.Initialize();
+            ProfileProvider.Initialize();
 
             return View();
         }

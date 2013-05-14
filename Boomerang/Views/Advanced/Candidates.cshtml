@@ -1,5 +1,5 @@
-﻿@using Core;
-@using Core.Helpers
+﻿@using Boomerang.Web;
+@using Boomerang.Web.Helpers
 @model IEnumerable<Candidate>
 
 @{
@@ -31,7 +31,7 @@
 
                 <p class="message"></p>
                      
-                <div class="pagination"><input type="text" id="Filter" placeholder="Eg: Filter" /><div class="page_navigation"></div></div>
+                <div class="pagination"><input type="text" id="Filter" placeholder="Eg: Filter" /><div class="page-navigation" id="page-navigation"></div></div>
 			    <table class="default-table candidates" id="candidates"> 
                     <thead>            
 				        <tr>
@@ -95,6 +95,9 @@ else
         <li><a href="#" class="button" id="deactivate">Deactivate</a></li>
         <li><a href="#" class="button" id="export" data-id="candidates">Export</a></li>
     </ul>
+    
+    <div class="radio"><input type="checkbox" id="show-active" /> <label for="show-active">Show active</label></div>
+    <div class="radio"><input type="checkbox" id="show-inactive" /> <label for="show-inactive">Show inactive</label></div>
 </div>
 
 <script type="text/javascript" src="/Scripts/custom/jquery.table-to-csv.js"></script>

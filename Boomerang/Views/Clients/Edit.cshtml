@@ -1,9 +1,11 @@
-﻿@using Core
-@using Core.Components
+﻿@using Boomerang.Web
+@using Boomerang.Web.Extensions
+@using Boomerang.Web.Helpers
 @model Client
 
 @{
     ViewBag.Title = "Editing \"" + @Model.Name + "\"";
+    var website = (string.IsNullOrEmpty(Model.Website) || Model.Website.ToLower().IndexOf("http") > -1) ? Model.Website : "http://" + Model.Website;
 }
 
 @section navigation
@@ -54,6 +56,25 @@
                                     <div class="input">@Html.DropDownListFor(m => m.UserId, (SelectList)ViewData["Managers"])</div>
                                 </div>
                             </div>
+                            <div class="table-row">
+                                <div class="table-cell twocol">
+                                    <label>Website</label>
+                                </div>
+                                <div class="table-cell fourcol">
+                                    <div class="input"><input type="text" name="Website" id="Website" value="@Model.Website" /></div>
+                                </div>
+                                <div class="table-cell sixcol last">
+                                    <p><a href="@website" class="website">@website</a></p>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell twelvecol last">
+                                    <label>Bio</label>
+                                </div>
+                                <div class="table-cell twelvecol last">
+                                    <textarea name="Bio" id="Bio">@Model.Bio</textarea>
+                                </div>
+                            </div>
                         </div>
 
                     </fieldset>
@@ -63,7 +84,7 @@
                     </div>     
 
                     <div class="no-border">
-                        <button class="primary save" tabindex="14">Save</button><a href="/clients">back to client list</a>
+                        <button class="primary save">Save</button><a href="#" id="backlink">Go back</a>
                     </div>
                 </div>
 
@@ -101,13 +122,13 @@
                         </div>
 
                         <div class="no-border">
-                            <button id="btnAddSector" tabindex="20">Add more</button>
+                            <button id="btnAddSector">Add more</button>
                         </div>
 
                     </fieldset>
 
                     <div class="no-border">
-                        <button id="btnSaveSector" class="primary" tabindex="20">Save</button><a href="/Clients">back to client list</a>
+                        <button id="btnSaveSector" class="primary">Save</button><a href="#" id="backlink">Go back</a>
                     </div>
 
                 </div>
@@ -115,12 +136,14 @@
                 <div id="contact" class="form">
                     <input type="hidden" name="Id" value="0" />
                     
-                    <div class="page_navigation"></div>
+                    <div class="page-navigation" id="page-navigation"></div>
                     <table width="100%" id="contact_list" class="default-table">
                         <thead>
                             <tr>
                                 <th>Name</th>
                                 <th>Email</th>
+                                <th>Office</th>
+                                <th>Telephone</th>
                                 <th>Primary</th>
                                 <th></th>
                                 <th></th>
@@ -130,8 +153,10 @@
                             @foreach (Contact Contact in Model.Contacts())
                             {
                                 <tr id="@Contact.Id">
-                                    <td>@Contact.Surname, @Contact.Forename</td>
-                                    <td>@Contact.Email</td>
+                                    <td>@Contact.Forename @Contact.Surname</td>
+                                    <td><a href="mailto:@Contact.Email" title="@Contact.Email">@Contact.Email.CutToSize(15)</a></td>
+                                    <td>@Contact.Office</td>
+                                    <td>@Contact.Telephone</td>
                                     <td id="is_primary">@Contact.Primary</td>
                                     <td><a href="#" class="edit" id="@Contact.Id">Edit</a></td>
                                     <td><a href="#" class="delete" id="@Contact.Id">Delete</a></td>
@@ -146,36 +171,48 @@
                         <div class="table">
                             <div class="table-row">
                                 <div class="table-cell twocol"><label>Forename</label></div>
-                                <div class="table-cell fourcol"><div class="input"><input type="text" name="Forename" tabindex="1" /></div></div>
-                                <div class="table-cell twocol"><label>Middle name(s)</label></div>
-                                <div class="table-cell fourcol last"><div class="input"><input type="text" name="Middlenames" tabindex="1" /></div></div>
+                                <div class="table-cell fourcol"><div class="input"><input type="text" name="Forename" /></div></div>
+                                <div class="table-cell twocol"><label>Surname</label></div>
+                                <div class="table-cell fourcol last"><div class="input"><input type="text" name="Surname" /></div></div>
                             </div>
 
                             <div class="table-row">
-                                <div class="table-cell twocol"><label>Surname</label></div>
-                                <div class="table-cell fourcol"><div class="input"><input type="text" name="Surname" tabindex="1" /></div></div>
-                                <div class="table-cell twocol"><label>Email</label></div>
-                                <div class="table-cell fourcol last"><div class="input"><input type="text" name="Email" tabindex="1" /></div></div>
+                                <div class="table-cell twocol"><label>Office/Site</label></div>
+                                <div class="table-cell fourcol"><div class="input"><input type="text" name="Office" /></div></div>
+                                <div class="table-cell twocol"><label>Job Tile</label></div>
+                                <div class="table-cell fourcol last"><div class="input"><input type="text" name="JobTitle" /></div></div>
                             </div>
 
                             <div class="table-row">
                                 <div class="table-cell twocol"><label>Telephone</label></div>
-                                <div class="table-cell fourcol"><div class="input"><input type="text" name="Telephone" tabindex="1" /></div></div>
-                                <div class="table-cell twocol"><label>Mobile</label></div>
-                                <div class="table-cell fourcol last"><div class="input"><input type="text" name="Mobile" tabindex="1" /></div></div>
+                                <div class="table-cell fourcol"><div class="input"><input type="text" name="Telephone" /></div></div>
+                                <div class="table-cell twocol"><label>Telephone Alt</label></div>
+                                <div class="table-cell fourcol last"><div class="input"><input type="text" name="TelephoneAlt" /></div></div>
+                            </div>
+
+                            <div class="table-row">
+                                <div class="table-cell twocol"><label>Email</label></div>
+                                <div class="table-cell fourcol"><div class="input"><input type="text" name="Email" /></div></div>
+                                <div class="table-cell twocol"><label>Email Alt</label></div>
+                                <div class="table-cell fourcol last"><div class="input"><input type="text" name="EmailAlt" /></div></div>
                             </div>
 
                             <div class="table-row">
                                 <div class="table-cell twocol"><label>Fax</label></div>
-                                <div class="table-cell fourcol"><div class="input"><input type="text" name="Fax" tabindex="1" /></div></div>
-                                <div class="table-cell twocol"><label>Job Tile</label></div>
-                                <div class="table-cell fourcol last"><div class="input"><input type="text" name="JobTitle" tabindex="1" /></div></div>
+                                <div class="table-cell fourcol"><div class="input"><input type="text" name="Fax" /></div></div>
+                                <div class="table-cell twocol"><label>Callback date</label></div>
+                                <div class="table-cell fourcol last"><div class="input"><input id="datepicker" type="text" name="CallbackDate" /></div></div>
                             </div>
 
                             <div class="table-row">
-                                <div class="table-cell twocol"><label>Callback date</label></div>
-                                <div class="table-cell fourcol"><div class="input"><input id="datepicker" type="text" name="CallbackDate" tabindex="1" /></div></div>
-                                <div class="table-cell sixcol last">
+                                <div class="table-cell twelvecol last"><label>Bio</label></div>
+                                <div class="table-cell twelvecol last">
+                                    <textarea name="ContactBio" id="ContactBio"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="table-row">
+                                <div class="table-cell twelvecol last">
                                     <div class="radio">
                                         <input type="checkbox" id="Primary" /><label for="Primary">Primary contact</label>
                                     </div>
@@ -186,22 +223,28 @@
 
                     
                     <div class="no-border">
-                        <button class="primary save" tabindex="15">Save</button><a href="/clients">back to client list</a>
+                        <button class="primary save">Save</button><a href="#" id="backlink">Go back</a>
                     </div>
                 </div>
 
-                <div id="history" class="form">                    
-                    <fieldset>
-                        <legend>History</legend>
-                                    
-                        <input type="hidden" id="HistoryId" value="0"  />
-                        <div class="input"><textarea id="HistoryMessage" rows="10" tabindex="1"></textarea></div>
-
-                    </fieldset>
+                <div id="history" class="form">      
+                    <div class="table">
+                        <div class="table-row">
+                            <div class="table-cell twelvecol last">
+                                <label>History</label>
+                            </div>
+                            <div class="table-cell twelvecol last">
+                                <input type="hidden" id="HistoryId" value="0"  />
+                                <textarea id="HistoryMessage"></textarea>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="no-border">
-                        <button id="btnSaveHistory" class="primary" tabindex="2">Save</button><a href="/Clients">back to client list</a>
+                        <button id="btnSaveHistory" class="primary">Save</button><a href="#" id="backlink">Go back</a>
                     </div>
+
+                    <div class="page-navigation" id="history-navigation"></div>
 
                     <ol id="history-comments" class="notes">                             
                         @foreach (Note Note in Model.History())
@@ -307,9 +350,9 @@
 <script type="text/javascript">
     var settings = {
         selectedColumn: 0,
-        ignoreColumns: [3,4],
+        ignoreColumns: [5,6],
         onComplete: function () {
-            $('.page_navigation').paginate({ collection: 'tbody > tr', recordsperpage: 20, container: 'tbody > tr' });
+            $('#page-navigation').paginate({ collection: 'tbody > tr', recordsperpage: 20, container: 'tbody > tr' });
         }
     };
 
@@ -319,8 +362,8 @@
     };
 
     var pMessage = $('.message');
-    var pClientId = $('input[name=Id]', '#client'), pName = $('input[name=Name]', '#client'), pUserId = $('#UserId', '#client'); // Client form        
-    var pContactId = $('input[name=Id]', '#contact'), pForename = $('input[name=Forename]', '#contact'), pMiddlenames = $('input[name=Middlenames]', '#contact'), pSurname = $('input[name=Surname]', '#contact'), pTelephone = $('input[name=Telephone]', '#contact'), pMoblile = $('input[name=Mobile]', '#contact'), pFax = $('input[name=Fax]', '#contact'), pEmail = $('input[name=Email]', '#contact'), pJobTitle = $('input[name=JobTitle]', '#contact'), pCallback = $('input[name=CallbackDate]', '#contact'), pPrimary = $('#Primary', '#contact')
+    var pClientId = $('input[name=Id]', '#client'), pName = $('input[name=Name]', '#client'), pWebsite = $('#Website', '#client'), pBio = $('#Bio', '#client'), pUserId = $('#UserId', '#client'); // Client form        
+    var pContactId = $('input[name=Id]', '#contact'), pForename = $('input[name=Forename]', '#contact'), pOffice = $('input[name=Office]', '#contact'), pSurname = $('input[name=Surname]', '#contact'), pTelephone = $('input[name=Telephone]', '#contact'), pTelephoneAlt = $('input[name=TelephoneAlt]', '#contact'), pFax = $('input[name=Fax]', '#contact'), pEmail = $('input[name=Email]', '#contact'), pEmailAlt = $('input[name=EmailAlt]', '#contact'), pJobTitle = $('input[name=JobTitle]', '#contact'), pCallback = $('input[name=CallbackDate]', '#contact'), pContactBio = $('#ContactBio', '#contact'), pPrimary = $('#Primary', '#contact')
     var pHistoryId = $('#HistoryId', '#history'), pHistoryMessage = $('#HistoryMessage', '#history'); // History form
     
     $(function () {
@@ -348,7 +391,7 @@
             $.event.trigger('AjaxButtonClick', this);
 
             if (validateClient()) {
-                saveClient($(this));
+                saveClient();
             } else {
                 $.event.trigger('AjaxButtonError');
             }
@@ -378,6 +421,19 @@
             if (success)
                 $('#' + dataId).parent().parent().remove();
         });
+
+        $.each($('input[name=PostCode]'), function () {
+            $(this).bind('keyup', function (e) {
+                if (e.which >= 97 && e.which <= 122) {
+                    var newKey = e.which - 32;
+                    // I have tried setting those
+                    e.keyCode = newKey;
+                    e.charCode = newKey;
+                }
+
+                $(this).val(($(this).val()).toUpperCase());
+            });
+        });
         
         /* SECTORS
         ********************************************************************/
@@ -406,22 +462,46 @@
             }
         });
 
-        $('.edit', '#contact_list').live('click', function () {
+        $('.edit', '#contact_list').live('click', function (e) {
+            e.preventDefault();
             getContact($(this).attr('id'));
         });
+
+        $('.delete', '#contact_list').live('click', function (e) {
+            e.preventDefault();
+            deleteContact($(this).attr('id'));
+        });
         
+
         /* HISTORY
         ********************************************************************/
-
+        
+        paginateHistory();
 
         $('#btnSaveHistory').click(function () {
             $.event.trigger('AjaxButtonClick', this);
 
             if (validateHistory()) {
-                saveNote($(this));
+                saveNote();
+
+                paginateHistory();
             } else {
                 $.event.trigger('AjaxButtonError');
             }
+        });
+
+        $('ol.notes > li').live('mouseenter', function () {
+            var deleteLink = '<a href="#" class="delete-note" id="' + $(this).attr('id') + '">Delete</a>';
+
+            $(deleteLink).css({ position: 'absolute', top: '0', right: '5px' }).appendTo(this);
+        }).live('mouseleave', function () {
+            $('.delete-note').remove();
+        });
+
+        $('.delete-note').live('click', function (e) {
+            e.preventDefault();
+
+            deleteNote($(this).attr('id'));
         });
     });
 
@@ -495,16 +575,12 @@
 
 
     function validateContact() {
-        if (pForename.val().length > 0 && pSurname.val().length > 0 && pEmail.val().length > 0) {
+        if (pForename.val().length > 0) {
             pForename.removeClass('ui-state-error');
-            pSurname.removeClass('ui-state-error');
-            pEmail.removeClass('ui-state-error');
             pMessage.show().removeClass('ui-state-error').removeClass('ui-state-highlight').text('');
             return true;
         } else {
             if (pForename.val().length == 0) pForename.addClass('ui-state-error');
-            if (pSurname.val().length == 0) pSurname.addClass('ui-state-error');
-            if (pEmail.val().length == 0) pEmail.addClass('ui-state-error');
             pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('Please correct the errors below:');
             return false;
         }
@@ -526,6 +602,10 @@
         }
     };
 
+    function paginateHistory() {
+        $('#history-navigation').paginate({ collection: '#history-comments > li', recordsperpage: 10, container: '#history-comments > li' });
+    };
+
     /* MISC
     ********************************************************************/
 
@@ -533,11 +613,11 @@
     function resetContactForm() {
         pContactId.val('0');
         pForename.val('');
-        pMiddlenames.val('');
+        pOffice.val('');
         pSurname.val('');
         pEmail.val('');
         pTelephone.val('');
-        pMoblile.val('');
+        pTelephoneAlt.val('');
         pFax.val('');
         pCallback.val('');
         pJobTitle.val('');
@@ -549,16 +629,23 @@
     ********************************************************************/
 
 
-    function saveClient(saveButton) {
+    function saveClient() {
         $.ajax({
             url: '@Url.Action("Save", "Clients")',
             type: 'POST',
-            data: '{ "Id": ' + pClientId.val() + ', "Name": "' + pName.val() + '", "UserId": "' + pUserId.val() + '" }',
+            data: '{ "Id": ' + pClientId.val() + ', "Name": "' + pName.val() + '", "Website": "' + pWebsite.val() + '", "Bio": "' + pBio.val() + '", "UserId": "' + pUserId.val() + '" }',
             dataType: 'text json',
             contentType: 'application/json; charset=utf-8',
             traditional: true,
             success: function (o) {
                 if (o.success) {
+                    var website = pWebsite.val();
+
+                    if (website.length > 0 && website.toLowerCase().indexOf('http') == -1)
+                        website = "http://" + website;
+
+                    $('.website').text(website);
+
                     if (saveAddresses()) {
                         pMessage.show().addClass('ui-state-highlight').removeClass('ui-state-error').text('Your client has been saved.');
                         $.event.trigger('AjaxButtonSuccess');
@@ -656,14 +743,14 @@
     }
 
     function saveAddress(target) {
-        var pAddressId = $(target).attr('id'), pTypeId = $('input[name=TypeId]', target), pHouse = $('input[name=HouseNumber]', target), pStreet = $('input[name=Street]', target), pArea = $('input[name=Area]', target), pTown = $('input[name=Town]', target), pPostCode = $('input[name=PostCode]', target), pCounty = $('select[name=County]', target); // Address form
+        var pAddressId = $(target).attr('id'), pTypeId = $('input[name=TypeId]', target), pHouse = $('input[name=HouseNumber]', target), pStreet = $('input[name=Street]', target), pArea = $('input[name=Area]', target), pTown = $('input[name=Town]', target), pPostCode = $('input[name=PostCode]', target), pCounty = $('select[name=County]', target), pInvoice = $('#Invoice', target); // Address form
         var bSuccess = false;
 
         $.ajax({
             async: false,
             url: '@Url.Action("SaveAddress", "Common")',
             type: 'POST',
-            data: '{ "Id": ' + pAddressId + ', "ClientId": ' + pClientId.val() + ', "HouseNumber": "' + pHouse.val() + '", "Street": "' + pStreet.val() + '", "Area": "' + pArea.val() + '", "Town": "' + pTown.val() + '", "County": "' + pCounty.val() + '", "PostCode": "' + pPostCode.val() + '"  }',
+            data: '{ "Id": ' + pAddressId + ', "ClientId": ' + pClientId.val() + ', "HouseNumber": "' + pHouse.val() + '", "Street": "' + pStreet.val() + '", "Area": "' + pArea.val() + '", "Town": "' + pTown.val() + '", "County": "' + pCounty.val() + '", "PostCode": "' + pPostCode.val() + '", "Invoice": ' + pInvoice.is(':checked') + ' }',
             dataType: 'text json',
             contentType: 'application/json; charset=utf-8',
             traditional: true,
@@ -686,6 +773,29 @@
         return bSuccess;
     };
 
+    function deleteContact(id) {
+        $.ajax({
+            url: '@Url.Action("DeleteContact", "Clients")',
+            type: 'POST',
+            data: '{ "Id": ' + id + ' }',
+            dataType: 'text json',
+            contentType: 'application/json; charset=utf-8',
+            traditional: true,
+            success: function (o) {
+                if (o.success) {
+                    $('#contact_list tr#' + id).remove();
+
+                    pMessage.show().addClass('ui-state-highlight').text('Your contact has been deleted.');
+                } else {
+                    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text(o.error);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('An unspecified error has occured. Please contact the administrator (error code: 124).');
+            }
+        });
+    };
+
     function getContact(id) {
         $.ajax({
             url: '@Url.Action("GetContact", "Clients")',
@@ -698,11 +808,11 @@
                 if (o.success) {
                     pContactId.val(o.contact.Id);
                     pForename.val(o.contact.Forename);
-                    pMiddlenames.val(o.contact.Middlenames);
+                    pOffice.val(o.contact.Office);
                     pSurname.val(o.contact.Surname);
                     pEmail.val(o.contact.Email);
                     pTelephone.val(o.contact.Telephone);
-                    pMoblile.val(o.contact.Mobile);
+                    pTelephoneAlt.val(o.contact.TelephoneAlt);
                     pFax.val(o.contact.Fax);
                     pJobTitle.val(o.contact.JobTitle);
                     pCallback.val(o.contact.Callback);
@@ -726,14 +836,14 @@
         $.ajax({
             url: '@Url.Action("SaveContact", "Clients")',
             type: 'POST',
-            data: '{ "Id": ' + pContactId.val() + ', "ClientId": ' + pClientId.val() + ', "Forename": "' + pForename.val() + '", "Middlenames": "' + pMiddlenames.val() + '", "Surname": "' + pSurname.val() + '", "Telephone": "' + pTelephone.val() + '", "Mobile": "' + pMoblile.val() + '", "Fax": "' + pFax.val() + '", "Email": "' + pEmail.val() + '", "JobTitle": "' + pJobTitle.val() + '", "CallbackDate": "' + pCallback.val() + '", "Primary": "' + pPrimary.is(':checked') + '" }',
+            data: '{ "Id": ' + pContactId.val() + ', "ClientId": ' + pClientId.val() + ', "Forename": "' + pForename.val() + '", "Surname": "' + pSurname.val() + '", "Office": "' + pOffice.val() + '", "Telephone": "' + pTelephone.val() + '", "TelephoneAlt": "' + pTelephoneAlt.val() + '", "Fax": "' + pFax.val() + '", "Email": "' + pEmail.val() + '", "EmailAlt": "' + pEmailAlt.val() + '", "JobTitle": "' + pJobTitle.val() + '", "CallbackDate": "' + pCallback.val() + '", "Bio": "' + pContactBio.val() + '", "Primary": "' + pPrimary.is(':checked') + '" }',
             dataType: 'text json',
             contentType: 'application/json; charset=utf-8',
             traditional: true,
             success: function (o) {
                 if (o.success) {
                     var _primary = (pPrimary.is(':checked')) ? 'True' : 'False';
-                    var row = '<tr id="' + o.id + '"><td>' + $('input[name=Surname]', '#contact').val() + ', ' + $('input[name=Forename]', '#contact').val() + '</td><td>' + $('input[name=Email]', '#contact').val() + '</td><td id="is_primary">' + _primary + '</td><td><a href="#form" class="button edit" id="' + o.id + '">Edit</a></td><td><a href="#" class="button edit" id="' + o.id + '">Delete</a></td></tr>';
+                    var row = '<tr id="' + o.id + '"><td>' + pForename.val() + ' ' + pSurname.val() + '</td><td><a href="mailto:' + pEmail.val() + '">' + pEmail.val() + '</a></td><td>' + pOffice.val() + '</td><td>' + pTelephone.val() + '</td><td id="is_primary">' + _primary + '</td><td><a href="#form" class="button edit" id="' + o.id + '">Edit</a></td><td><a href="#" class="button edit" id="' + o.id + '">Delete</a></td></tr>';
                     
                     if (pPrimary.is(':checked')) {
                         var i = $('#contact_list tr').length;
@@ -765,7 +875,7 @@
         });
     };
 
-    function saveNote(saveButton) {
+    function saveNote() {
         $.ajax({
             url: '@Url.Action("SaveNote", "Candidates")',
             type: 'POST',
@@ -794,4 +904,27 @@
             }
         });
     };
+
+    function deleteNote(id) {
+        $.ajax({
+            url: '@Url.Action("DeleteNote", "Common")',
+                type: 'POST',
+                data: '{ "Id": ' + id + ' }',
+                dataType: 'text json',
+                contentType: 'application/json; charset=utf-8',
+                traditional: true,
+                success: function (o) {
+                    if (o.success) {
+                        $('ol.notes').find('li#' + id).remove();
+
+                        paginateHistory();
+
+                        pMessage.show().addClass('ui-state-highlight').removeClass('ui-state-error').text('Your note has been deleted.');
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('Failed to delete your note');
+                }
+            });
+        };
 </script>

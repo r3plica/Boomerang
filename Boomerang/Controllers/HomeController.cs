@@ -1,9 +1,9 @@
-﻿using Core.Components;
+﻿using Boomerang.Web.Providers;
 using System.Web.Mvc;
 using System.Linq;
 using System.Web.Security;
 using Boomerang.Models;
-using Core;
+using Boomerang.Web;
 
 namespace Boomerang.Controllers
 {

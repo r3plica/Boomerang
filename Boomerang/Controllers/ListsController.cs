@@ -1,6 +1,6 @@
-﻿using Core;
-using Core.Components;
-using Core.Data;
+﻿using Boomerang.Web;
+using Boomerang.Web.Providers;
+using Boomerang.Web.Data;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -34,9 +34,9 @@ namespace Boomerang.Controllers
 
             switch (Target.ToLower())
             {
-                case "salary": List = GenericManager.GetSalaryRates(); break;
-                case "transport": List = GenericManager.GetTransportTypes(); break;
-                default: List = GenericManager.GetSalaryRates(); break;
+                case "salary": List = GenericProvider.GetSalaryRates(); break;
+                case "transport": List = GenericProvider.GetTransportTypes(); break;
+                default: List = GenericProvider.GetSalaryRates(); break;
             }
 
             return View(List);

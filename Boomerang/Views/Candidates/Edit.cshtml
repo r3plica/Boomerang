@@ -1,5 +1,6 @@
-﻿@using Core
-@using Core.Components
+﻿@using Boomerang.Web
+@using Boomerang.Web.Providers
+@using Boomerang.Web.Extensions
 @using System.Collections.ObjectModel
 @model Candidate
 
@@ -47,13 +48,13 @@
                                     <label>Forename</label>
                                 </div>
                                 <div class="table-cell fourcol">
-                                    <div class="input"><input type="text" name="Forename" tabindex="1" value="@Model.Forename" /></div>
+                                    <div class="input"><input type="text" name="Forename" value="@Model.Forename" /></div>
                                 </div>
                                 <div class="table-cell twocol">
                                     <label>Surname</label>
                                 </div>
                                 <div class="table-cell fourcol last">
-                                    <div class="input"><input type="text" name="Surname" tabindex="2" value="@Model.Surname" /></div>
+                                    <div class="input"><input type="text" name="Surname" value="@Model.Surname" /></div>
                                 </div>
                             </div>
                             <div class="table-row">
@@ -61,18 +62,18 @@
                                     <label>Date of birth</label>
                                 </div>
                                 <div class="table-cell fourcol">
-                                    <div class="input"><input type="text" name="DOB" tabindex="3" id="datepicker1" value="@Model.DOB" /></div>
+                                    <div class="input"><input type="text" name="DOB" id="datepicker1" value="@Model.DOB" /></div>
                                 </div>
                                 <div class="table-cell twocol"></div>
                                 <div class="table-cell fourcol last">
                                     <div class="radio">
                                         @if (Model.Active)
                                         {
-                                            <input type="checkbox" name="Inactive" id="Inactive" tabindex="4" />
+                                            <input type="checkbox" name="Inactive" id="Inactive" />
                                         }
                                         else
                                         {
-                                            <input type="checkbox" name="Inactive" id="Inactive" tabindex="4" checked="checked" />
+                                            <input type="checkbox" name="Inactive" id="Inactive" checked="checked" />
                                         }
                                         <label for="Inactive">Mark as inactive</label>
                                     </div>
@@ -98,33 +99,33 @@
                                     <div class="radio">
                                         @if (Model.CRB)
                                         {
-                                            <input type="checkbox" name="CRB" id="CRB" tabindex="5" checked="checked" />
+                                            <input type="checkbox" name="CRB" id="CRB" checked="checked" />
                                         }
                                         else
                                         {
-                                            <input type="checkbox" name="CRB" id="CRB" tabindex="5" />
+                                            <input type="checkbox" name="CRB" id="CRB" />
                                         }
                                         <label for="CRB">CRB checks</label>
                                     </div>
                                     <div class="radio">                                        
                                         @if (Model.References)
                                         {
-                                            <input type="checkbox" name="References" id="References" tabindex="6" checked="checked" />
+                                            <input type="checkbox" name="References" id="References" checked="checked" />
                                         }
                                         else
                                         {
-                                            <input type="checkbox" name="References" id="References" tabindex="6" />
+                                            <input type="checkbox" name="References" id="References" />
                                         }   
                                         <label for="References">Reference checks</label>
                                     </div>
                                     <div class="radio">                                        
                                         @if (Model.Interviewed)
                                         {
-                                            <input type="checkbox" name="Interviewed" id="Interviewed" tabindex="7" checked="checked" />
+                                            <input type="checkbox" name="Interviewed" id="Interviewed" checked="checked" />
                                         }
                                         else
                                         {
-                                            <input type="checkbox" name="Interviewed" id="Interviewed" tabindex="7" />
+                                            <input type="checkbox" name="Interviewed" id="Interviewed" />
                                         }   
                                         <label for="Interviewed">Interviewed</label>
                                     </div>
@@ -135,13 +136,13 @@
                                     <label>Last contact date</label>
                                 </div>
                                 <div class="table-cell fourcol">
-                                    <div class="input"><input type="text" name="LastContactDate" tabindex="8" id="datepicker2" value="@Model.LastContactDate" /></div>
+                                    <div class="input"><input type="text" name="LastContactDate" id="datepicker2" value="@Model.LastContactDate" /></div>
                                 </div>
                                 <div class="table-cell twocol">
                                     <label>NI Number</label>
                                 </div>
                                 <div class="table-cell fourcol last">
-                                    <div class="input"><input type="text" name="NiNumber" tabindex="9" value="@Model.NiNumber" /></div>
+                                    <div class="input"><input type="text" name="NiNumber" value="@Model.NiNumber" /></div>
                                 </div>
                             </div>
                             <div class="table-row">
@@ -149,13 +150,13 @@
                                     <label>Telephone</label>
                                 </div>
                                 <div class="table-cell fourcol">
-                                    <div class="input"><input type="text" name="Telephone" tabindex="10" value="@Model.Telephone" /></div>
+                                    <div class="input"><input type="text" name="Telephone" value="@Model.Telephone" /></div>
                                 </div>
                                 <div class="table-cell twocol">
-                                    <label>Mobile</label>
+                                    <label>Telephone 2</label>
                                 </div>
                                 <div class="table-cell fourcol last">
-                                    <div class="input"><input type="text" name="Mobile" tabindex="11" value="@Model.Mobile" /></div>
+                                    <div class="input"><input type="text" name="TelephoneAlt" value="@Model.Mobile" /></div>
                                 </div>
                             </div>
                             <div class="table-row">
@@ -163,13 +164,13 @@
                                     <label>Email</label>
                                 </div>
                                 <div class="table-cell fourcol">
-                                    <div class="input"><input type="text" name="Email" tabindex="12" value="@Model.Email" /></div>
+                                    <div class="input"><input type="text" name="Email" value="@Model.Email" /></div>
                                 </div>
                                 <div class="table-cell twocol">
                                     <label>Transport</label>
                                 </div>
                                 <div class="table-cell fourcol last">
-                                    <select name="Transport" tabindex="13">
+                                    <select name="Transport">
                                         <option value="1">None</option>
                                         <option value="2">Walking</option>
                                         <option value="3">Cycling</option>
@@ -189,30 +190,30 @@
                         <div class="table">
                             <div class="table-row">
                                 <div class="table-cell twocol">
-                                    <label>House/Flat number</label>
+                                    <label>Address 1</label>
                                 </div>
                                 <div class="table-cell fourcol">
-                                    <div class="input"><input type="text" name="HouseNumber" tabindex="14" value="@Model.Address().HouseNumber" /></div>
+                                    <div class="input"><input type="text" name="HouseNumber" value="@Model.Address().HouseNumber" /></div>
                                 </div>
                                 <div class="table-cell twocol">
-                                    <label>Street</label>
+                                    <label>Address 2</label>
                                 </div>
                                 <div class="table-cell fourcol last">
-                                    <div class="input"><input type="text" name="Street" tabindex="15" value="@Model.Address().Street" /></div>
+                                    <div class="input"><input type="text" name="Street" value="@Model.Address().Street" /></div>
                                 </div>
                             </div>
                             <div class="table-row">
                                 <div class="table-cell twocol">
-                                    <label>Area</label>
+                                    <label>Address 3</label>
                                 </div>
                                 <div class="table-cell fourcol">
-                                    <div class="input"><input type="text" name="Area" tabindex="16" value="@Model.Address().Area" /></div>
+                                    <div class="input"><input type="text" name="Area" value="@Model.Address().Area" /></div>
                                 </div>
                                 <div class="table-cell twocol">
                                     <label>Town/City</label>
                                 </div>
                                 <div class="table-cell fourcol last">
-                                    <div class="input"><input type="text" name="Town" tabindex="17" value="@Model.Address().Town" /></div>
+                                    <div class="input"><input type="text" name="Town" value="@Model.Address().Town" /></div>
                                 </div>
                             </div>
                             <div class="table-row">
@@ -220,20 +221,20 @@
                                     <label>County</label>
                                 </div>
                                 <div class="table-cell fourcol">
-                                    @Html.Raw(AddressManager.DisplayCountyDropDown(Model.Address().GetCountyList(), Model.Address().County, 18))
+                                    @Html.Raw(AddressProvider.DisplayCountyDropDown(Model.Address().GetCountyList(), Model.Address().County, 18))
                                 </div>
                                 <div class="table-cell twocol">
                                     <label>Post Code</label>
                                 </div>
                                 <div class="table-cell fourcol last">
-                                    <div class="input"><input type="text" name="PostCode" tabindex="19" value="@Model.Address().PostCode" /></div>
+                                    <div class="input"><input type="text" name="PostCode" value="@Model.Address().PostCode" /></div>
                                 </div>
                             </div>
                         </div>
                     </fieldset>
 
                     <div class="no-border">
-                        <button class="save primary" tabindex="20">Save</button><a href="/Candidates">back to candidate list</a>
+                        <button class="save primary">Save</button><a href="#" id="backlink">Go back</a>
                     </div>
 
                 </div>
@@ -340,7 +341,7 @@
                         </div>
 
                         <div class="no-border">
-                            <button id="btnAddWork" tabindex="20">Add more</button>
+                            <button id="btnAddWork">Add more</button>
                         </div>
 
                     </fieldset>
@@ -379,13 +380,13 @@
                         </div>
 
                         <div class="no-border">
-                            <button id="btnAddSkill" tabindex="20">Add more</button>
+                            <button id="btnAddSkill">Add more</button>
                         </div>
 
                     </fieldset>
 
                     <div class="no-border">
-                        <button id="btnSaveSalary" class="primary" tabindex="20">Save</button><a href="/Candidates">back to candidate list</a>
+                        <button id="btnSaveSalary" class="primary">Save</button><a href="#" id="backlink">Go back</a>
                     </div>
 
                 </div>
@@ -395,16 +396,18 @@
                     <div class="table">
                         <div class="table-row">
                             <div class="table-cell sixcol">
-                                <fieldset>
-                                    <legend>Interview notes</legend>
-
-                                    <input type="hidden" id="NoteId" value="0" />
-                                    <div class="input"><textarea id="NoteMessage" rows="10" tabindex="1"></textarea></div>
-
-                                </fieldset>
+                                <label>Interview notes</label>
+                            </div>
+                            <div class="table-cell sixcol last">
+                                <label>History</label>
+                            </div>
+                            <div class="table-cell sixcol">
+                                <input type="hidden" id="NoteId" value="0" />
+                                <textarea id="NoteMessage"></textarea>
 
                                 <div class="no-border">
-                                    <button id="btnSaveNote" class="primary" tabindex="2">Save</button><a href="/Candidates">back to candidate list</a>
+                                    <button id="btnSaveNote" class="primary">Save</button><a href="#" id="backlink">Go back</a>
+                                    <div class="page-navigation" id="interview-navigation"></div>
                                 </div>
 
                                 <ol id="interview-comments" class="notes">                                
@@ -419,17 +422,13 @@
                                 </ol>
 
                             </div>
-                            <div class="table-cell sixcol last">
-                                <fieldset>
-                                    <legend>History</legend>
-                                    
-                                    <input type="hidden" id="HistoryId" value="0"  />
-                                    <div class="input"><textarea id="HistoryMessage" rows="10" tabindex="3"></textarea></div>
-
-                                </fieldset>
+                            <div class="table-cell sixcol last">                                    
+                                <input type="hidden" id="HistoryId" value="0"  />
+                                <textarea id="HistoryMessage"></textarea>
 
                                 <div class="no-border">
-                                    <button id="btnSaveHistory" class="primary" tabindex="4">Save</button><a href="/Candidates">back to candidate list</a>
+                                    <button id="btnSaveHistory" class="primary">Save</button><a href="#" id="backlink">Go back</a>
+                                    <div class="page-navigation" id="history-navigation"></div>
                                 </div>
 
                                 <ol id="history-comments" class="notes">                             
@@ -540,9 +539,11 @@
 
 <script type="text/javascript">
     var pMessage = $('.message');
-    var pId = $('#Id', '#details'), pForename = $('input[name=Forename]', '#details'), pNiNumber = $('input[name=NiNumber]', '#details'), pSurname = $('input[name=Surname]', '#details'), pTelephone = $('input[name=Telephone]', '#details'), pMobile = $('input[name=Mobile]', '#details'), pEmail = $('input[name=Email]', '#details'), pDob = $('input[name=DOB]', '#details'), pActive = $('input[name=Inactive]', '#details'), pLastContactDate = $('input[name=LastContactDate]', '#details'), pCRB = $('input[name=CRB]', '#details'), pReferences = $('input[name=References]', '#details'), pInterviewed = $('input[name=Interviewed]', '#details'), pTransport = $('select[name=Transport]', '#details'); // Candidate form   
+    var pId = $('#Id', '#details'), pForename = $('input[name=Forename]', '#details'), pNiNumber = $('input[name=NiNumber]', '#details'), pSurname = $('input[name=Surname]', '#details'), pTelephone = $('input[name=Telephone]', '#details'), pTelephoneAlt = $('input[name=TelephoneAlt]', '#details'), pEmail = $('input[name=Email]', '#details'), pDob = $('input[name=DOB]', '#details'), pActive = $('input[name=Inactive]', '#details'), pLastContactDate = $('input[name=LastContactDate]', '#details'), pCRB = $('input[name=CRB]', '#details'), pReferences = $('input[name=References]', '#details'), pInterviewed = $('input[name=Interviewed]', '#details'), pTransport = $('select[name=Transport]', '#details'); // Candidate form   
     var pAddressId = $('input[name=AddressId]', '#details'), pHouse = $('input[name=HouseNumber]', '#details'), pStreet = $('input[name=Street]', '#details'), pArea = $('input[name=Area]', '#details'), pTown = $('input[name=Town]', '#details'), pCounty = $('select[name=County]', '#details'), pPostCode = $('input[name=PostCode]', '#details'); // Address form
     var pSalaryId = $('#Id', '#salary'), pSalaryFulltime = $('#FullTime', '#salary'), pSalaryParttime = $('#PartTime', '#salary'), pSalaryStudent = $('#Student', '#salary'), pSalaryTemp = $('#Temp', '#salary'), pSalaryNightShifts = $('#NightShifts', '#salary'), pSalaryDayShifts = $('#DayShifts', '#salary'), pSalaryOther = $('#Other', '#salary'), pSalaryTempWage = $('#TempWage', '#salary'), pSalaryPermWage = $('#PermWage', '#salary'), pSalaryTempRateId = $('#TempRateId', '#salary'), pSalaryPermRateId = $('#PermRateId', '#salary') // Salary form   
+    var pHistoryId = $('#HistoryId', '#history'), pHistoryMessage = $('#HistoryMessage', '#history'); // History form
+    var pNoteId = $('#NoteId', '#history'), pNoteMessage = $('#NoteMessage', '#history'); // Note form
 
     var settings = {
         selectedColumn: 2,
@@ -554,9 +555,9 @@
 
         /* SETUP
         ********************************************************************/
-        
+
         $('.tabs').tabs(); // jquery ui tabs
-        
+
         $('#current_age').text(getAge('@Model.DOB'));
         $('select[name=County]', '#details').val('@Model.Address().County');
         $('select[name=Transport]', '#details').val('@Model.TransportId');
@@ -607,11 +608,24 @@
                 $.event.trigger('AjaxButtonError');
             }
         });
-        
+
+        $.each($('input[name=PostCode]'), function () {
+            $(this).bind('keyup', function (e) {
+                if (e.which >= 97 && e.which <= 122) {
+                    var newKey = e.which - 32;
+                    // I have tried setting those
+                    e.keyCode = newKey;
+                    e.charCode = newKey;
+                }
+
+                $(this).val(($(this).val()).toUpperCase());
+            });
+        });
+
 
         /* WORK/SKILLS
         ********************************************************************/
-        
+
         $('#btnAddWork').click(function () {
             addExperience($('#work-row'), 2);
         });
@@ -629,22 +643,37 @@
 
         /* INTERVIEW NOTES/HISTORY
         ********************************************************************/
-        
+
+        paginateNotes()
+        paginateHistory()
+
         $('#btnSaveNote').click(function () {
             $.event.trigger('AjaxButtonClick', this);
 
-            saveNote($('#NoteId'), 1, $('#NoteMessage'));
+            if (validateNote()) {
+                saveNote(pNoteId, 1, pNoteMessage);
+
+                paginateNotes()
+            } else {
+                $.event.trigger('AjaxButtonError');
+            }
         });
 
         $('#btnSaveHistory').click(function () {
             $.event.trigger('AjaxButtonClick', this);
 
-            saveNote($('#HistoryId'), 2, $('#HistoryMessage'));
+            if (validateHistory()) {
+                saveNote(pHistoryId, 2, pHistoryMessage);
+
+                paginateHistory()
+            } else {
+                $.event.trigger('AjaxButtonError');
+            }
         });
 
         $('ol.notes > li').live('mouseenter', function () {
             var deleteLink = '<a href="#" class="delete-note" id="' + $(this).attr('id') + '">Delete</a>';
-            
+
             $(deleteLink).css({ position: 'absolute', top: '0', right: '5px' }).appendTo(this);
         }).live('mouseleave', function () {
             $('.delete-note').remove();
@@ -659,7 +688,7 @@
 
         /* DOCUMENTS
         ********************************************************************/
-        
+
         $('.delete button', '#existing-files').live('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
@@ -672,7 +701,7 @@
 
     /* DETAILS FUNCTIONS
     ********************************************************************/
-    
+
     function getAge(dateString) {
         var today = new Date();
         var birthDate = new Date(dateString);
@@ -704,23 +733,59 @@
 
     /* WORK/SKILL FUNCTIONS
     ********************************************************************/
-        
+
     function addExperience(row, typeId) {
         var item = '<div class="table-cell twocol"><label>Name</label></div><div class="table-cell fourcol last"><input type="hidden" id="ExperienceId" value="0" /><input type="hidden" id="ExperienceTypeId" value="' + typeId + '" /><div class="input"><input type="text" id="ExperienceName" /></div></div>';
         row.append(item);
     }
-    
+
+
+    /* INTERVIEW/HISTORY FUNCTIONS
+    ********************************************************************/
+
+    function validateHistory() {
+        if (pHistoryMessage.val().length > 0) {
+            pHistoryMessage.removeClass('ui-state-error');
+            pMessage.show().removeClass('ui-state-error').removeClass('ui-state-highlight').text('');
+            return true;
+        } else {
+            if (pHistoryMessage.val().length == 0) pHistoryMessage.addClass('ui-state-error');
+            pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('Please correct the errors below:');
+            return false;
+        }
+    };
+
+    function validateNote() {
+        if (pNoteMessage.val().length > 0) {
+            pNoteMessage.removeClass('ui-state-error');
+            pMessage.show().removeClass('ui-state-error').removeClass('ui-state-highlight').text('');
+            return true;
+        } else {
+            if (pNoteMessage.val().length == 0) pNoteMessage.addClass('ui-state-error');
+            pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('Please correct the errors below:');
+            return false;
+        }
+    };
+
+    function paginateHistory() {
+        $('#history-navigation').paginate({ collection: '#history-comments > li', recordsperpage: 10, container: '#history-comments > li' });
+    };
+
+    function paginateNotes() {
+        $('#interview-navigation').paginate({ collection: '#interview-comments > li', recordsperpage: 10, container: '#interview-comments > li' });
+    };
+
 
     /* AJAX FUNCTIONS
     ********************************************************************/
-        
+
     function deleteFile(Id) {
         $.ajax({
             url: '/Components/UploadHandler.ashx?id=' + Id + '&Method=DELETE',
             type: 'POST',
             success: function (o) {
                 $('#' + Id, '#existing-files').remove();
-                
+
                 pMessage.show().addClass('ui-state-highlight').removeClass('ui-state-error').text('Your file has been deleted.');
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -741,6 +806,9 @@
                 if (o.success) {
                     $('ol.notes').find('li#' + id).remove();
 
+                    paginateHistory();
+                    paginateNotes();
+
                     pMessage.show().addClass('ui-state-highlight').removeClass('ui-state-error').text('Your note has been deleted.');
                 }
             },
@@ -754,7 +822,7 @@
         $.ajax({
             url: '@Url.Action("Save", "Candidates")',
             type: 'POST',
-            data: '{ "Id": ' + pId.val() + ', "Forename": "' + pForename.val() + '", "Surname": "' + pSurname.val() + '", "Telephone": "' + pTelephone.val() + '", "Mobile": "' + pMobile.val() + '", "Email": "' + pEmail.val() + '", "Active": "' + !pActive.is(':checked') + '", "DOB": "' + pDob.val() + '", "CRB": "' + pCRB.is(':checked') + '", "References": "' + pReferences.is(':checked') + '", "Interviewed": "' + pInterviewed.is(':checked') + '", "LastContactDate": "' + pLastContactDate.val() + '", "NiNumber": "' + pNiNumber.val() + '", "TransportId": "' + pTransport.val() + '" }',
+            data: '{ "Id": ' + pId.val() + ', "Forename": "' + pForename.val() + '", "Surname": "' + pSurname.val() + '", "Telephone": "' + pTelephone.val() + '", "Mobile": "' + pTelephoneAlt.val() + '", "Email": "' + pEmail.val() + '", "Active": "' + !pActive.is(':checked') + '", "DOB": "' + pDob.val() + '", "CRB": "' + pCRB.is(':checked') + '", "References": "' + pReferences.is(':checked') + '", "Interviewed": "' + pInterviewed.is(':checked') + '", "LastContactDate": "' + pLastContactDate.val() + '", "NiNumber": "' + pNiNumber.val() + '", "TransportId": "' + pTransport.val() + '" }',
             dataType: 'text json',
             contentType: 'application/json; charset=utf-8',
             traditional: true,

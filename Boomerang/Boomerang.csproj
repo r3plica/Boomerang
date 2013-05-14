@@ -285,7 +285,6 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Content\Site.css" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -333,9 +332,9 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj">
+    <ProjectReference Include="..\Boomerang.Web\Boomerang.Web.csproj">
       <Project>{81c01f8f-0761-4ee4-8269-9844e4e4f6f0}</Project>
-      <Name>Core</Name>
+      <Name>Boomerang.Web</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

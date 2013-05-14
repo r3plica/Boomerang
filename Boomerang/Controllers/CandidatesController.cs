@@ -1,5 +1,5 @@
-﻿using Core;
-using Core.Components;
+﻿using Boomerang.Web;
+using Boomerang.Web.Providers;
 using System;
 using System.Collections.ObjectModel;
 using System.Web.Mvc;
@@ -15,7 +15,7 @@ namespace Boomerang.Controllers
         [Authorize(Roles = "Managers")]
         public ActionResult Index()
         {
-            return View(CandidateManager.CurrentCandidates());
+            return View(CandidateProvider.CurrentCandidates());
         }
 
         //
@@ -34,7 +34,7 @@ namespace Boomerang.Controllers
         public ActionResult Edit(int Id)
         {
             Candidate Candidate = new Candidate(Id);
-            Collection<GenericType> Rates = GenericManager.GetSalaryRates();
+            Collection<GenericType> Rates = GenericProvider.GetSalaryRates();
 
             SelectList TempRate = (Candidate.SalaryDetails().TempRateId > 0) ? new SelectList(Rates, "Id", "Name", Candidate.SalaryDetails().TempRateId) : new SelectList(Rates, "Id", "Name", 1);
             SelectList PermRate = (Candidate.SalaryDetails().PermRateId > 0) ? new SelectList(Rates, "Id", "Name", Candidate.SalaryDetails().PermRateId) : new SelectList(Rates, "Id", "Name", 1);

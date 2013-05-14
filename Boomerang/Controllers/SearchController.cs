@@ -1,4 +1,4 @@
-﻿using Core;
+﻿using Boomerang.Web;
 using System.Web.Mvc;
 
 namespace Boomerang.Controllers

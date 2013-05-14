@@ -9,6 +9,11 @@ createButtons();
 /* BUTTONS 
 ***************************************************************************************************************/
 
+$('#backlink').click(function (e) {
+    e.preventDefault();
+    history.back(1);
+});
+
 $('button, .fileinput-button').bind('mouseenter', function () {
     $(this).addClass('ajax-hover');
 }).bind('mouseleave', function () {

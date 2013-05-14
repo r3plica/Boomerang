@@ -1,5 +1,5 @@
-﻿using Core;
-using Core.Components;
+﻿using Boomerang.Web;
+using Boomerang.Web.Providers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +29,7 @@ namespace Boomerang.Models
                 if (_CurrentUser == null)
                     return null;
 
-                return ClientManager.UpcomingContact().Where(c => c.UserId == _CurrentUser.ProviderUserKey.ToString());
+                return ClientProvider.UpcomingContact().Where(c => c.UserId == _CurrentUser.ProviderUserKey.ToString());
             } 
         }
         public BasicSearchModel BasicSearch { get; set; }

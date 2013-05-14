@@ -1,6 +1,6 @@
 ﻿using Boomerang.Models;
-using Core;
-using Core.Components;
+using Boomerang.Web;
+using Boomerang.Web.Providers;
 using System;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -15,7 +15,7 @@ namespace Boomerang.Controllers
 
         public ActionResult Index()
         {
-            return View(ProfileManager.AllProfiles());
+            return View(ProfileProvider.AllProfiles());
         }
 
         //
@@ -78,13 +78,13 @@ namespace Boomerang.Controllers
         {
             if (ModelState.IsValid)
             {
-                MembershipUser User = Membership.GetUser(new Guid(model.UserId));
-                Profile Profile = new Profile(User);
+                MembershipUser user = Membership.GetUser(new Guid(model.UserId));
+                Profile profile = new Profile(user);
 
                 bool saveProfileSucceeded;
                 try
                 {
-                    saveProfileSucceeded = Profile.Save();                 
+                    saveProfileSucceeded = profile.Save();                 
                 }
                 catch (Exception)
                 {
@@ -92,11 +92,11 @@ namespace Boomerang.Controllers
                 }
 
                 bool changePasswordSucceeded = true;
-                if (model.OldPassword != null && model.NewPassword != null)
+                if (string.IsNullOrEmpty(model.Password) && model.Password == model.ConfirmPassword)
                 {
                     try
                     {
-                        changePasswordSucceeded = Profile.ChangePassword(model.OldPassword, model.NewPassword);
+                        changePasswordSucceeded = profile.ChangePassword(user.ResetPassword(), model.Password);
                     }
                     catch (Exception)
                     {
@@ -106,15 +106,15 @@ namespace Boomerang.Controllers
 
                 if (changePasswordSucceeded && saveProfileSucceeded)
                 {
-                    if (User.ProviderUserKey.ToString() == Profile.ProviderUserKey.ToString())
+                    if (user.ProviderUserKey.ToString() == Membership.GetUser(User.Identity.Name).ProviderUserKey.ToString())
                         FormsAuthentication.SetAuthCookie(model.UserName, true);
 
-                    return View(model);
+                    return RedirectToAction("Index");
                 }
                 else
                 {
                     if (!changePasswordSucceeded)
-                        ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
+                        ModelState.AddModelError("", "The passwords did not match.");
 
                     if (!saveProfileSucceeded)
                         ModelState.AddModelError("", "Failed to save the user.");
@@ -164,6 +164,21 @@ namespace Boomerang.Controllers
             {
                 MembershipUser CurrentUser = Membership.GetUser(new Guid(Id));
                 CurrentUser.UnlockUser();
+
+                return new JsonResult { Data = new { success = true } }; // Return nothing as there are no errors
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult { Data = new { success = false, error = ex.Message } };
+            }
+        }
+
+        public JsonResult Delete(string Id)
+        {
+            try
+            {
+                MembershipUser CurrentUser = Membership.GetUser(new Guid(Id));
+                Membership.DeleteUser(CurrentUser.UserName);
 
                 return new JsonResult { Data = new { success = true } }; // Return nothing as there are no errors
             }

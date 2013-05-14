@@ -52,7 +52,7 @@
                         </div>
 
                         <div class="table-cell fourcol last">
-                            <div class="radio">@Html.CheckBoxFor(m => m.Client.ShowInactive)@Html.LabelFor(m => m.Client.ShowInactive)</div>
+                            <div class="radio">@Html.CheckBoxFor(m => m.Client.ShowInactive, new { @checked = "checked" })@Html.LabelFor(m => m.Client.ShowInactive)</div>
                         </div>
                     </div>
 
@@ -64,14 +64,6 @@
                         <div class="table-cell fourcol"> 
                             <div class="input">@Html.TextBoxFor(m => m.Client.SearchAddress, new { placeholder = "Eg: Huddersfield road" })</div>
                         </div>
-
-                        <div class="table-cell twocol">
-                            <div class="radio">@Html.CheckBoxFor(m => m.Client.ShowDelivery, new { @checked = "checked" })@Html.LabelFor(m => m.Client.ShowDelivery)</div>
-                        </div>
-
-                        <div class="table-cell fourcol last">
-                            <div class="radio">@Html.CheckBoxFor(m => m.Client.ShowInvoice, new { @checked = "checked" })@Html.LabelFor(m => m.Client.ShowInvoice)</div>
-                        </div>
                     </div>
                     
                     <div class="table-row">
@@ -82,26 +74,22 @@
                         <div class="table-cell fourcol"> 
                             <div class="input">@Html.TextBoxFor(m => m.Client.SearchContact, new { placeholder = "Eg: User@gmail.com" })</div>
                         </div>
-
-                        <div class="table-cell sixcol last">
-                            <div class="radio">@Html.CheckBoxFor(m => m.Client.ShowPrimary, new { @checked = "checked" })@Html.LabelFor(m => m.Client.ShowPrimary)</div>
-                        </div>
                     </div>
                     
                     <div class="table-row">
                         <div class="table-cell twocol">
-                            @Html.LabelFor(m => m.Client.SearchHistory)
+                            @Html.LabelFor(m => m.Client.SearchSector)
                         </div>
 
                         <div class="table-cell tencol last"> 
-                            <div class="input">@Html.TextBoxFor(m => m.Client.SearchHistory, new { placeholder = "Eg: place was filled" })</div>
+                            <div class="input">@Html.TextBoxFor(m => m.Client.SearchSector, new { placeholder = "Eg: Engineering" })</div>
                         </div>
                     </div>
 
                     <div class="table-row">
                         <div class="table-cell twelvecol last"> 
                             <button class="button primary">Search</button>
-                            <a href="/">back to home</a>
+                            <a href="#" id="backlink">Go back</a>
                         </div>
                     </div>
                 </div>                      
@@ -130,7 +118,7 @@
                         </div>
 
                         <div class="table-cell fourcol last">
-                            <div class="radio">@Html.CheckBoxFor(m => m.Candidate.ShowInactive)@Html.LabelFor(m => m.Candidate.ShowInactive)</div>
+                            <div class="radio">@Html.CheckBoxFor(m => m.Candidate.ShowInactive, new { @checked = "checked" })@Html.LabelFor(m => m.Candidate.ShowInactive)</div>
                         </div>
                     </div>
 
@@ -139,35 +127,91 @@
                             @Html.LabelFor(m => m.Candidate.SearchAddress)
                         </div>
 
-                        <div class="table-cell tencol last"> 
+                        <div class="table-cell fourcol"> 
                             <div class="input">@Html.TextBoxFor(m => m.Candidate.SearchAddress, new { placeholder = "Eg: Huddersfield road" })</div>
                         </div>
+
+                        <div class="table-cell twocol">
+                            <div class="radio">@Html.CheckBoxFor(m => m.Candidate.ShowCrb)@Html.LabelFor(m => m.Candidate.ShowCrb)</div>
+                        </div>
+
+                        <div class="table-cell fourcol last">
+                            <div class="radio">@Html.CheckBoxFor(m => m.Candidate.HideCrb)@Html.LabelFor(m => m.Candidate.HideCrb)</div>
+                        </div>
                     </div>
 
                     <div class="table-row">
                         <div class="table-cell twocol">
-                            @Html.LabelFor(m => m.Candidate.SearchExperience)
+                            @Html.LabelFor(m => m.Candidate.SearchSkills)
                         </div>
 
-                        <div class="table-cell tencol last"> 
-                            <div class="input">@Html.TextBoxFor(m => m.Candidate.SearchExperience, new { placeholder = "Eg: NVQ Electronics" })</div>
+                        <div class="table-cell fourcol"> 
+                            <div class="input">@Html.TextBoxFor(m => m.Candidate.SearchSkills, new { placeholder = "Eg: NVQ Electronics" })</div>
+                        </div>
+
+                        <div class="table-cell twocol">
+                            <div class="radio">@Html.CheckBoxFor(m => m.Candidate.Interviewed)@Html.LabelFor(m => m.Candidate.Interviewed)</div>
+                        </div>
+
+                        <div class="table-cell fourcol last">
+                            <div class="radio">@Html.CheckBoxFor(m => m.Candidate.NotInterviewed)@Html.LabelFor(m => m.Candidate.NotInterviewed)</div>
                         </div>
                     </div>
-                    
+
                     <div class="table-row">
                         <div class="table-cell twocol">
-                            @Html.LabelFor(m => m.Candidate.SearchNotes)
+                            @Html.LabelFor(m => m.Candidate.SearchWork)
                         </div>
 
-                        <div class="table-cell tencol last"> 
-                            <div class="input">@Html.TextBoxFor(m => m.Candidate.SearchNotes, new { placeholder = "Eg: well dressed" })</div>
+                        <div class="table-cell fourcol"> 
+                            <div class="input">@Html.TextBoxFor(m => m.Candidate.SearchWork, new { placeholder = "Eg: Engineer" })</div>
+                        </div>
+
+                        <div class="table-cell twocol">
+                            <div class="radio">@Html.CheckBoxFor(m => m.Candidate.References)@Html.LabelFor(m => m.Candidate.References)</div>
+                        </div>
+
+                        <div class="table-cell fourcol last">
+                            <div class="radio">@Html.CheckBoxFor(m => m.Candidate.NoReferences)@Html.LabelFor(m => m.Candidate.NoReferences)</div>
+                        </div>
+                    </div>
+
+                    <div class="table-row">
+                        <div class="table-cell twocol">
+                            <div class="radio">@Html.CheckBoxFor(m => m.Candidate.FullTime, new { @checked = "checked" })@Html.LabelFor(m => m.Candidate.FullTime)</div>
+                        </div>
+
+                        <div class="table-cell fourcol"> 
+                            <div class="radio">@Html.CheckBoxFor(m => m.Candidate.PartTime)@Html.LabelFor(m => m.Candidate.PartTime)</div>
+                        </div>
+
+                        <div class="table-cell twocol">
+                            <div class="radio">@Html.CheckBoxFor(m => m.Candidate.Student)@Html.LabelFor(m => m.Candidate.Student)</div>
+                        </div>
+
+                        <div class="table-cell fourcol last">
+                            <div class="radio">@Html.CheckBoxFor(m => m.Candidate.Temp)@Html.LabelFor(m => m.Candidate.Temp)</div>
+                        </div>
+                    </div>
+
+                    <div class="table-row" style="margin-bottom: 10px;">
+                        <div class="table-cell twocol">
+                            <div class="radio">@Html.CheckBoxFor(m => m.Candidate.NightShifts)@Html.LabelFor(m => m.Candidate.NightShifts)</div>
+                        </div>
+
+                        <div class="table-cell fourcol"> 
+                            <div class="radio">@Html.CheckBoxFor(m => m.Candidate.DayShifts)@Html.LabelFor(m => m.Candidate.DayShifts)</div>
+                        </div>
+
+                        <div class="table-cell sixcol last">
+                            <div class="radio">@Html.CheckBoxFor(m => m.Candidate.Other)@Html.LabelFor(m => m.Candidate.Other)</div>
                         </div>
                     </div>
 
                     <div class="table-row">
                         <div class="table-cell twelvecol last"> 
                             <button class="button primary">Search</button>
-                            <a href="/">back to home</a>
+                            <a href="#" id="backlink">Go back</a>
                         </div>
                     </div>
                 </div>  

@@ -1,5 +1,6 @@
 ﻿@using System.Collections.ObjectModel
-@using Core
+@using Boomerang.Web
+@using Boomerang.Web.Helpers
 @using Boomerang.Models;
 @model HomeModel
 
@@ -39,7 +40,7 @@
 
                         <div class="table-cell fourcol last">
                             <div class="radio">@Html.CheckBoxFor(m => m.BasicSearch.ShowActive, new {@checked="checked"})@Html.LabelFor(m => m.BasicSearch.ShowActive)</div>
-                            <div class="radio">@Html.CheckBoxFor(m => m.BasicSearch.ShowInactive)@Html.LabelFor(m => m.BasicSearch.ShowInactive)</div>
+                            <div class="radio">@Html.CheckBoxFor(m => m.BasicSearch.ShowInactive, new { @checked = "checked" })@Html.LabelFor(m => m.BasicSearch.ShowInactive)</div>
                         </div>
                     </div>
 
@@ -82,9 +83,9 @@
 					            <td>@c.PrimaryContact().CallbackDate</td>
 					            <td><a href="/Clients/Edit/@c.Id">@c.Name</a></td>
 					            <td>@c.PrimaryContact().Forename @c.PrimaryContact().Surname</td>
-					            <td>@c.PrimaryContact().Email</td>
+					            <td><a href="mailto:@c.PrimaryContact().Email" title="@c.PrimaryContact().Email">@c.PrimaryContact().Email.CutToSize(15)</a></td>
 					            <td>@c.PrimaryContact().Telephone</td>
-					            <td>@c.PrimaryContact().Mobile</td>
+					            <td>@c.PrimaryContact().TelephoneAlt</td>
 					            <td class="status">
                                     @if (c.Active) {
                                         <input type="checkbox" checked="checked" disabled="disabled" />

@@ -3,7 +3,7 @@
     ignoreColumns: [0],
     direction: 'asc',
     onComplete: function () {
-        $('.page_navigation').paginate({ collection: 'tbody > tr', recordsperpage: 20, container: 'tbody > tr' });
+        $('#page-navigation').paginate({ collection: 'tbody > tr', recordsperpage: 20, container: 'tbody > tr' });
     }
 };
 
@@ -47,8 +47,12 @@ $(function () {
         deactivate($('tbody tr.selected', '.clients').attr('id'));
     });
 
-    $('#show-active-only').change(function () {
-        filterResults($(this).is(":checked"));
+    $('#show-active').change(function () {
+        displayActive($(this).is(":checked"));
+    });
+
+    $('#show-inactive').change(function () {
+        displayInactive($(this).is(":checked"));
     });
 
     $('#export').click(function () {
@@ -77,19 +81,41 @@ $(function () {
     });
 });
 
-function filterResults(showOnlyActive) {
+var inactiveRows = [];
+function displayActive(showOnlyActive) {
     if (showOnlyActive) {
-        rows = [];
+        inactiveRows = [];
 
         $.each($("tbody > tr", ".clients"), function (i, item) {
             var checkbox = $(this).find('.status > input');
             if (!checkbox.is(":checked")) {
-                rows.push(item);
+                inactiveRows.push(item);
                 $(this).remove(); // remove from our table
             }
         });
     } else {
-        $.each(rows, function (i, item) {
+        $.each(inactiveRows, function (i, item) {
+            $('.clients').append(item);
+        });
+    }
+
+    $('.clients').sortTable(settings);
+}
+
+var activeRows = [];
+function displayInactive(showOnlyInactive) {
+    if (showOnlyInactive) {
+        activeRows = [];
+
+        $.each($("tbody > tr", ".clients"), function (i, item) {
+            var checkbox = $(this).find('.status > input');
+            if (checkbox.is(":checked")) {
+                activeRows.push(item);
+                $(this).remove(); // remove from our table
+            }
+        });
+    } else {
+        $.each(activeRows, function (i, item) {
             $('.clients').append(item);
         });
     }

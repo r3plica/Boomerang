@@ -34,20 +34,20 @@
                         <div class="tabel-cell sixcol">
                     
                             @Html.LabelFor(m => m.UserName)
-                            <div class="input">@Html.TextBoxFor(m => m.UserName, new { tabindex = 1 })</div>
+                            <div class="input">@Html.TextBoxFor(m => m.UserName)</div>
                     
                             @Html.LabelFor(m => m.Email)
-                            <div class="input">@Html.TextBoxFor(m => m.Email, new { tabindex = 2 })</div>
+                            <div class="input">@Html.TextBoxFor(m => m.Email)</div>
 
                         </div>
 
                         <div class="tabel-cell sixcol last">
                             
                             @Html.LabelFor(m => m.Password)
-                            <div class="input">@Html.PasswordFor(m => m.Password, new { tabindex = 3 })</div>
+                            <div class="input">@Html.PasswordFor(m => m.Password)</div>
                             
                             @Html.LabelFor(m => m.ConfirmPassword)
-                            <div class="input">@Html.PasswordFor(m => m.ConfirmPassword, new { tabindex = 4 })</div>
+                            <div class="input">@Html.PasswordFor(m => m.ConfirmPassword)</div>
 
                         </div>
 
@@ -56,7 +56,7 @@
                 </div>
 
                 <div class="no-border">
-                    <button class="save primary" tabindex="5">Save</button><a href="/Account">back to the user list</a>
+                    <button class="save primary">Save</button><a href="#" id="backlink">Go back</a>
                 </div>
             }
         </div>        

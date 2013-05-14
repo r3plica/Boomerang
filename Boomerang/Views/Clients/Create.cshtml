@@ -1,7 +1,9 @@
-﻿@using Core;
+﻿@using Boomerang.Web;
 
 @{
     ViewBag.Title = "Create a client";
+    var users = Membership.GetAllUsers();
+    var currentUser = User.Identity.Name;
 }
 
 @section navigation
@@ -35,15 +37,49 @@
                     <fieldset>
                         <legend>Client details</legend>
 
-                        <input type="hidden" id="UserId" value="@Membership.GetUser(User.Identity.Name).ProviderUserKey.ToString()" />
-
                         <div class="table">
                             <div class="table-row">
                                 <div class="table-cell twocol">
                                     <label>Name</label>
                                 </div>
+                                <div class="table-cell fourcol last">
+                                    <div class="input"><input type="text" name="Name" /></div>
+                                </div>
+                                <div class="table-cell twocol">
+                                    <label>Assign to</label>
+                                </div>
+                                <div class="table-cell fourcol last">
+                                    <div class="input">
+                                        <select id="UserId" name="UserId">
+                                            @foreach (MembershipUser user in users)
+                                            {
+                                                if (user.UserName == currentUser)
+                                                {
+                                                    <option selected="selected" value="@user.ProviderUserKey.ToString()">@user.UserName</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@user.ProviderUserKey.ToString()">@user.UserName</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell twocol">
+                                    <label>Website</label>
+                                </div>
                                 <div class="table-cell tencol last">
-                                    <div class="input"><input type="text" name="Name" tabindex="1" /></div>
+                                    <div class="input"><input type="text" name="Website" id="Website" /></div>
+                                </div>
+                            </div>
+                            <div class="table-row">
+                                <div class="table-cell twelvecol last">
+                                    <label>Bio</label>
+                                </div>
+                                <div class="table-cell twelvecol last">
+                                    <textarea name="Bio" id="Bio"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -55,7 +91,7 @@
                     </div>
 
                     <div class="no-border">
-                       <button class="primary saveEdit" tabindex="13">Save and edit</button><button class="save" tabindex="14">Save</button><a href="/clients">back to client list</a>
+                       <button class="primary saveEdit">Save and edit</button><button class="save">Save</button><a href="#" id="backlink">Go back</a>
                     </div>
                 </div>
             </div>
@@ -67,7 +103,7 @@
 
 <script type="text/javascript">
     var pMessage = $('.message');
-    var pName = $('input[name=Name]', '#client'), pSector = $('input[name=Sector]', '#client'), pUserId = $('#UserId', '#client'); // Client form   
+    var pName = $('input[name=Name]', '#client'), pWebsite = $('#Website', '#client'), pBio = $('#Bio', '#client'), pUserId = $('#UserId', '#client'); // Client form   
     
     $(function () {
         $('.tabs').tabs({ disabled: [1, 2, 3] }); // jquery ui tabs
@@ -75,19 +111,6 @@
             changeMonth: true,
             changeYear: true,
             dateFormat: 'dd/mm/yy'
-        });
-
-        $('#invoice_checkbox').change(function () {
-            var copyDelivery = $(this).is(':checked');
-
-            if (copyDelivery) {
-                $('input[name=HouseNumber]', '#invoice').val($('input[name=HouseNumber]', '#address').val());
-                $('input[name=Street]', '#invoice').val($('input[name=Street]', '#address').val());
-                $('input[name=Area]', '#invoice').val($('input[name=Area]', '#address').val());
-                $('input[name=Town]', '#invoice').val($('input[name=Town]', '#address').val());
-                $('select[name=County]', '#invoice').val($('select[name=County]', '#address').val());
-                $('input[name=PostCode]', '#invoice').val($('input[name=PostCode]', '#address').val());
-            }
         });
 
         $('.saveEdit', '#client').click(function () {
@@ -122,6 +145,19 @@
             
             $('#' + dataId).parent().parent().remove();
         });
+
+        $.each($('input[name=PostCode]'), function () {
+            $(this).bind('keyup', function (e) {
+                if (e.which >= 97 && e.which <= 122) {
+                    var newKey = e.which - 32;
+                    // I have tried setting those
+                    e.keyCode = newKey;
+                    e.charCode = newKey;
+                }
+
+                $(this).val(($(this).val()).toUpperCase());
+            });
+        });
     });
 
     function validateClient() {
@@ -137,23 +173,7 @@
     };
 
     function validateAddress(target) {
-        //var pAddressId = $('input[name=AddressId]', target), pTypeId = $('input[name=TypeId]', target), pHouse = $('input[name=HouseNumber]', target), pStreet = $('input[name=Street]', target), pTown = $('input[name=Town]', target), pPostCode = $('input[name=PostCode]', target), pCounty = $('select[name=County]', target); // Address form
-
-        //if (pHouse.val().length > 0 && pStreet.val().length > 0 && pPostCode.val().length > 0 && pCounty.val() != 0) {
-        //    pHouse.removeClass('ui-state-error');
-        //    pStreet.removeClass('ui-state-error');
-        //    pPostCode.removeClass('ui-state-error');
-        //    pCounty.removeClass('ui-state-error');
-        //    pMessage.show().removeClass('ui-state-error').removeClass('ui-state-highlight').text('');
-            return true;
-        //} else {
-        //    if (pHouse.val().length == 0) pHouse.addClass('ui-state-error');
-        //    if (pStreet.val().length == 0) pStreet.addClass('ui-state-error');
-        //    if (pPostCode.val().length == 0) pPostCode.addClass('ui-state-error');
-        //    if (pCounty.val() == 0) pCounty.addClass('ui-state-error');
-        //    pMessage.show().addClass('ui-state-error').removeClass('ui-state-highlight').text('Please correct the errors below:');
-        //    return false;
-        //}
+        return true;
     };
 
     function saveAddresses(clientId) {       
@@ -172,6 +192,10 @@
             $(this).val('');
         });
 
+        $.each($('textarea'), function () {
+            $(this).val('');
+        });
+
         $.each($('select'), function () {
             $(this).val('0');
         });
@@ -181,7 +205,7 @@
         $.ajax({
             url: '@Url.Action("Save", "Clients")',
             type: 'POST',
-            data: '{ "Id": 0, "Name": "' + pName.val() + '", "Sector": "' + pSector.val() + '", "UserId": "' + pUserId.val() + '" }',
+            data: '{ "Id": 0, "Name": "' + pName.val() + '", "Website": "' + pWebsite.val() + '", "Bio": "' + pBio.val() + '", "UserId": "' + pUserId.val() + '" }',
             dataType: 'text json',
             contentType: 'application/json; charset=utf-8',
             traditional: true,
@@ -237,14 +261,14 @@
     };
 
     function saveAddress(target, clientId) {
-        var pAddressId = $(target).attr('id'), pTypeId = $('input[name=TypeId]', target), pHouse = $('input[name=HouseNumber]', target), pStreet = $('input[name=Street]', target), pArea = $('input[name=Area]', target), pTown = $('input[name=Town]', target), pPostCode = $('input[name=PostCode]', target), pCounty = $('select[name=County]', target); // Address form
+        var pAddressId = $(target).attr('id'), pTypeId = $('input[name=TypeId]', target), pHouse = $('input[name=HouseNumber]', target), pStreet = $('input[name=Street]', target), pArea = $('input[name=Area]', target), pTown = $('input[name=Town]', target), pPostCode = $('input[name=PostCode]', target), pCounty = $('select[name=County]', target), pInvoice = $('#Invoice', target); // Address form
         var bSuccess = false;
 
         $.ajax({
             async: false,
             url: '@Url.Action("SaveAddress", "Common")',
             type: 'POST',
-            data: '{ "Id": ' + pAddressId + ', "ClientId": ' + clientId + ', "HouseNumber": "' + pHouse.val() + '", "Street": "' + pStreet.val() + '", "Area": "' + pArea.val() + '", "Town": "' + pTown.val() + '", "County": "' + pCounty.val() + '", "PostCode": "' + pPostCode.val() + '"  }',
+            data: '{ "Id": ' + pAddressId + ', "ClientId": ' + clientId + ', "HouseNumber": "' + pHouse.val() + '", "Street": "' + pStreet.val() + '", "Area": "' + pArea.val() + '", "Town": "' + pTown.val() + '", "County": "' + pCounty.val() + '", "PostCode": "' + pPostCode.val() + '", "Invoice": ' + pInvoice.is(':checked') + ' }',
             dataType: 'text json',
             contentType: 'application/json; charset=utf-8',
             traditional: true,

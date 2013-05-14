@@ -36,9 +36,9 @@ table .button span.text { width: auto; }
 .pagination { display: block; background-color: #CC0000; overflow: hidden; border-top: 1px solid #d1a3a3; border-left: 1px solid #d1a3a3; border-right: 1px solid #d1a3a3; }
 .pagination #filter-close { position: absolute; right: 5px; top: 5px; width: 16px; height: 16px; cursor: pointer; background-color: red; }
 
-.pagination .page_navigation { float: right; }
-.pagination .page_navigation .button { float: left; padding: 1px 8px 6px; cursor: pointer; color: white; }
-.pagination .page_navigation .active { background-color: white; color: #CC0000; }
+.page-navigation { float: right; display: block; background-color: #CC0000; margin: 5px 0; padding: 0 !important; }
+.page-navigation .button { float: left; padding: 1px 8px 6px; cursor: pointer; color: white; }
+.page-navigation .active { background-color: white; color: #CC0000; }
 
 
 /* JQUERY UI
@@ -275,6 +275,7 @@ form button, .form button { background-color: #f7eced; border: 1px solid #d5a8a8
 form button.primary, .form button.primary { background-color: #CC0000; border: 1px solid #CC0000; color: #fff; }
 form .fileinput-button { background-color: #CC0000; border: 1px solid #CC0000; color: #fff; height:34px; margin-right: 10px; padding: 0px 10px; cursor: pointer; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; }
 form .fileinput-button span { margin: 9px 0px 0px 0px; display: block; }
+textarea { width: 100%; height: 100px; margin-bottom: 10px; }
 
 .ie7 form .button, .ie7 .form .button { padding: 0 2px; }
 
@@ -292,7 +293,7 @@ form .fileinput-button span { margin: 9px 0px 0px 0px; display: block; }
 /* NOTES
 ****************************************************************************************************/
 
-.notes { list-style: none; padding: 0px; margin-top: 20px; width: 100%; border-top: 1px solid #666; }
+.notes { list-style: none; padding: 0px; margin-top: 30px; width: 100%; border-top: 1px solid #666; }
 .notes li { margin: 10px 0px 0px; padding-bottom: 10px; border-bottom: 1px solid #666; position: relative; }
 .notes li p span.small { font-size: 0.8em; }
 .notes li p.note { margin-bottom: 0; }

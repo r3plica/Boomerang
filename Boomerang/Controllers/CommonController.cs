@@ -1,5 +1,5 @@
-﻿using Core;
-using Core.Components;
+﻿using Boomerang.Web;
+using Boomerang.Web.Providers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,7 +60,7 @@ namespace Boomerang.Controllers
         {
             try
             {
-                return new JsonResult { Data = new { success = true, address = AddressManager.AddAddressForDisplay(newRow) } };
+                return new JsonResult { Data = new { success = true, address = AddressProvider.AddAddressForDisplay(newRow) } };
             }
             catch (Exception ex)
             {

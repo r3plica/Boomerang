@@ -1,7 +1,7 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{81C01F8F-0761-4EE4-8269-9844E4E4F6F0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boomerang.Web", "Boomerang.Web\Boomerang.Web.csproj", "{81C01F8F-0761-4EE4-8269-9844E4E4F6F0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boomerang", "Boomerang\Boomerang.csproj", "{3FC6678F-60D4-423C-B1F0-AF1FB7E62080}"
 EndProject

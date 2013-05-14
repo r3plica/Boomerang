@@ -1,5 +1,5 @@
-﻿using Core;
-using Core.Components;
+﻿using Boomerang.Web;
+using Boomerang.Web.Providers;
 using System;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -15,7 +15,7 @@ namespace Boomerang.Controllers
 
         public ActionResult Index()
         {
-            return View(ClientManager.CurrentClients());
+            return View(ClientProvider.CurrentClients());
         }
 
         //
@@ -33,7 +33,7 @@ namespace Boomerang.Controllers
         {
             Client Client = new Client(Id);
 
-            ViewData["Managers"] = new SelectList(ProfileManager.AllProfiles().Where(p => p.RoleName == "Managers").ToList(), "ProviderUserKey", "UserName", Client.UserId);
+            ViewData["Managers"] = new SelectList(ProfileProvider.AllProfiles().Where(p => p.RoleName == "Managers").ToList(), "ProviderUserKey", "UserName", Client.UserId);
 
             return View(Client);
         }
@@ -121,6 +121,20 @@ namespace Boomerang.Controllers
                 Contact.Save();
 
                 return new JsonResult { Data = new { success = true, id = Contact.Id } }; // Return nothing as there are no errors
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult { Data = new { success = false, error = ex.Message } };
+            }
+        }
+
+        public JsonResult DeleteContact(int Id)
+        {
+            try
+            {
+                new Contact().Delete(Id);
+
+                return new JsonResult { Data = new { success = true } }; // Return nothing as there are no errors
             }
             catch (Exception ex)
             {

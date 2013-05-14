@@ -1,5 +1,5 @@
-﻿@using Core;
-@using Core.Helpers
+﻿@using Boomerang.Web;
+@using Boomerang.Web.Helpers
 @model IEnumerable<Client>
 
 @{
@@ -32,7 +32,7 @@
 
                 <p class="message"></p>
                                   
-                <div class="pagination"><input type="text" id="Filter" placeholder="Eg: Filter" /><div class="page_navigation"></div></div>
+                <div class="pagination"><input type="text" id="Filter" placeholder="Eg: Filter" /><div class="page-navigation" id="page-navigation"></div></div>
 			    <table class="default-table clients" id="clients"> 
                     <thead>            
 				        <tr>
@@ -55,8 +55,7 @@
 					            <td><a href="/Clients/Edit/@c.Id">@c.Name</a></td>
 					            <td><a href="mailto:@c.PrimaryContact().Email" title="@c.PrimaryContact().Email">@c.PrimaryContact().Email.CutToSize(15)</a></td>
 					            <td>@c.PrimaryContact().Telephone</td>
-					            <td>@c.PrimaryContact().Mobile</td>
-					            <td>@c.PrimaryContact().Fax</td>
+					            <td>@c.PrimaryContact().TelephoneAlt</td>
 					            <td>
                                     @if (c.Active)
                                     {
@@ -98,6 +97,9 @@ else
         <li><a href="#" class="button" id="deactivate">Deactivate</a></li>
         <li><a href="#" class="button" id="export" data-id="clients">Export</a></li>
     </ul>
+    
+    <div class="radio"><input type="checkbox" id="show-active" /> <label for="show-active">Show active</label></div>
+    <div class="radio"><input type="checkbox" id="show-inactive" /> <label for="show-inactive">Show inactive</label></div>
 </div>
 
 <script type="text/javascript" src="/Scripts/custom/jquery.table-to-csv.js"></script>
