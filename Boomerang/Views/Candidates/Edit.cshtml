@@ -250,26 +250,34 @@
                             <div class="table-row">
                                 <div class="table-cell threecol">
                                     <div class="radio">
-                                        @Html.CheckBoxFor(m => m.SalaryDetails().FullTime)
-                                        @Html.LabelFor(m => m.SalaryDetails().FullTime)
-                                        <br /><br />
-                                        @Html.CheckBoxFor(m => m.SalaryDetails().PartTime)
-                                        @Html.LabelFor(m => m.SalaryDetails().PartTime)
-                                        <br /><br />
-                                        @Html.CheckBoxFor(m => m.SalaryDetails().Student)
-                                        @Html.LabelFor(m => m.SalaryDetails().Student)
-                                        <br /><br />
-                                        @Html.CheckBoxFor(m => m.SalaryDetails().Temp)
-                                        @Html.LabelFor(m => m.SalaryDetails().Temp)
-                                        <br /><br />
-                                        @Html.CheckBoxFor(m => m.SalaryDetails().NightShifts)
-                                        @Html.LabelFor(m => m.SalaryDetails().NightShifts)
-                                        <br /><br />
-                                        @Html.CheckBoxFor(m => m.SalaryDetails().DayShifts)
-                                        @Html.LabelFor(m => m.SalaryDetails().DayShifts)
-                                        <br /><br />
-                                        @Html.CheckBoxFor(m => m.SalaryDetails().Other)
-                                        @Html.LabelFor(m => m.SalaryDetails().Other)
+                                        <div style="overflow: hidden;">
+                                            @Html.CheckBoxFor(m => m.SalaryDetails().FullTime)
+                                            @Html.LabelFor(m => m.SalaryDetails().FullTime)
+                                        </div>
+                                        <div style="overflow: hidden;">
+                                            @Html.CheckBoxFor(m => m.SalaryDetails().PartTime)
+                                            @Html.LabelFor(m => m.SalaryDetails().PartTime)
+                                        </div>
+                                        <div style="overflow: hidden;">
+                                            @Html.CheckBoxFor(m => m.SalaryDetails().Student)
+                                            @Html.LabelFor(m => m.SalaryDetails().Student)
+                                        </div>
+                                        <div style="overflow: hidden;">
+                                            @Html.CheckBoxFor(m => m.SalaryDetails().Temp)
+                                            @Html.LabelFor(m => m.SalaryDetails().Temp)
+                                        </div>
+                                        <div style="overflow: hidden;">
+                                            @Html.CheckBoxFor(m => m.SalaryDetails().NightShifts)
+                                            @Html.LabelFor(m => m.SalaryDetails().NightShifts)
+                                        </div>
+                                        <div style="overflow: hidden;">
+                                            @Html.CheckBoxFor(m => m.SalaryDetails().DayShifts)
+                                            @Html.LabelFor(m => m.SalaryDetails().DayShifts)
+                                        </div>
+                                        <div style="overflow: hidden;">
+                                            @Html.CheckBoxFor(m => m.SalaryDetails().Other)
+                                            @Html.LabelFor(m => m.SalaryDetails().Other)
+                                        </div>
                                     </div> 
                                 </div>
                                 <div class="table-cell ninecol last">
